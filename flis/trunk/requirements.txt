@@ -1,0 +1,12 @@
+Flask==0.9
+Flask-Script==0.3.3
+Jinja2==2.6
+Werkzeug==0.8.3
+argparse==1.2.1
+blinker==1.2
+distribute==0.6.24
+flatland==dev
+htables==0.4b5
+simplejson==2.6.1
+path.py==2.3
+-e git+git://github.com/eaudeweb/Flask-HTables.git@master#egg=Flask_HTables-dev
