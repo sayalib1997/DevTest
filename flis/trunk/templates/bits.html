@@ -1,0 +1,27 @@
+{%- macro css_link(filename, media, pdf_compatible=None, _external=None) -%}
+    {#
+        IMPORT IT LIKE THIS IF YOU NEED "pdf_compatible" PARAMETER:
+
+            {% from 'bits.html' import css_link with context -%}
+    #}
+
+  {% if pdf_compatible %}
+    <style type="text/css" {% if media %}media="{{ media }}"{% endif %}>
+        {{ inject_css(filename) }}
+    </style>
+  {% else %}
+    <link rel="stylesheet" href="{{ url_for('static', filename=filename, _external=_external) }}"
+          {% if media %}media="{{ media }}"{% endif %} />
+  {% endif %}
+{%- endmacro %}
+
+{% macro script_src(filename) -%}
+<script src="{{ url_for('static', filename=filename) }}"></script>
+{%- endmacro %}
+
+{% macro flash_messages() -%}
+  {% for category, message in get_flashed_messages(with_categories=True) %}
+    {% set category_cls = 'alert-'+category if category else '' %}
+    <p class="alert {{ category_cls }}">{{ message }}</p>
+  {% endfor %}
+{%- endmacro %}

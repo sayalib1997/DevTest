@@ -1,9 +1,10 @@
+import flask
 from path import path
 from werkzeug.local import LocalProxy
 from flask_htables import HTables
 
 
-_tables = ['message']
+_tables = ['sources']
 
 htables_ext = HTables()
 
@@ -19,3 +20,11 @@ def initialize_app(app):
     with app.test_request_context():
         for name in _tables:
             session[name].create_table()
+
+def get_or_404(name, row_id):
+    table = session[name]
+    try:
+        return table.get(row_id)
+    except table.RowNotFound:
+        flask.abort(404)
+

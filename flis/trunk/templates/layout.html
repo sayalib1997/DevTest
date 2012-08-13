@@ -1,0 +1,12 @@
+{% from 'bits.html' import css_link, script_src, flash_messages -%}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>FLIS</title>
+        {{ css_link('bootstrap/css/bootstrap.css') }}
+    </head>
+    <body>
+        {% block content %} {{content}} {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <form id="source_edit" name="source_edit" class="form-horizontal" method="post">
+        {{ mk.widget(source) }}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            {% if source_id %}
+                {% set cancel_url = url_for('lists.source_view', source_id=source_id)
+                %}
+            {% else %}
+                {% set cancel_url = url_for('lists.sources_view')
+                %}
+            {% endif %}
+            <a class="btn"
+               href="{{ cancel_url }}">
+                Cancel
+            </a>
+        </div>
+    </form>
+{% endblock %}
