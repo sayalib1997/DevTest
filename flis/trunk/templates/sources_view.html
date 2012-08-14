@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h3>Sources</h3>
+<div class="btn-toolbar">
+  <div class="btn-group">
+    <a href="{{ url_for('lists.source_edit') }}"
+       class="btn btn-primary"> Add source</a>
+  </div>
+</div>
+<div class="row">
+  <div class="span4">
+    <form class="form-horizontal">
+      <table class="table table-bordered sources">
+        <thead>
+          <tr>
+            <th>Sources</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for source in sources %}
+          <tr>
+            <td>
+              <a href="{{ url_for('lists.source_edit',
+                                   source_id=source.id) }}">
+                {{ source["short_name"] }}
+              </a>
+              <a href="{{ url_for('lists.source_delete',
+                                   source_id=source.id) }}"
+                 class="hide icon-trash"
+                 style="float: right;">&nbsp;</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </form>
+  </div>
+
+  <div class="span6"></div>
+</div>
+{% endblock %}

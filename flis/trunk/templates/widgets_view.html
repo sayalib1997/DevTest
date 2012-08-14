@@ -30,7 +30,7 @@
     {%- for name in mk.children_order(group) %}
       <tr>
         {% set field = group[name] %}
-        <th class="span2">{{ field.label }}</th>
+        <th class="span2">{{ field.properties.label }}</th>
         <td>{{ mk.widget(field) }}</td>
       </tr>
     {% endfor %}

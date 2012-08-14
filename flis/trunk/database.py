@@ -28,3 +28,7 @@ def get_or_404(name, row_id):
     except table.RowNotFound:
         flask.abort(404)
 
+def get_all(name):
+    table = session[name]
+    return table.get_all()
+

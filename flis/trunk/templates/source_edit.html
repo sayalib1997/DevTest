@@ -2,11 +2,15 @@
 
 {% block content %}
     <form id="source_edit" name="source_edit" class="form-horizontal" method="post">
-        {{ mk.widget(source) }}
+        {{ mk.widget(source_schema) }}
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">Save changes</button>
             {% if source_id %}
-                {% set cancel_url = url_for('lists.source_view', source_id=source_id)
+            <a class="btn btn-danger remove-source" data-toggle="modal"
+              href="#delete-modal">
+              Delete
+            </a>
+            {% set cancel_url = url_for('lists.source_view', source_id=source_id)
                 %}
             {% else %}
                 {% set cancel_url = url_for('lists.sources_view')
@@ -18,4 +22,22 @@
             </a>
         </div>
     </form>
+{% if source_id %}
+  {% set delete_url = url_for('lists.source_delete', source_id=source_id) %}
+  <div class="modal fade" id="delete-modal">
+    <div class="modal-header">
+      <a class="close" data-dismiss="modal">×</a>
+      <h3>Confirmation</h3>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to delete this source?</p>
+    </div>
+    <div class="modal-footer">
+      <form method="POST" action="{{ delete_url }}" style="display: inline;">
+        <button type="submit" class="btn btn-primary btn-danger">Delete</button>
+      </form>
+      <a class="btn btn-cancel" data-dismiss="modal">Cancel</a>
+    </div>
+  </div>
+{% endif %}
 {% endblock %}

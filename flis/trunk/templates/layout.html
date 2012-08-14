@@ -5,8 +5,64 @@
         <meta charset="utf-8">
         <title>FLIS</title>
         {{ css_link('bootstrap/css/bootstrap.css') }}
+        {{ css_link('bootstrap/css/bootstrap-responsive.css') }}
+
+        {{ css_link('css/bootstrap-ui/jquery-ui-1.8.16.custom.css') }}
+        {{ css_link('css/bootstrap-ui/jquery.ui.1.8.16.ie.css') }}
+        {{ script_src("js/jquery-1.7.1.min.js") }}
+        {{ script_src("bootstrap/js/bootstrap-modal.js") }}
     </head>
     <body>
+      {% block layout_header %}
+      <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+          <div class="container">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse"
+                    data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+            </button>
+            <a class="brand" href="{{ url_for('lists.home') }}">
+              FLIS
+            </a>
+
+            <div class="nav-collapse">
+              <ul class="nav pull-right">
+                <li class="staff_section">
+                  <a href="{{ url_for('lists.home') }}">Other link</a>
+                </li>
+              {% if user %}
+                <li class="staff_section">
+                  <a href="{{ url_for('staff.home') }}">Staff members</a>
+                </li>
+                <li class="country_section">
+                  <a href="{{ url_for('country.home') }}">Member states</a>
+                </li>
+                <li class="meeting_section">
+                  <a href="{{ url_for('meeting.home') }}">Meetings</a>
+                </li>
+                <li>
+                  <a href="#"><i class="icon-question-sign icon-white"></i> Help</a>
+                </li>
+                {% if not bypass_login %}
+                <li>
+                    <a href="{{ url_for('auth.logout')}}">Logout</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('auth.change_password')}}">Change password</a>
+                </li>
+                {% endif %}
+              {% endif %}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endblock %}
+      <div class="container" style="margin-top: 50px">
+        {{ flash_messages() }}
         {% block content %} {{content}} {% endblock %}
+      </div>
     </body>
 </html>

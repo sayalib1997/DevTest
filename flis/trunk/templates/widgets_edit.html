@@ -10,7 +10,6 @@
 
 {% macro input(mk, field) %}
   {{ mk.input(field, class="field-%s" % field.name) }}
-  {{- _errors(mk, field) -}}
 {% endmacro %}
 
 {% macro textarea(mk, field) %}

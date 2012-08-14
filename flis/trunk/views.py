@@ -17,21 +17,22 @@ def source_edit(source_id=None):
     app = flask.current_app
     session = database.session
 
-    if source_id:
-        sources_row = database.get_or_404("sources", source_id)
-        source = schema.SourcesSchema.from_flat(sources_row)
+    if source_id is None:
+        sources_row = None
     else:
-        sources_row = session['sources'].new()
-        source = None
+        sources_row = database.get_or_404("sources", source_id)
+        source_schema = schema.SourcesSchema.from_flat(sources_row)
 
     if flask.request.method == "POST":
         form_data = dict(schema.SourcesSchema.from_defaults().flatten())
         form_data.update(flask.request.form.to_dict())
 
-        source = schema.SourcesSchema.from_flat(form_data)
+        source_schema = schema.SourcesSchema.from_flat(form_data)
 
-        if source.validate():
-            sources_row.update(source.flatten())
+        if source_schema.validate():
+            if sources_row is None:
+                sources_row = session['sources'].new()
+            sources_row.update(source_schema.flatten())
 
             session.save(sources_row)
             session.commit()
@@ -44,13 +45,13 @@ def source_edit(source_id=None):
             flask.flash(u"Errors in sources information", "error")
     else:
         if source_id:
-            source = schema.SourcesSchema.from_flat(sources_row)
+            source_schema = schema.SourcesSchema.from_flat(sources_row)
         else:
-            source = schema.SourcesSchema()
+            source_schema = schema.SourcesSchema()
 
     return flask.render_template('source_edit.html', **{
         'mk': MarkupGenerator(app.jinja_env.get_template('widgets_edit.html')),
-        'source': source,
+        'source_schema': source_schema,
         'source_id': source_id,
     })
 
@@ -65,10 +66,22 @@ def source_view(source_id):
         'source_id': source_id,
     })
 
+@lists.route("/sources/<int:source_id>/delete", methods=["POST"])
+def source_delete(source_id):
+    #sources_row = database.get_or_404("sources", source_id)
+
+    session = database.session
+    session['sources'].delete(source_id)
+    session.commit()
+    return flask.redirect(flask.url_for("lists.sources_view"))
+
 @lists.route("/sources/")
 def sources_view():
-    return flask.render_template('layout.html', **{
-        'content': "Not yet..."
+    sources_rows = database.get_all("sources")
+    sources = [schema.Source.from_flat(sources_row)
+        for sources_row in sources_rows]
+    return flask.render_template('sources_view.html', **{
+        'sources': sources,
     })
 
 class MarkupGenerator(flatland.out.markup.Generator):
