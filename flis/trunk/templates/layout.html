@@ -11,6 +11,7 @@
         {{ css_link('css/bootstrap-ui/jquery.ui.1.8.16.ie.css') }}
         {{ script_src("js/jquery-1.7.1.min.js") }}
         {{ script_src("bootstrap/js/bootstrap-modal.js") }}
+        {{ script_src("bootstrap/js/bootstrap-dropdown.js") }}
     </head>
     <body>
       {% block layout_header %}
@@ -23,14 +24,14 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
             </button>
-            <a class="brand" href="{{ url_for('lists.home') }}">
+            <a class="brand" href="{{ url_for('flis.home') }}">
               FLIS
             </a>
 
             <div class="nav-collapse">
               <ul class="nav pull-right">
                 <li class="staff_section">
-                  <a href="{{ url_for('lists.home') }}">Other link</a>
+                  <a href="{{ url_for('flis.home') }}">Other link</a>
                 </li>
               {% if user %}
                 <li class="staff_section">

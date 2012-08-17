@@ -1,9 +1,6 @@
 import flatland as fl
-from flatland.signals import validator_validated
-from flatland.schema.base import NotEmpty
 
-CommonString = fl.String.using(optional=True) \
-                        .with_properties(widget='input')
+from common import CommonString, SourceField
 
 _SourcesSchema = fl.Dict.with_properties(widget="simple_schema").of(
     CommonString.named('short_name')
@@ -49,11 +46,80 @@ class Source(dict):
 
         return source
 
-@validator_validated.connect
-def validated(sender, element, result, **kwargs):
-    if sender is NotEmpty:
-        if not result:
-            label = getattr(element, 'label', element.name)
-            msg = element.properties.get("not_empty_error",
-                                         u"%s is required" % label)
-            element.add_error(msg)
+
+_TrendsSchema = fl.Dict.with_properties(widget="simple_schema").of(
+    CommonString.named('code')
+        .with_properties(label=u"Code *",
+                         not_empty_error=u"Please provide the code")
+        .using(optional=False),
+    CommonString.named('description')
+        .with_properties(label=u"Description *",
+                         not_empty_error=u"Please provide the description")
+        .using(optional=False),
+    SourceField.named('source')
+        .with_properties(label=u"Source *",
+                         not_empty_error=u"Please select the source")
+        .using(optional=False),
+    CommonString.named('url')
+        .with_properties(label=u"URL *",
+                         not_empty_error=(u"Please provide the URL "
+                             u"(to published GMT brief)"))
+        .using(optional=False),
+    CommonString.named('ownership')
+        .with_properties(label=u"Ownership*",
+                         not_empty_error=u"Please provide the ownership")
+        .using(optional=False),
+    CommonString.named('summary')
+        .with_properties(widget='textarea', label=u"Summary"),
+)
+
+class TrendsSchema(_TrendsSchema):
+
+    @property
+    def value(self):
+        return Trend(super(TrendsSchema, self).value)
+
+class Trend(dict):
+
+    id = None
+
+    @staticmethod
+    def from_flat(trends_row):
+        trend = TrendsSchema.from_flat(trends_row)
+
+        trend = trend.value
+        trend.id = trends_row.id
+
+        return trend
+
+_ThematicCategoriesSchema = fl.Dict.with_properties(widget="simple_schema").of(
+    CommonString.named('code')
+        .with_properties(label=u"Code *",
+                         not_empty_error=u"Please provide the code")
+        .using(optional=False),
+    CommonString.named('description')
+        .with_properties(label=u"Description *",
+                         not_empty_error=u"Please provide the description")
+        .using(optional=False),
+)
+
+class ThematicCategoriesSchema(_ThematicCategoriesSchema):
+
+    @property
+    def value(self):
+        return Trend(super(ThematicCategoriesSchema, self).value)
+
+class ThematicCategory(dict):
+
+    id = None
+
+    @staticmethod
+    def from_flat(thematic_categories_row):
+        thematic_category = ThematicCategoriesSchema.from_flat(
+                thematic_categories_row)
+
+        thematic_category = thematic_category.value
+        thematic_category.id = thematic_categories_row.id
+
+        return thematic_category
+

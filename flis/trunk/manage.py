@@ -17,6 +17,7 @@ def create_app():
     app.config.update(default_config)
     app.config.from_pyfile("settings.py", silent=True)
     app.register_blueprint(views.lists)
+    app.register_blueprint(views.flis)
     _my_extensions = app.jinja_options["extensions"] + ["jinja2.ext.do"]
     app.jinja_options = dict(app.jinja_options, extensions=_my_extensions)
     database.initialize_app(app)

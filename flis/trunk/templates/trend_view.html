@@ -1,0 +1,15 @@
+{% extends "settings.html" %}
+
+{% block settings_content %}
+    <div class="btn-toolbar">
+        <div class="btn-group">
+            {% set edit_url = url_for('lists.trend_edit', trend_id=trend_id) %}
+            <a class="btn" href="{{ edit_url }}">Edit {{ trend.description }}</a>
+        </div>
+        <div class="btn-group">
+            {% set trends_url = url_for('lists.trends_view') %}
+            <a class="btn" href="{{ trends_url }}">Back to trends</a>
+        </div>
+    </div>
+    {{ mk.widget(trend) }}
+{% endblock %}

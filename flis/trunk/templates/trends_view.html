@@ -1,30 +1,29 @@
 {% extends "settings.html" %}
 
 {% block settings_content %}
-<h3>Sources</h3>
+<h3>Trends</h3>
 <div class="btn-toolbar">
   <div class="btn-group">
-    <a href="{{ url_for('lists.source_edit') }}"
-       class="btn btn-primary"> Add source</a>
+    <a href="{{ url_for('lists.trend_edit') }}"
+       class="btn btn-primary">Add trend</a>
   </div>
 </div>
 <div class="row">
   <div class="span4">
     <form class="form-horizontal">
-      <table class="table table-bordered sources">
+      <table class="table table-bordered trends">
         <thead>
           <tr>
-            <th>Source name</th>
+            <th>Trend name</th>
           </tr>
         </thead>
         <tbody>
-          {%- for source in sources %}
+          {%- for trend in trends %}
           <tr>
             <td>
-              <a href="{{ url_for('lists.source_edit',
-                                   source_id=source.id) }}">
-                {{ source["short_name"] }} ({{ source["long_name"] }})
-              </a>
+              <a href="{{ url_for('lists.trend_edit',
+                                   trend_id=trend.id) }}">
+                {{ trend["description"] }}</a>
             </td>
           </tr>
           {% endfor %}

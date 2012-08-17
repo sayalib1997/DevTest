@@ -1,0 +1,39 @@
+{% extends "settings.html" %}
+
+{% block settings_content %}
+<h3>Thematic categories</h3>
+<div class="btn-toolbar">
+  <div class="btn-group">
+    <a href="{{ url_for('lists.thematic_category_edit') }}"
+       class="btn btn-primary"> Add category</a>
+  </div>
+</div>
+<div class="row">
+  <div class="span4">
+    <form class="form-horizontal">
+      <table class="table table-bordered thematic_category">
+        <thead>
+          <tr>
+            <th>Thematic category</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for thematic_category in thematic_categories %}
+          <tr>
+            <td>
+                <a href="{{ url_for('lists.thematic_category_edit',
+                    thematic_category_id=thematic_category.id) }}">
+                    {{ thematic_category["code"] }}
+                    ({{ thematic_category["description"] }})
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </form>
+  </div>
+
+  <div class="span6"></div>
+</div>
+{% endblock %}

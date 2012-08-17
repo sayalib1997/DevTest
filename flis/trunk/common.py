@@ -1,0 +1,100 @@
+import operator
+import flatland as fl
+import flask
+from flatkit import ValuesFromTable, get_request_cache
+
+from flatland.validation import Validator, Converted, IsEmail
+from flatland.signals import validator_validated
+from flatland.schema.base import NotEmpty
+
+import database
+
+class ListEmails(Validator):
+
+    fail = None
+
+    def validate(self, element, state):
+        if element.properties.get("not_empty_error"):
+            self.fail = fl.validation.base.N_(element.properties["not_empty_error"])
+        else:
+            self.fail = fl.validation.base.N_(u'One or more email addresses are not valid.')
+
+        is_email_validator = IsEmail()
+        if not element.optional and not element:
+            return self.note_error(element, state, 'fail')
+        for e in element:
+            if e.value and not is_email_validator.validate(e, None):
+                return self.note_error(element, state, 'fail')
+
+        return True
+
+class ListValue(Validator):
+
+    fail = None
+
+    def validate(self, element, state):
+        if element.properties.get("not_empty_error"):
+            self.fail = fl.validation.base.N_(element.properties["not_empty_error"])
+        else:
+            self.fail = fl.validation.base.N_(u'%(u)s is not a valid value for %(label)s.')
+
+        for e in element.value:
+            if e not in element.properties['valid_values']:
+                return self.note_error(element, state, 'fail')
+
+        return True
+
+class EnumValue(Validator):
+
+    fail = None
+
+    def validate(self, element, state):
+        if element.properties.get("not_empty_error"):
+            self.fail = fl.validation.base.N_(element.properties["not_empty_error"])
+        else:
+            self.fail = fl.validation.base.N_(u'%(u)s is not a valid value for %(label)s.')
+        if element.valid_values:
+            if element.value not in element.valid_values:
+                return self.note_error(element, state, 'fail')
+        return True
+
+CommonString = fl.String.using(optional=True) \
+                        .with_properties(widget='input')
+
+CommonEnum = fl.Enum.using(optional=True) \
+                    .including_validators(EnumValue()) \
+                    .with_properties(widget="select")
+CommonEnum.value_labels = None
+
+# CommonBoolean has optional=False because booleans are
+# required to be True or False (None is not allowed)
+CommonBoolean = fl.Boolean.using(optional=True).with_properties(widget="checkbox")
+CommonDict = fl.Dict.with_properties(widget="group")
+CommonList = fl.List.using(optional=True)
+CommonInteger = fl.Integer.using(optional=True)
+_valid_date = Converted(incorrect=u"%(label)s is not a valid date")
+CommonDate = fl.Date.using(optional=True).including_validators(_valid_date) \
+                    .with_properties(widget='date', attr={"class": "picker"}
+                    )
+CommonDateTime = fl.DateTime.using(optional=True).including_validators(_valid_date) \
+                            .with_properties(widget='date', attr={"class": "picker"})
+
+
+class SourceField(CommonEnum, object):
+    valid_values = ValuesFromTable('sources', field='short_name')
+
+    @property
+    def value_labels(self):
+        cache = get_request_cache()
+        cache_key = 'values-and-labels-' + 'CountryRow'
+        return cache.get(cache_key)
+
+@validator_validated.connect
+def validated(sender, element, result, **kwargs):
+    if sender is NotEmpty:
+        if not result:
+            label = getattr(element, 'label', element.name)
+            msg = element.properties.get("not_empty_error",
+                                         u"%s is required" % label)
+            element.add_error(msg)
+

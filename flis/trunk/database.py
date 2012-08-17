@@ -4,7 +4,7 @@ from werkzeug.local import LocalProxy
 from flask_htables import HTables
 
 
-_tables = ['sources']
+_tables = ['sources', 'trends', 'thematic_categories']
 
 htables_ext = HTables()
 
@@ -31,4 +31,3 @@ def get_or_404(name, row_id):
 def get_all(name):
     table = session[name]
     return table.get_all()
-

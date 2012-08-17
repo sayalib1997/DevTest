@@ -25,3 +25,38 @@
     <p class="alert {{ category_cls }}">{{ message }}</p>
   {% endfor %}
 {%- endmacro %}
+
+{% macro nav_tabs(active) -%}
+<ul class="nav nav-tabs">
+
+  <li class="{{ 'active' if active == 'interlinks' else '' }}">
+    <a href="{{ url_for('flis.home') }}">Interlinks</a>
+  </li>
+
+  <li class="dropdown {{ 'active' if active == 'settings' else '' }}">
+
+    <a class="dropdown-toggle" data-toggle="dropdown">
+      Settings
+      <b class="caret"></b>
+    </a>
+
+    <ul class="dropdown-menu">
+      <li>
+        <a href="{{ url_for('lists.sources_view') }}">
+          Sources</a>
+      </li>
+      <li>
+        <a href="{{ url_for('lists.trends_view') }}">
+          Trends</a>
+      </li>
+      <li>
+        <a href="{{ url_for('lists.thematic_categories_view') }}">
+          Thematic categories</a>
+      </li>
+
+    </ul>
+
+  </li>
+
+</ul>
+{%- endmacro %}

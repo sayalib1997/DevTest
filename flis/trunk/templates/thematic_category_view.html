@@ -1,0 +1,19 @@
+{% extends "settings.html" %}
+
+{% block settings_content %}
+    <div class="btn-toolbar">
+        <div class="btn-group">
+            {% set edit_url = url_for('lists.thematic_category_edit',
+                thematic_category_id=thematic_category_id) %}
+                <a class="btn" href="{{ edit_url }}">Edit
+                    {{ thematic_category.code }}</a>
+        </div>
+        <div class="btn-group">
+            {% set thematic_categories_url = url_for(
+                'lists.thematic_categories_view') %}
+                <a class="btn" href="{{ thematic_categories_url }}">
+                    Back to thematic categories</a>
+        </div>
+    </div>
+    {{ mk.widget(thematic_category) }}
+{% endblock %}

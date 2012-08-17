@@ -18,6 +18,24 @@
   {% do mk.end() -%}
 {% endmacro %}
 
+{% macro select(mk, field) %}
+  {# bug, we must call valid_values before value_labels #}
+  {% set valid_values = field.valid_values %}
+  {% set value_labels = field.properties.value_labels or
+                        field.value_labels or None %}
+  {{ mk.select.open(field, class=field.properties.css_class) }}
+
+  {{ mk.option(field, value="", contents="--") }}
+
+  {% for value in field.valid_values %}
+    {% set value_label = (value_labels[value]
+                          if value_labels else value) %}
+    {{ mk.option(field, value=value, contents=value_label) }}
+  {% endfor %}
+
+  {{ mk.select.close() }}
+{% endmacro %}
+
 {% macro schema(mk, schema) %}
   {%- do mk.begin(auto_domid=true, auto_for=true) %}
   {%- for name in mk.children_order(schema) %}
