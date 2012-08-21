@@ -238,6 +238,87 @@ def thematic_categories_view():
         'thematic_categories': thematic_categories,
     })
 
+@lists.route('/geographical_scales/new/', methods=['GET', 'POST'])
+@lists.route('/geographical_scales/<int:geographical_scale_id>/edit',
+        methods=['GET', 'POST'])
+def geographical_scale_edit(geographical_scale_id=None):
+    app = flask.current_app
+    session = database.session
+
+    if geographical_scale_id is None:
+        geographical_scales_row = None
+    else:
+        geographical_scales_row = database.get_or_404("geographical_scale",
+                geographical_scale_id)
+        geographical_scale_schema = schema.GeographicalScalesSchema.from_flat(
+                geographical_scales_row)
+
+    if flask.request.method == "POST":
+        form_data = dict(schema.GeographicalScalesSchema.from_defaults().flatten())
+        form_data.update(flask.request.form.to_dict())
+
+        geographical_scale_schema = schema.GeographicalScalesSchema.from_flat(
+                form_data)
+
+        if geographical_scale_schema.validate():
+            if geographical_scales_row is None:
+                geographical_scales_row = session['geographical_scales'].new()
+            geographical_scales_row.update(geographical_scale_schema.flatten())
+
+            session.save(geographical_scales_row)
+            session.commit()
+
+            flask.flash("Geographical scale saved", "success")
+            location = flask.url_for("lists.geographical_scale_view",
+                    geographical_scale_id=geographical_scales_row.id)
+            return flask.redirect(location)
+
+        else:
+            flask.flash(u"Errors in trends information", "error")
+    else:
+        if geographical_scale_id:
+            geographical_scale_schema = schema.GeographicalScalesSchema.from_flat(
+                    geographical_scales_row)
+        else:
+            geographical_scale_schema = schema.GeographicalScalesSchema()
+
+    return flask.render_template('geographical_scale_edit.html', **{
+        'mk': MarkupGenerator(app.jinja_env.get_template('widgets_edit.html')),
+        'geographical_scale_schema': geographical_scale_schema,
+        'geographical_scale_id': geographical_scale_id,
+    })
+
+@lists.route("/geographical_scales/<int:geographical_scale_id>/")
+def geographical_scale_view(geographical_scale_id):
+    app = flask.current_app
+    geographical_scales_row = database.get_or_404("geographical_scales",
+            geographical_scale_id)
+    geographical_scale = schema.GeographicalScalesSchema.from_flat(
+            geographical_scales_row)
+    return flask.render_template('geographical_scale_view.html', **{
+        'mk': MarkupGenerator(app.jinja_env.get_template('widgets_view.html')),
+        'geographical_scale': geographical_scale,
+        'geographical_scale_id': geographical_scale_id,
+    })
+
+@lists.route("/geographical_scales/<int:geographical_scale_id>/delete",
+        methods=["POST"])
+def geographical_scale_delete(geographical_scale_id):
+    session = database.session
+    session['geographical_scales'].delete(geographical_scale_id)
+    session.commit()
+    return flask.redirect(flask.url_for("lists.geographical_scales_view"))
+
+@lists.route("/geographical_scales/")
+def geographical_scales_view():
+    geographical_scales_rows = database.get_all("geographical_scales")
+    geographical_scales = [
+            schema.GeographicalScale.from_flat(geographical_scales_row)
+            for geographical_scales_row in geographical_scales_rows]
+    return flask.render_template('geographical_scales_view.html', **{
+        'geographical_scales': geographical_scales,
+    })
+
 class MarkupGenerator(flatland.out.markup.Generator):
 
     def __init__(self, template):

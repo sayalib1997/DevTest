@@ -59,7 +59,7 @@ _TrendsSchema = fl.Dict.with_properties(widget="simple_schema").of(
     SourceField.named('source')
         .with_properties(label=u"Source *",
                          not_empty_error=u"Please select the source")
-        .using(optional=False),
+        .using(optional=False, child_type=fl.Integer),
     CommonString.named('url')
         .with_properties(label=u"URL *",
                          not_empty_error=(u"Please provide the URL "
@@ -122,4 +122,35 @@ class ThematicCategory(dict):
         thematic_category.id = thematic_categories_row.id
 
         return thematic_category
+
+_GeographicalScalesSchema = fl.Dict.with_properties(widget="simple_schema").of(
+    CommonString.named('code')
+        .with_properties(label=u"Code *",
+                         not_empty_error=u"Please provide the code")
+        .using(optional=False),
+    CommonString.named('description')
+        .with_properties(label=u"Description *",
+                         not_empty_error=u"Please provide the description")
+        .using(optional=False),
+)
+
+class GeographicalScalesSchema(_GeographicalScalesSchema):
+
+    @property
+    def value(self):
+        return Trend(super(GeographicalScalesSchema, self).value)
+
+class GeographicalScale(dict):
+
+    id = None
+
+    @staticmethod
+    def from_flat(geographical_scales_row):
+        geographical_scale = GeographicalScalesSchema.from_flat(
+                geographical_scales_row)
+
+        geographical_scale = geographical_scale.value
+        geographical_scale.id = geographical_scales_row.id
+
+        return geographical_scale
 

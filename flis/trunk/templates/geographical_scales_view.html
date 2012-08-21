@@ -1,0 +1,39 @@
+{% extends "settings.html" %}
+
+{% block settings_content %}
+<h3>Geographical scales</h3>
+<div class="btn-toolbar">
+  <div class="btn-group">
+    <a href="{{ url_for('lists.geographical_scale_edit') }}"
+       class="btn btn-primary"> Add geographical scale</a>
+  </div>
+</div>
+<div class="row">
+  <div class="span4">
+    <form class="form-horizontal">
+      <table class="table table-bordered geographical_scale">
+        <thead>
+          <tr>
+            <th>Geographical scale</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for geographical_scale in geographical_scales %}
+          <tr>
+            <td>
+                <a href="{{ url_for('lists.geographical_scale_edit',
+                    geographical_scale_id=geographical_scale.id) }}">
+                    {{ geographical_scale["code"] }}
+                    ({{ geographical_scale["description"] }})
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </form>
+  </div>
+
+  <div class="span6"></div>
+</div>
+{% endblock %}

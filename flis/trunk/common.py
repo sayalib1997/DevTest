@@ -1,13 +1,10 @@
-import operator
 import flatland as fl
-import flask
-from flatkit import ValuesFromTable, get_request_cache
+from flatkit.schema import ValuesFromTable, DictFromTable
 
 from flatland.validation import Validator, Converted, IsEmail
 from flatland.signals import validator_validated
 from flatland.schema.base import NotEmpty
 
-import database
 
 class ListEmails(Validator):
 
@@ -81,13 +78,8 @@ CommonDateTime = fl.DateTime.using(optional=True).including_validators(_valid_da
 
 
 class SourceField(CommonEnum, object):
-    valid_values = ValuesFromTable('sources', field='short_name')
-
-    @property
-    def value_labels(self):
-        cache = get_request_cache()
-        cache_key = 'values-and-labels-' + 'CountryRow'
-        return cache.get(cache_key)
+    valid_values = ValuesFromTable('sources', field=None)
+    value_labels = DictFromTable('sources', value_field='short_name', key_field=None)
 
 @validator_validated.connect
 def validated(sender, element, result, **kwargs):
