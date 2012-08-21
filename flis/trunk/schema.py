@@ -154,3 +154,34 @@ class GeographicalScale(dict):
 
         return geographical_scale
 
+_GeographicalCoveragesSchema = fl.Dict.with_properties(widget="simple_schema").of(
+    CommonString.named('code')
+        .with_properties(label=u"Code *",
+                         not_empty_error=u"Please provide the code")
+        .using(optional=False),
+    CommonString.named('description')
+        .with_properties(label=u"Description *",
+                         not_empty_error=u"Please provide the description")
+        .using(optional=False),
+)
+
+class GeographicalCoveragesSchema(_GeographicalCoveragesSchema):
+
+    @property
+    def value(self):
+        return Trend(super(GeographicalCoveragesSchema, self).value)
+
+class GeographicalCoverage(dict):
+
+    id = None
+
+    @staticmethod
+    def from_flat(geographical_coverages_row):
+        geographical_coverage = GeographicalCoveragesSchema.from_flat(
+                geographical_coverages_row)
+
+        geographical_coverage = geographical_coverage.value
+        geographical_coverage.id = geographical_coverages_row.id
+
+        return geographical_coverage
+

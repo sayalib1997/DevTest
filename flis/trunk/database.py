@@ -4,7 +4,8 @@ from werkzeug.local import LocalProxy
 from flask_htables import HTables
 
 
-_tables = ['sources', 'trends', 'thematic_categories', 'geographical_scales']
+_tables = ['sources', 'trends', 'thematic_categories', 'geographical_scales',
+            'geographical_coverages']
 
 htables_ext = HTables()
 

@@ -319,6 +319,88 @@ def geographical_scales_view():
         'geographical_scales': geographical_scales,
     })
 
+
+@lists.route('/geographical_coverages/new/', methods=['GET', 'POST'])
+@lists.route('/geographical_coverages/<int:geographical_coverage_id>/edit',
+        methods=['GET', 'POST'])
+def geographical_coverage_edit(geographical_coverage_id=None):
+    app = flask.current_app
+    session = database.session
+
+    if geographical_coverage_id is None:
+        geographical_coverages_row = None
+    else:
+        geographical_coverages_row = database.get_or_404("geographical_coverages",
+                geographical_coverage_id)
+        geographical_coverage_schema = schema.GeographicalCoveragesSchema.from_flat(
+                geographical_coverages_row)
+
+    if flask.request.method == "POST":
+        form_data = dict(schema.GeographicalCoveragesSchema.from_defaults().flatten())
+        form_data.update(flask.request.form.to_dict())
+
+        geographical_coverage_schema = schema.GeographicalCoveragesSchema.from_flat(
+                form_data)
+
+        if geographical_coverage_schema.validate():
+            if geographical_coverages_row is None:
+                geographical_coverages_row = session['geographical_coverages'].new()
+            geographical_coverages_row.update(geographical_coverage_schema.flatten())
+
+            session.save(geographical_coverages_row)
+            session.commit()
+
+            flask.flash("Geographical coverage saved", "success")
+            location = flask.url_for("lists.geographical_coverage_view",
+                    geographical_coverage_id=geographical_coverages_row.id)
+            return flask.redirect(location)
+
+        else:
+            flask.flash(u"Errors in trends information", "error")
+    else:
+        if geographical_coverage_id:
+            geographical_coverage_schema = schema.GeographicalCoveragesSchema.from_flat(
+                    geographical_coverages_row)
+        else:
+            geographical_coverage_schema = schema.GeographicalCoveragesSchema()
+
+    return flask.render_template('geographical_coverage_edit.html', **{
+        'mk': MarkupGenerator(app.jinja_env.get_template('widgets_edit.html')),
+        'geographical_coverage_schema': geographical_coverage_schema,
+        'geographical_coverage_id': geographical_coverage_id,
+    })
+
+@lists.route("/geographical_coverages/<int:geographical_coverage_id>/")
+def geographical_coverage_view(geographical_coverage_id):
+    app = flask.current_app
+    geographical_coverages_row = database.get_or_404("geographical_coverages",
+            geographical_coverage_id)
+    geographical_coverage = schema.GeographicalCoveragesSchema.from_flat(
+            geographical_coverages_row)
+    return flask.render_template('geographical_coverage_view.html', **{
+        'mk': MarkupGenerator(app.jinja_env.get_template('widgets_view.html')),
+        'geographical_coverage': geographical_coverage,
+        'geographical_coverage_id': geographical_coverage_id,
+    })
+
+@lists.route("/geographical_coverages/<int:geographical_coverage_id>/delete",
+        methods=["POST"])
+def geographical_coverage_delete(geographical_coverage_id):
+    session = database.session
+    session['geographical_coverages'].delete(geographical_coverage_id)
+    session.commit()
+    return flask.redirect(flask.url_for("lists.geographical_coverages_view"))
+
+@lists.route("/geographical_coverages/")
+def geographical_coverages_view():
+    geographical_coverages_rows = database.get_all("geographical_coverages")
+    geographical_coverages = [
+            schema.GeographicalCoverage.from_flat(geographical_coverages_row)
+            for geographical_coverages_row in geographical_coverages_rows]
+    return flask.render_template('geographical_coverages_view.html', **{
+        'geographical_coverages': geographical_coverages,
+    })
+
 class MarkupGenerator(flatland.out.markup.Generator):
 
     def __init__(self, template):

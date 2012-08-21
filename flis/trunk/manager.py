@@ -3,7 +3,7 @@
 #import flaskext.script
 #import os.path
 
-default_config = {"DATABASE_URI": "postgresql://localhost/flisdb",
+default_config = {"DATABASE_URI": "postgresql://localhost/flis",
                 }
 
 def create_app(instance_path=None):
