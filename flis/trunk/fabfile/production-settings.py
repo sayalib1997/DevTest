@@ -1,0 +1,11 @@
+from path import path
+
+instance_path = path(__file__).parent
+
+secret_key_path = instance_path/'secret_key.txt'
+if secret_key_path.isfile():
+    SECRET_KEY = secret_key_path.text().strip()
+
+HTABLES_ENGINE = 'postgresql'
+HTABLES_POSTGRESQL_URI = "postgresql://edw:edw@localhost/flis"
+
