@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    {% from "bits.html" import nav_tabs %}
+    {{ nav_tabs('gmts') }}
+
+    <div class="btn-toolbar">
+        <div class="btn-group">
+            {% set edit_url = url_for('flis.gmt_edit', gmt_id=gmt_id) %}
+            <a class="btn" href="{{ edit_url }}">Edit {{ gmt.description }}</a>
+        </div>
+        <div class="btn-group">
+            {% set gmts_url = url_for('flis.gmts_listing') %}
+            <a class="btn" href="{{ gmts_url }}">Back to GMTs</a>
+        </div>
+    </div>
+    {{ mk.widget(gmt) }}
+{% endblock %}

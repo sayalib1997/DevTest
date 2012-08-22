@@ -1,6 +1,56 @@
 import flatland as fl
 
-from common import CommonString, SourceField
+from common import CommonString, SourceField, SteepCategoryField
+
+_GMTsSchema = fl.Dict.with_properties(widget="simple_schema").of(
+    CommonString.named('code')
+        .with_properties(label=u"Code *",
+                         not_empty_error=u"Please provide the code")
+        .using(optional=False),
+    SteepCategoryField.named('steep_category')
+        .with_properties(label=u"Steep category *",
+                         not_empty_error=u"Please select the steep category")
+        .using(optional=False, child_type=fl.Integer),
+    CommonString.named('description')
+        .with_properties(label=u"Description *",
+                         not_empty_error=u"Please provide the description")
+        .using(optional=False),
+    SourceField.named('source')
+        .with_properties(label=u"Source *",
+                         not_empty_error=u"Please select the source")
+        .using(optional=False, child_type=fl.Integer),
+    CommonString.named('url')
+        .with_properties(label=u"URL *",
+                         not_empty_error=(u"Please provide the URL "
+                             u"(to published GMT brief)"))
+        .using(optional=False),
+    CommonString.named('ownership')
+        .with_properties(label=u"Ownership*",
+                         not_empty_error=u"Please provide the ownership")
+        .using(optional=False),
+    CommonString.named('summary')
+        .with_properties(widget='textarea', label=u"Summary"),
+)
+
+class GMTsSchema(_GMTsSchema):
+
+    @property
+    def value(self):
+        return GMT(super(GMTsSchema, self).value)
+
+class GMT(dict):
+
+    id = None
+
+    @staticmethod
+    def from_flat(gmts_row):
+        gmt = GMTsSchema.from_flat(gmts_row)
+
+        gmt = gmt.value
+        gmt.id = gmts_row.id
+
+        return gmt
+
 
 _SourcesSchema = fl.Dict.with_properties(widget="simple_schema").of(
     CommonString.named('short_name')

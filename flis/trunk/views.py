@@ -9,6 +9,77 @@ flis = flask.Blueprint('flis', __name__)
 def home():
     return flask.render_template('interlinks.html')
 
+@flis.route('/gmts/new/', methods=['GET', 'POST'])
+@flis.route('/gmts/<int:gmt_id>/edit', methods=['GET', 'POST'])
+def gmt_edit(gmt_id=None):
+    app = flask.current_app
+    session = database.session
+
+    if gmt_id is None:
+        gmts_row = None
+    else:
+        gmts_row = database.get_or_404("gmts", gmt_id)
+        gmt_schema = schema.GMT.from_flat(gmts_row)
+
+    if flask.request.method == "POST":
+        form_data = dict(schema.GMTsSchema.from_defaults().flatten())
+        form_data.update(flask.request.form.to_dict())
+
+        gmt_schema = schema.GMTsSchema.from_flat(form_data)
+
+        if gmt_schema.validate():
+            if gmts_row is None:
+                gmts_row = session['gmts'].new()
+            gmts_row.update(gmt_schema.flatten())
+
+            session.save(gmts_row)
+            session.commit()
+
+            flask.flash("GMT saved", "success")
+            location = flask.url_for("flis.gmt_view", gmt_id=gmts_row.id)
+            return flask.redirect(location)
+        else:
+            flask.flash(u"Errors in GMT information", "error")
+    else:
+        if gmt_id:
+            gmt_schema = schema.GMTsSchema.from_flat(gmts_row)
+        else:
+            gmt_schema = schema.GMTsSchema()
+
+    return flask.render_template('gmt_edit.html', **{
+        'mk': MarkupGenerator(app.jinja_env.get_template('widgets_edit.html')),
+        'gmt_schema': gmt_schema,
+        'gmt_id': gmt_id,
+    })
+
+@flis.route('/gmts/<int:gmt_id>/')
+def gmt_view(gmt_id):
+    app = flask.current_app
+    gmts_row = database.get_or_404("gmts", gmt_id)
+    gmt = schema.GMTsSchema.from_flat(gmts_row)
+    return flask.render_template('gmt_view.html', **{
+        'mk': MarkupGenerator(app.jinja_env.get_template('widgets_view.html')),
+        'gmt': gmt,
+        'gmt_id': gmt_id,
+    })
+
+@flis.route('/gmts/<int:gmt_id>/delete', methods=["POST"])
+def gmt_delete(gmt_id):
+    session = database.session
+    session['gmts'].delete(gmt_id)
+    session.commit()
+    return flask.redirect(flask.url_for("flis.gmts_listing"))
+
+@flis.route('/gmts/')
+def gmts_listing():
+    gmts_rows = database.get_all("gmts")
+    gmts = [schema.GMT.from_flat(gmts_row)
+        for gmts_row in gmts_rows]
+    return flask.render_template('gmts_listing.html', **{
+        'gmts': gmts,
+    })
+
+
 lists = flask.Blueprint('lists', __name__)
 
 @lists.route('/sources/new/', methods=['GET', 'POST'])

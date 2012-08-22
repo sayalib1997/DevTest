@@ -81,6 +81,11 @@ class SourceField(CommonEnum, object):
     valid_values = ValuesFromTable('sources', field=None)
     value_labels = DictFromTable('sources', value_field='short_name', key_field=None)
 
+class SteepCategoryField(CommonEnum, object):
+    valid_values = ValuesFromTable('steep_categories', field=None)
+    value_labels = DictFromTable('steep_categories', value_field='description',
+                                 key_field=None)
+
 @validator_validated.connect
 def validated(sender, element, result, **kwargs):
     if sender is NotEmpty:
