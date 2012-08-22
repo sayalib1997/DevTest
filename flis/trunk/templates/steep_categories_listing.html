@@ -1,0 +1,39 @@
+{% extends "settings.html" %}
+
+{% block settings_content %}
+<h3>Steep categorys</h3>
+<div class="btn-toolbar">
+  <div class="btn-group">
+    <a href="{{ url_for('lists.steep_category_edit') }}"
+       class="btn btn-primary"> Add steep category</a>
+  </div>
+</div>
+<div class="row">
+  <div class="span4">
+    <form class="form-horizontal">
+      <table class="table table-bordered steep_category">
+        <thead>
+          <tr>
+            <th>Steep category</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for steep_category in steep_categories %}
+          <tr>
+            <td>
+                <a href="{{ url_for('lists.steep_category_edit',
+                    steep_category_id=steep_category.id) }}">
+                    {{ steep_category["code"] }}
+                    ({{ steep_category["description"] }})
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </form>
+  </div>
+
+  <div class="span6"></div>
+</div>
+{% endblock %}

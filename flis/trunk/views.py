@@ -319,7 +319,6 @@ def geographical_scales_view():
         'geographical_scales': geographical_scales,
     })
 
-
 @lists.route('/geographical_coverages/new/', methods=['GET', 'POST'])
 @lists.route('/geographical_coverages/<int:geographical_coverage_id>/edit',
         methods=['GET', 'POST'])
@@ -399,6 +398,87 @@ def geographical_coverages_view():
             for geographical_coverages_row in geographical_coverages_rows]
     return flask.render_template('geographical_coverages_view.html', **{
         'geographical_coverages': geographical_coverages,
+    })
+
+@lists.route('/steep_categories/new/', methods=['GET', 'POST'])
+@lists.route('/steep_categories/<int:steep_category_id>/edit',
+        methods=['GET', 'POST'])
+def steep_category_edit(steep_category_id=None):
+    app = flask.current_app
+    session = database.session
+
+    if steep_category_id is None:
+        steep_categories_row = None
+    else:
+        steep_categories_row = database.get_or_404("steep_categories",
+                steep_category_id)
+        steep_category_schema = schema.SteepCategoriesSchema.from_flat(
+                steep_categories_row)
+
+    if flask.request.method == "POST":
+        form_data = dict(schema.SteepCategoriesSchema.from_defaults().flatten())
+        form_data.update(flask.request.form.to_dict())
+
+        steep_category_schema = schema.SteepCategoriesSchema.from_flat(
+                form_data)
+
+        if steep_category_schema.validate():
+            if steep_categories_row is None:
+                steep_categories_row = session['steep_categories'].new()
+            steep_categories_row.update(steep_category_schema.flatten())
+
+            session.save(steep_categories_row)
+            session.commit()
+
+            flask.flash("Geographical coverage saved", "success")
+            location = flask.url_for("lists.steep_category_view",
+                    steep_category_id=steep_categories_row.id)
+            return flask.redirect(location)
+
+        else:
+            flask.flash(u"Errors in trends information", "error")
+    else:
+        if steep_category_id:
+            steep_category_schema = schema.SteepCategoriesSchema.from_flat(
+                    steep_categories_row)
+        else:
+            steep_category_schema = schema.SteepCategoriesSchema()
+
+    return flask.render_template('steep_category_edit.html', **{
+        'mk': MarkupGenerator(app.jinja_env.get_template('widgets_edit.html')),
+        'steep_category_schema': steep_category_schema,
+        'steep_category_id': steep_category_id,
+    })
+
+@lists.route("/steep_categories/<int:steep_category_id>/")
+def steep_category_view(steep_category_id):
+    app = flask.current_app
+    steep_categories_row = database.get_or_404("steep_categories",
+            steep_category_id)
+    steep_category = schema.SteepCategoriesSchema.from_flat(
+            steep_categories_row)
+    return flask.render_template('steep_category_view.html', **{
+        'mk': MarkupGenerator(app.jinja_env.get_template('widgets_view.html')),
+        'steep_category': steep_category,
+        'steep_category_id': steep_category_id,
+    })
+
+@lists.route("/steep_categories/<int:steep_category_id>/delete",
+        methods=["POST"])
+def steep_category_delete(steep_category_id):
+    session = database.session
+    session['steep_categories'].delete(steep_category_id)
+    session.commit()
+    return flask.redirect(flask.url_for("lists.steep_categories_listing"))
+
+@lists.route("/steep_categories/")
+def steep_categories_listing():
+    steep_categories_rows = database.get_all("steep_categories")
+    steep_categories = [
+            schema.GeographicalCoverage.from_flat(steep_categories_row)
+            for steep_categories_row in steep_categories_rows]
+    return flask.render_template('steep_categories_listing.html', **{
+        'steep_categories': steep_categories,
     })
 
 class MarkupGenerator(flatland.out.markup.Generator):

@@ -185,3 +185,33 @@ class GeographicalCoverage(dict):
 
         return geographical_coverage
 
+_SteepCategoriesSchema = fl.Dict.with_properties(widget="simple_schema").of(
+    CommonString.named('code')
+        .with_properties(label=u"Code *",
+                         not_empty_error=u"Please provide the code")
+        .using(optional=False),
+    CommonString.named('description')
+        .with_properties(label=u"Description *",
+                         not_empty_error=u"Please provide the description")
+        .using(optional=False),
+)
+
+class SteepCategoriesSchema(_SteepCategoriesSchema):
+
+    @property
+    def value(self):
+        return Trend(super(SteepCategoriesSchema, self).value)
+
+class SteepCategory(dict):
+
+    id = None
+
+    @staticmethod
+    def from_flat(steep_categories_row):
+        steep_category = SteepCategoriesSchema.from_flat(
+                steep_categories_row)
+
+        steep_category = steep_category.value
+        steep_category.id = steep_categories_row.id
+
+        return steep_category
