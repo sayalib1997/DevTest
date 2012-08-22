@@ -481,6 +481,80 @@ def steep_categories_listing():
         'steep_categories': steep_categories,
     })
 
+@lists.route('/timelines/new/', methods=['GET', 'POST'])
+@lists.route('/timelines/<int:timeline_id>/edit', methods=['GET', 'POST'])
+def timeline_edit(timeline_id=None):
+    app = flask.current_app
+    session = database.session
+
+    if timeline_id is None:
+        timelines_row = None
+    else:
+        timelines_row = database.get_or_404("timelines", timeline_id)
+        timeline_schema = schema.TimelinesSchema.from_flat(timelines_row)
+
+    if flask.request.method == "POST":
+        form_data = dict(schema.TimelinesSchema.from_defaults().flatten())
+        form_data.update(flask.request.form.to_dict())
+
+        timeline_schema = schema.TimelinesSchema.from_flat(form_data)
+
+        if timeline_schema.validate():
+            if timelines_row is None:
+                timelines_row = session['timelines'].new()
+            timelines_row.update(timeline_schema.flatten())
+
+            session.save(timelines_row)
+            session.commit()
+
+            flask.flash("Timeline saved", "success")
+            location = flask.url_for("lists.timeline_view",
+                                     timeline_id=timelines_row.id)
+            return flask.redirect(location)
+
+        else:
+            flask.flash(u"Errors in timeline information", "error")
+    else:
+        if timeline_id:
+            timeline_schema = schema.TimelinesSchema.from_flat(
+                timelines_row)
+        else:
+            timeline_schema = schema.TimelinesSchema()
+
+    return flask.render_template('timeline_edit.html', **{
+        'mk': MarkupGenerator(app.jinja_env.get_template('widgets_edit.html')),
+        'timeline_schema': timeline_schema,
+        'timeline_id': timeline_id,
+    })
+
+@lists.route("/timelines/<int:timeline_id>/")
+def timeline_view(timeline_id):
+    app = flask.current_app
+    timelines_row = database.get_or_404("timelines", timeline_id)
+    timeline = schema.TimelinesSchema.from_flat(timelines_row)
+    return flask.render_template('timeline_view.html', **{
+        'mk': MarkupGenerator(app.jinja_env.get_template('widgets_view.html')),
+        'timeline': timeline,
+        'timeline_id': timeline_id,
+    })
+
+@lists.route("/timelines/<int:timeline_id>/delete", methods=["POST"])
+def timeline_delete(timeline_id):
+    session = database.session
+    session['timelines'].delete(timeline_id)
+    session.commit()
+    return flask.redirect(flask.url_for("lists.timelines_listing"))
+
+@lists.route("/timelines/")
+def timelines_listing():
+    timelines_rows = database.get_all("timelines")
+    timelines = [
+        schema.Timeline.from_flat(timelines_row)
+        for timelines_row in timelines_rows]
+    return flask.render_template('timelines_listing.html', **{
+        'timelines': timelines
+    })
+
 class MarkupGenerator(flatland.out.markup.Generator):
 
     def __init__(self, template):

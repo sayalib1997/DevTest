@@ -215,3 +215,29 @@ class SteepCategory(dict):
         steep_category.id = steep_categories_row.id
 
         return steep_category
+
+_TimelinesSchema = fl.Dict.with_properties(widget="simple_schema").of(
+    CommonString.named('title')
+        .with_properties(label=u"Title *",
+                         not_empty_error=u"Please provide the title")
+        .using(optional=False),
+)
+
+class TimelinesSchema(_TimelinesSchema):
+
+    @property
+    def value(self):
+        return Timeline(super(TimelinesSchema, self).value)
+
+class Timeline(dict):
+
+    id = None
+
+    @staticmethod
+    def from_flat(timelines_row):
+        timeline = TimelinesSchema.from_flat(timelines_row)
+
+        timeline = timeline.value
+        timeline.id = timelines_row.id
+
+        return timeline
