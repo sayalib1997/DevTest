@@ -1,0 +1,40 @@
+<script>
+  $(function () {
+    if ($('#file').val()){
+      $('.caption').hide();
+    }
+    $('.remove-file').click(function(evt){
+      evt.preventDefault();
+      $('#file').hide();
+      $('.caption').fadeIn();
+      $('#file_id').attr('value', '');
+    })
+  });
+</script>
+
+<fieldset>
+  <div class="control-group ">
+    <label class="control-label" for="f_file_id">Example of file</label>
+    <div class="controls">
+      <div id="file">
+        {% if indicator and indicator.has_file %}
+          <a href="{{ indicator.file }}" >{{ indicator.file_id }}</a>
+          <a href=""
+             class="btn btn-danger remove-file"
+             style="{% if not indicator.has_file -%} display: none {% endif %}">
+             Remove
+          </a>
+        {% endif %}
+      </div>
+
+      <div class="caption">
+        <div id="file-input-container" class="file-input-container">
+          {% set file_id = indicator.file_id|default('') %}
+          <input type="hidden" id="file_id" name="file_id" value="{{file_id}}"/>
+          <input type="file" id="file" name="file" value="{{file_id}}"/>
+          <div class="err" style="margin-left: 6px; display: none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</fieldset>

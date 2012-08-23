@@ -5,7 +5,8 @@ from flask_htables import HTables
 
 
 _tables = ['sources', 'trends', 'thematic_categories', 'geographical_scales',
-            'geographical_coverages', 'steep_categories', 'timelines', 'gmts']
+            'geographical_coverages', 'steep_categories', 'timelines', 'gmts',
+            'indicators']
 
 htables_ext = HTables()
 

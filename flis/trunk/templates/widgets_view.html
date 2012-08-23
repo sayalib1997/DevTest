@@ -30,7 +30,7 @@
     {%- for name in mk.children_order(group) %}
       <tr>
         {% set field = group[name] %}
-        <th class="span2">{{ field.properties.label }}</th>
+        <th class="span2">{{ field.properties.label or field.label }}</th>
         <td>{{ mk.widget(field) }}</td>
       </tr>
     {% endfor %}
@@ -44,4 +44,25 @@
     <h2>{{ field.label }}</h2>
     {{ mk.widget(field) }}
   {% endfor -%}
+{% endmacro -%}
+
+{%- macro group(mk, group) %}
+  <table class="table table-bordered table-condensed">
+    <tbody>
+    {%- for name in mk.children_order(group) %}
+      <tr>
+        {% set field = group[name] %}
+        <th class="span2">{{ field.properties.label|safe }}</th>
+        <td>{{ mk.widget(field) }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endmacro -%}
+
+{%- macro hide(mk, field) %}
+{% endmacro -%}
+
+{%- macro file(mk, field) %}
+  <a href="{{ url_for('static', filename='files/'+field.value) }}" >{{ field.value }}</a>
 {% endmacro -%}

@@ -2,6 +2,10 @@ import flask
 import flatland.out.markup
 import schema
 import database
+import tempfile
+from path import path
+
+MByte = 1024*1024
 
 flis = flask.Blueprint('flis', __name__)
 
@@ -624,6 +628,145 @@ def timelines_listing():
         for timelines_row in timelines_rows]
     return flask.render_template('timelines_listing.html', **{
         'timelines': timelines
+    })
+
+def _copy_file(src_file, dst_file):
+    size = 0
+    while True:
+        buf = src_file.read(128*65535)
+        if not buf:
+            return size
+        dst_file.write(buf)
+        size += len(buf)
+
+class FileSizeLimitExceeded(Exception):
+    pass
+
+def _save_file(form_data, uploaded_file, limit=None):
+    app = flask.current_app
+
+    with tempfile.TemporaryFile() as tmp:
+        size = _copy_file(uploaded_file, tmp)
+        if limit is not None and size > limit:
+            raise FileSizeLimitExceeded
+        tmp.seek(0)
+
+        filename = uploaded_file.filename
+        user_files_folder = flask.safe_join(
+            path(app.root_path), app.config['USER_FILES_PATH'])
+
+        with open(flask.safe_join(user_files_folder, filename), "w+") as dst_file:
+            _copy_file(tmp, dst_file)
+    form_data["file_id"] = filename
+
+class IndicatorMissingFile(Exception):
+    pass
+
+def _delete_file(indicators_row):
+    app = flask.current_app
+    file_id = indicators_row.get("file_id", None)
+    if file_id:
+        user_files_folder = flask.safe_join(
+            path(app.root_path), app.config['USER_FILES_PATH'])
+        file_path = flask.safe_join(user_files_folder, file_id)
+        path(file_path).remove_p()
+        del indicators_row["file_id"]
+    else:
+        raise IndicatorMissingFile
+
+@lists.route('/indicators/new/', methods=['GET', 'POST'])
+@lists.route('/indicators/<int:indicator_id>/edit', methods=['GET', 'POST'])
+def indicator_edit(indicator_id=None):
+    app = flask.current_app
+    session = database.session
+
+    if indicator_id is None:
+        indicators_row = None
+    else:
+        indicators_row = database.get_or_404("indicators", indicator_id)
+        indicator_schema = schema.IndicatorsSchema.from_flat(indicators_row)
+
+    if flask.request.method == "POST":
+        form_data = dict(schema.IndicatorsSchema.from_defaults().flatten())
+        form_data.update(flask.request.form.to_dict())
+
+
+        uploaded_file = flask.request.files['file']
+        if uploaded_file.filename != u'':
+            limit = flask.current_app.config.get('FILE_SIZE_LIMIT_MB') * MByte
+            if indicators_row:
+                try:
+                    _delete_file(indicators_row)
+                except IndicatorMissingFile:
+                    pass
+            try:
+                _save_file(form_data, uploaded_file, limit)
+                # response["error"] = "success"
+            except FileSizeLimitExceeded:
+                pass# response["error"] = "File size limit exceeded (%d MB)" % limit
+        else:
+            pass# response["error"] = "File not valid"
+
+        indicator_schema = schema.IndicatorsSchema.from_flat(form_data)
+        if indicator_schema.validate():
+            if indicators_row is None:
+                indicators_row = session['indicators'].new()
+            indicators_row.update(indicator_schema.flatten())
+
+            session.save(indicators_row)
+            session.commit()
+
+            flask.flash("Indicator saved", "success")
+            location = flask.url_for("lists.indicator_view", indicator_id=indicators_row.id)
+            return flask.redirect(location)
+
+        else:
+            flask.flash(u"Errors in indicators information", "error")
+    else:
+        if indicator_id:
+            indicator_schema = schema.IndicatorsSchema.from_flat(indicators_row)
+        else:
+            indicator_schema = schema.IndicatorsSchema()
+
+    if indicators_row:
+        indicator = schema.Indicator.from_flat(indicators_row)
+    else:
+        indicator = None
+    return flask.render_template('indicator_edit.html', **{
+        'mk': MarkupGenerator(app.jinja_env.get_template('widgets_edit.html')),
+        'indicator_schema': indicator_schema,
+        'indicator': indicator,
+        'indicator_id': indicator_id,
+    })
+
+@lists.route("/indicators/<int:indicator_id>/")
+def indicator_view(indicator_id):
+    app = flask.current_app
+    indicators_row = database.get_or_404("indicators", indicator_id)
+    indicator = schema.IndicatorsSchema.from_flat(indicators_row)
+    return flask.render_template('indicator_view.html', **{
+        'mk': MarkupGenerator(app.jinja_env.get_template('widgets_view.html')),
+        'indicator': indicator,
+        'indicator_id': indicator_id,
+    })
+
+@lists.route("/indicators/<int:indicator_id>/delete", methods=["POST"])
+def indicator_delete(indicator_id):
+
+    session = database.session
+    indicators_row = database.get_or_404("indicators", indicator_id)
+    _delete_file(indicators_row)
+    session['indicators'].delete(indicator_id)
+    session.commit()
+    return flask.redirect(flask.url_for("lists.indicators_listing"))
+
+@lists.route("/indicators/")
+def indicators_listing():
+    indicators_rows = database.get_all("indicators")
+    indicators = [schema.Indicator.from_flat(indicators_row)
+        for indicators_row in indicators_rows]
+    return flask.render_template('indicators_listing.html', **{
+        'indicators': indicators,
     })
 
 class MarkupGenerator(flatland.out.markup.Generator):

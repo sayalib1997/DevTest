@@ -71,3 +71,30 @@
   </fieldset>
   {% do mk.end() -%}
 {% endmacro %}
+
+{% macro group(mk, group) %}
+  <div class="well">
+    {%- for name in mk.children_order(group) %}
+      {% set field = group[name] %}
+      {% set error_cls = 'error' if field.errors else '' %}
+
+      {% if field.label %}
+      <div class="control-group {{ error_cls }}">
+        {{ mk.label(field, class='control-label', contents=field.properties.label) }}
+        <div class="controls">
+          {{ mk.widget(field) }}
+          {% for message in field.errors %}
+            <span class="help-inline">{{ message }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% else %}
+        {{ mk.widget(field) }}
+      {% endif %}
+    {%- endfor %}
+  </div>
+{% endmacro %}
+
+{% macro file(mk, schema) %}{% endmacro %}
+
+{% macro hide(mk, schema) %}{% endmacro %}

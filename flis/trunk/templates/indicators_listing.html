@@ -1,0 +1,37 @@
+{% extends "settings.html" %}
+
+{% block settings_content %}
+<h3>Indicators</h3>
+<div class="btn-toolbar">
+  <div class="btn-group">
+    <a href="{{ url_for('lists.indicator_edit') }}"
+       class="btn btn-primary">Add indicator</a>
+  </div>
+</div>
+<div class="row">
+  <div class="span4">
+    <form class="form-horizontal">
+      <table class="table table-bordered indicators">
+        <thead>
+          <tr>
+            <th>Indicator name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for indicator in indicators %}
+          <tr>
+            <td>
+              <a href="{{ url_for('lists.indicator_edit',
+                                   indicator_id=indicator.id) }}">
+                {{ indicator["code"] }}</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </form>
+  </div>
+
+  <div class="span6"></div>
+</div>
+{% endblock %}

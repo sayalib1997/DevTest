@@ -81,6 +81,26 @@ class SourceField(CommonEnum, object):
     valid_values = ValuesFromTable('sources', field=None)
     value_labels = DictFromTable('sources', value_field='short_name', key_field=None)
 
+class ThematicCategoryField(CommonEnum, object):
+    valid_values = ValuesFromTable('thematic_categories', field=None)
+    value_labels = DictFromTable('thematic_categories',
+            value_field='description', key_field=None)
+
+class GeoScaleField(CommonEnum, object):
+    valid_values = ValuesFromTable('geographical_scales', field=None)
+    value_labels = DictFromTable('geographical_scales',
+            value_field='code', key_field=None)
+
+class GeoCoverageField(CommonEnum, object):
+    valid_values = ValuesFromTable('geographical_coverages', field=None)
+    value_labels = DictFromTable('geographical_coverages',
+            value_field='code', key_field=None)
+
+class TimelineField(CommonEnum, object):
+    valid_values = ValuesFromTable('timelines', field=None)
+    value_labels = DictFromTable('timelines',
+            value_field='title', key_field=None)
+
 class SteepCategoryField(CommonEnum, object):
     valid_values = ValuesFromTable('steep_categories', field=None)
     value_labels = DictFromTable('steep_categories', value_field='description',

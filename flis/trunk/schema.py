@@ -1,26 +1,31 @@
 import flatland as fl
+import flask
+from werkzeug import secure_filename
+import database
 
-from common import CommonString, SourceField, SteepCategoryField
+from common import (CommonString, CommonDict ,SourceField,
+                    ThematicCategoryField, GeoScaleField, GeoCoverageField,
+                    TimelineField, SteepCategoryField)
 
 _GMTsSchema = fl.Dict.with_properties(widget="simple_schema").of(
     CommonString.named('code')
-        .with_properties(label=u"Code *",
+        .with_properties(label=u"Code",
                          not_empty_error=u"Please provide the code")
         .using(optional=False),
     SteepCategoryField.named('steep_category')
-        .with_properties(label=u"Steep category *",
+        .with_properties(label=u"Steep category",
                          not_empty_error=u"Please select the steep category")
         .using(optional=False, child_type=fl.Integer),
     CommonString.named('description')
-        .with_properties(label=u"Description *",
+        .with_properties(label=u"Description",
                          not_empty_error=u"Please provide the description")
         .using(optional=False),
     SourceField.named('source')
-        .with_properties(label=u"Source *",
+        .with_properties(label=u"Source",
                          not_empty_error=u"Please select the source")
         .using(optional=False, child_type=fl.Integer),
     CommonString.named('url')
-        .with_properties(label=u"URL *",
+        .with_properties(label=u"URL",
                          not_empty_error=(u"Please provide the URL "
                              u"(to published GMT brief)"))
         .using(optional=False),
@@ -54,23 +59,23 @@ class GMT(dict):
 
 _SourcesSchema = fl.Dict.with_properties(widget="simple_schema").of(
     CommonString.named('short_name')
-        .with_properties(label=u"Short name *",
+        .with_properties(label=u"Short name",
                          not_empty_error=u"Please provide the short name")
         .using(optional=False),
     CommonString.named('long_name')
-        .with_properties(label=u"Long name *",
+        .with_properties(label=u"Long name",
                          not_empty_error=u"Please provide the long name")
         .using(optional=False),
     CommonString.named('year_of_publication')
-        .with_properties(label=u"Year of publication *",
+        .with_properties(label=u"Year of publication",
                          not_empty_error=u"Please provide the year of publication")
         .using(optional=False),
     CommonString.named('author')
-        .with_properties(label=u"Author *",
+        .with_properties(label=u"Author",
                          not_empty_error=u"Please provide the author")
         .using(optional=False),
     CommonString.named('url')
-        .with_properties(label=u"URL (to online availability) *",
+        .with_properties(label=u"URL (to online availability)",
                          not_empty_error=u"Please provide the URL")
         .using(optional=False),
     CommonString.named('summary')
@@ -99,19 +104,19 @@ class Source(dict):
 
 _TrendsSchema = fl.Dict.with_properties(widget="simple_schema").of(
     CommonString.named('code')
-        .with_properties(label=u"Code *",
+        .with_properties(label=u"Code",
                          not_empty_error=u"Please provide the code")
         .using(optional=False),
     CommonString.named('description')
-        .with_properties(label=u"Description *",
+        .with_properties(label=u"Description",
                          not_empty_error=u"Please provide the description")
         .using(optional=False),
     SourceField.named('source')
-        .with_properties(label=u"Source *",
+        .with_properties(label=u"Source",
                          not_empty_error=u"Please select the source")
         .using(optional=False, child_type=fl.Integer),
     CommonString.named('url')
-        .with_properties(label=u"URL *",
+        .with_properties(label=u"URL",
                          not_empty_error=(u"Please provide the URL "
                              u"(to published GMT brief)"))
         .using(optional=False),
@@ -144,11 +149,11 @@ class Trend(dict):
 
 _ThematicCategoriesSchema = fl.Dict.with_properties(widget="simple_schema").of(
     CommonString.named('code')
-        .with_properties(label=u"Code *",
+        .with_properties(label=u"Code",
                          not_empty_error=u"Please provide the code")
         .using(optional=False),
     CommonString.named('description')
-        .with_properties(label=u"Description *",
+        .with_properties(label=u"Description",
                          not_empty_error=u"Please provide the description")
         .using(optional=False),
 )
@@ -175,11 +180,11 @@ class ThematicCategory(dict):
 
 _GeographicalScalesSchema = fl.Dict.with_properties(widget="simple_schema").of(
     CommonString.named('code')
-        .with_properties(label=u"Code *",
+        .with_properties(label=u"Code",
                          not_empty_error=u"Please provide the code")
         .using(optional=False),
     CommonString.named('description')
-        .with_properties(label=u"Description *",
+        .with_properties(label=u"Description",
                          not_empty_error=u"Please provide the description")
         .using(optional=False),
 )
@@ -206,11 +211,11 @@ class GeographicalScale(dict):
 
 _GeographicalCoveragesSchema = fl.Dict.with_properties(widget="simple_schema").of(
     CommonString.named('code')
-        .with_properties(label=u"Code *",
+        .with_properties(label=u"Code",
                          not_empty_error=u"Please provide the code")
         .using(optional=False),
     CommonString.named('description')
-        .with_properties(label=u"Description *",
+        .with_properties(label=u"Description",
                          not_empty_error=u"Please provide the description")
         .using(optional=False),
 )
@@ -237,11 +242,11 @@ class GeographicalCoverage(dict):
 
 _SteepCategoriesSchema = fl.Dict.with_properties(widget="simple_schema").of(
     CommonString.named('code')
-        .with_properties(label=u"Code *",
+        .with_properties(label=u"Code",
                          not_empty_error=u"Please provide the code")
         .using(optional=False),
     CommonString.named('description')
-        .with_properties(label=u"Description *",
+        .with_properties(label=u"Description",
                          not_empty_error=u"Please provide the description")
         .using(optional=False),
 )
@@ -268,7 +273,7 @@ class SteepCategory(dict):
 
 _TimelinesSchema = fl.Dict.with_properties(widget="simple_schema").of(
     CommonString.named('title')
-        .with_properties(label=u"Title *",
+        .with_properties(label=u"Title",
                          not_empty_error=u"Please provide the title")
         .using(optional=False),
 )
@@ -291,3 +296,94 @@ class Timeline(dict):
         timeline.id = timelines_row.id
 
         return timeline
+
+_IndicatorsSchema = fl.Dict.with_properties(widget="simple_schema").of(
+    CommonString.named('code')
+        .with_properties(label=u"Code",
+                         not_empty_error=u"Please provide the code")
+        .using(optional=False),
+    ThematicCategoryField.named('thematic_category')
+        .with_properties(label=u"Thematic category",
+                         not_empty_error=u"Please select the thematic category")
+        .using(optional=False, child_type=fl.Integer),
+    CommonString.named('description')
+        .with_properties(label=u"Description",
+                         not_empty_error=u"Please provide the description")
+        .using(optional=False),
+    GeoScaleField.named('geographical_scale')
+        .with_properties(label=u"Geo scale",
+                         not_empty_error=u"Please select the geo scale")
+        .using(optional=False, child_type=fl.Integer),
+    GeoCoverageField.named('geographical_coverage')
+        .with_properties(label=u"Geo coverage",
+                         not_empty_error=u"Please select the geo coverage")
+        .using(optional=False, child_type=fl.Integer),
+
+    CommonDict.named("time_coverage")
+              .with_properties(label=u"Time coverage")
+              .of(
+        CommonString.named('base_year')
+            .with_properties(label=u"Base year",
+                             not_empty_error=u"Please provide the base year ")
+            .using(optional=False),
+        CommonString.named('end_year')
+            .with_properties(label=u"End year",
+                             not_empty_error=u"Please provide the end year")
+            .using(optional=False),
+        TimelineField.named('timeline')
+            .with_properties(label=u"Timeline",
+                             not_empty_error=u"Please select the timeline")
+            .using(optional=False, child_type=fl.Integer),
+    ),
+
+    SourceField.named('source')
+        .with_properties(label=u"Source",
+                         not_empty_error=u"Please select the source")
+        .using(optional=False, child_type=fl.Integer),
+    CommonString.named('url')
+        .with_properties(label=u"URL",
+                         not_empty_error=u"Please provide the URL")
+        .using(optional=False),
+    CommonString.named('ownership')
+        .with_properties(label=u"Ownership",
+                         not_empty_error=u"Please provide the ownership")
+        .using(optional=False),
+    CommonString.named("file_id")
+                 .using(label="", optional=True)
+                 .with_properties(widget="file", label=u"Example of file"),
+
+)
+
+class IndicatorsSchema(_IndicatorsSchema):
+
+    @property
+    def value(self):
+        return Indicator(super(IndicatorsSchema, self).value)
+
+class Indicator(dict):
+
+    id = None
+
+    @staticmethod
+    def from_flat(indicators_row):
+        indicator = IndicatorsSchema.from_flat(indicators_row)
+
+        indicator = indicator.value
+        indicator.id = indicators_row.id
+
+        return indicator
+
+    @property
+    def has_file(self):
+        assert self.id is not None
+        indicator_row = database.get_or_404("indicators", self.id)
+        return bool(indicator_row.get("file_id", ""))
+
+    @property
+    def file(self):
+        if self["file_id"]:
+          filename = "files/%s" % self["file_id"]
+          return flask.url_for("static", filename=filename)
+        else:
+          return None
+

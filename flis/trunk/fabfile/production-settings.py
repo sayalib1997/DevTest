@@ -8,4 +8,5 @@ if secret_key_path.isfile():
 
 HTABLES_ENGINE = 'postgresql'
 HTABLES_POSTGRESQL_URI = "postgresql://edw:edw@localhost/flis"
-
+USER_FILES_PATH = "instance/files"
+FILE_SIZE_LIMIT_MB = 10

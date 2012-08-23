@@ -9,7 +9,9 @@
 
         {{ css_link('css/bootstrap-ui/jquery-ui-1.8.16.custom.css') }}
         {{ css_link('css/bootstrap-ui/jquery.ui.1.8.16.ie.css') }}
+        {{ css_link("css/uniform.default.css") }}
         {{ script_src("js/jquery-1.7.1.min.js") }}
+        {{ script_src("js/jquery.uniform.js") }}
         {{ script_src("bootstrap/js/bootstrap-modal.js") }}
         {{ script_src("bootstrap/js/bootstrap-dropdown.js") }}
     </head>
@@ -65,5 +67,10 @@
         {{ flash_messages() }}
         {% block content %} {{content}} {% endblock %}
       </div>
+      <script>
+        $(function () {
+           $("input[type=file]").uniform();
+        });
+      </script>
     </body>
 </html>

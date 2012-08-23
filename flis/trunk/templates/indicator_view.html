@@ -1,0 +1,15 @@
+{% extends "settings.html" %}
+
+{% block settings_content %}
+    <div class="btn-toolbar">
+        <div class="btn-group">
+            {% set edit_url = url_for('lists.indicator_edit', indicator_id=indicator_id) %}
+            <a class="btn" href="{{ edit_url }}">Edit {{ indicator.short_name }}</a>
+        </div>
+        <div class="btn-group">
+            {% set indicators_url = url_for('lists.indicators_listing') %}
+            <a class="btn" href="{{ indicators_url }}">Back to indicators</a>
+        </div>
+    </div>
+    {{ mk.widget(indicator) }}
+{% endblock %}

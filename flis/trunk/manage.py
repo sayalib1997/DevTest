@@ -1,7 +1,8 @@
 import flask
 import database
 import flaskext.script
-import os.path
+from path import path
+from werkzeug import SharedDataMiddleware
 import views
 
 default_config = {
@@ -9,8 +10,7 @@ default_config = {
     }
 
 def create_app():
-    instance_path = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                                'instance'))
+    instance_path = path(__file__).abspath().parent/'instance'
     app = flask.Flask(__name__,
                       instance_path=instance_path,
                       instance_relative_config=True)
@@ -21,6 +21,12 @@ def create_app():
     _my_extensions = app.jinja_options["extensions"] + ["jinja2.ext.do"]
     app.jinja_options = dict(app.jinja_options, extensions=_my_extensions)
     database.initialize_app(app)
+    if app.config['DEBUG']:
+        files_path = path(app.root_path)
+        files_path = flask.safe_join(files_path, "instance/files")
+        app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {
+            "/static/files": files_path,
+        })
     return app
 
 manager = flaskext.script.Manager(create_app)
