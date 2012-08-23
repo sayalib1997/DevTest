@@ -323,7 +323,7 @@ def geographical_scale_edit(geographical_scale_id=None):
     if geographical_scale_id is None:
         geographical_scales_row = None
     else:
-        geographical_scales_row = database.get_or_404("geographical_scale",
+        geographical_scales_row = database.get_or_404("geographical_scales",
                 geographical_scale_id)
         geographical_scale_schema = schema.GeographicalScalesSchema.from_flat(
                 geographical_scales_row)
