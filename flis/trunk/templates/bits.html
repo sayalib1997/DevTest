@@ -30,9 +30,8 @@
 <ul class="nav nav-tabs">
 
   <li class="{{ 'active' if active == 'interlinks' else '' }}">
-    <a href="{{ url_for('flis.home') }}">Interlinks</a>
+    <a href="{{ url_for('flis.interlinks_listing') }}">Interlinks</a>
   </li>
-
   <li class="{{ 'active' if active == 'gmts' else '' }}">
     <a href="{{ url_for('flis.gmts_listing') }}">GMT</a>
   </li>
@@ -58,11 +57,11 @@
           Thematic categories</a>
       </li>
       <li>
-        <a href="{{ url_for('lists.geographical_scales_view') }}">
+        <a href="{{ url_for('lists.geo_scales_view') }}">
           Geographical scale</a>
       </li>
       <li>
-        <a href="{{ url_for('lists.geographical_coverages_view') }}">
+        <a href="{{ url_for('lists.geo_coverages_view') }}">
           Geographical coverage</a>
       </li>
       <li>

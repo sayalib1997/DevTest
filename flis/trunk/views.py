@@ -83,6 +83,77 @@ def gmts_listing():
         'gmts': gmts,
     })
 
+@flis.route('/interlinks/new/', methods=['GET', 'POST'])
+@flis.route('/interlinks/<int:interlink_id>/edit', methods=['GET', 'POST'])
+def interlink_edit(interlink_id=None):
+    app = flask.current_app
+    session = database.session
+
+    if interlink_id is None:
+        interlinks_row = None
+    else:
+        interlinks_row = database.get_or_404("interlinks", interlink_id)
+        interlink_schema = schema.Interlink.from_flat(interlinks_row)
+
+    if flask.request.method == "POST":
+        form_data = dict(schema.InterlinksSchema.from_defaults().flatten())
+        form_data.update(flask.request.form.to_dict())
+
+        interlink_schema = schema.InterlinksSchema.from_flat(form_data)
+
+        if interlink_schema.validate():
+            if interlinks_row is None:
+                interlinks_row = session['interlinks'].new()
+            interlinks_row.update(interlink_schema.flatten())
+
+            session.save(interlinks_row)
+            session.commit()
+
+            flask.flash("Interlink saved", "success")
+            location = flask.url_for("flis.interlink_view",
+                    interlink_id=interlinks_row.id)
+            return flask.redirect(location)
+        else:
+            flask.flash(u"Errors in Interlink information", "error")
+    else:
+        if interlink_id:
+            interlink_schema = schema.InterlinksSchema.from_flat(interlinks_row)
+        else:
+            interlink_schema = schema.InterlinksSchema()
+
+    return flask.render_template('interlink_edit.html', **{
+        'mk': MarkupGenerator(app.jinja_env.get_template('widgets_edit.html')),
+        'interlink_schema': interlink_schema,
+        'interlink_id': interlink_id,
+    })
+
+@flis.route('/interlinks/<int:interlink_id>/')
+def interlink_view(interlink_id):
+    app = flask.current_app
+    interlinks_row = database.get_or_404("interlinks", interlink_id)
+    interlink = schema.InterlinksSchema.from_flat(interlinks_row)
+    return flask.render_template('interlink_view.html', **{
+        'mk': MarkupGenerator(app.jinja_env.get_template('widgets_view.html')),
+        'interlink': interlink,
+        'interlink_id': interlink_id,
+    })
+
+@flis.route('/interlinks/<int:interlink_id>/delete', methods=["POST"])
+def interlink_delete(interlink_id):
+    session = database.session
+    session['interlinks'].delete(interlink_id)
+    session.commit()
+    return flask.redirect(flask.url_for("flis.interlinks_listing"))
+
+@flis.route('/interlinks/')
+def interlinks_listing():
+    interlinks_rows = database.get_all("interlinks")
+    interlinks = [schema.Interlink.from_flat(interlinks_row)
+        for interlinks_row in interlinks_rows]
+    return flask.render_template('interlinks_listing.html', **{
+        'interlinks': interlinks,
+    })
+
 
 lists = flask.Blueprint('lists', __name__)
 
@@ -113,7 +184,8 @@ def source_edit(source_id=None):
             session.commit()
 
             flask.flash("Source saved", "success")
-            location = flask.url_for("lists.source_view", source_id=sources_row.id)
+            location = flask.url_for("lists.source_view",
+                                     source_id=sources_row.id)
             return flask.redirect(location)
 
         else:
@@ -248,7 +320,8 @@ def thematic_category_edit(thematic_category_id=None):
                 thematic_categories_row)
 
     if flask.request.method == "POST":
-        form_data = dict(schema.ThematicCategoriesSchema.from_defaults().flatten())
+        form_data = dict(
+                schema.ThematicCategoriesSchema.from_defaults().flatten())
         form_data.update(flask.request.form.to_dict())
 
         thematic_category_schema = schema.ThematicCategoriesSchema.from_flat(
@@ -313,166 +386,169 @@ def thematic_categories_view():
         'thematic_categories': thematic_categories,
     })
 
-@lists.route('/geographical_scales/new/', methods=['GET', 'POST'])
-@lists.route('/geographical_scales/<int:geographical_scale_id>/edit',
+@lists.route('/geo_scales/new/', methods=['GET', 'POST'])
+@lists.route('/geo_scales/<int:geo_scale_id>/edit',
         methods=['GET', 'POST'])
-def geographical_scale_edit(geographical_scale_id=None):
+def geo_scale_edit(geo_scale_id=None):
     app = flask.current_app
     session = database.session
 
-    if geographical_scale_id is None:
-        geographical_scales_row = None
+    if geo_scale_id is None:
+        geo_scales_row = None
     else:
-        geographical_scales_row = database.get_or_404("geographical_scales",
-                geographical_scale_id)
-        geographical_scale_schema = schema.GeographicalScalesSchema.from_flat(
-                geographical_scales_row)
+        geo_scales_row = database.get_or_404("geo_scales",
+                geo_scale_id)
+        geo_scale_schema = schema.GeographicalScalesSchema.from_flat(
+                geo_scales_row)
 
     if flask.request.method == "POST":
-        form_data = dict(schema.GeographicalScalesSchema.from_defaults().flatten())
+        form_data = dict(
+                schema.GeographicalScalesSchema.from_defaults().flatten())
         form_data.update(flask.request.form.to_dict())
 
-        geographical_scale_schema = schema.GeographicalScalesSchema.from_flat(
+        geo_scale_schema = schema.GeographicalScalesSchema.from_flat(
                 form_data)
 
-        if geographical_scale_schema.validate():
-            if geographical_scales_row is None:
-                geographical_scales_row = session['geographical_scales'].new()
-            geographical_scales_row.update(geographical_scale_schema.flatten())
+        if geo_scale_schema.validate():
+            if geo_scales_row is None:
+                geo_scales_row = session['geo_scales'].new()
+            geo_scales_row.update(geo_scale_schema.flatten())
 
-            session.save(geographical_scales_row)
+            session.save(geo_scales_row)
             session.commit()
 
             flask.flash("Geographical scale saved", "success")
-            location = flask.url_for("lists.geographical_scale_view",
-                    geographical_scale_id=geographical_scales_row.id)
+            location = flask.url_for("lists.geo_scale_view",
+                    geo_scale_id=geo_scales_row.id)
             return flask.redirect(location)
 
         else:
             flask.flash(u"Errors in trends information", "error")
     else:
-        if geographical_scale_id:
-            geographical_scale_schema = schema.GeographicalScalesSchema.from_flat(
-                    geographical_scales_row)
+        if geo_scale_id:
+            geo_scale_schema = schema.GeographicalScalesSchema.from_flat(
+                    geo_scales_row)
         else:
-            geographical_scale_schema = schema.GeographicalScalesSchema()
+            geo_scale_schema = schema.GeographicalScalesSchema()
 
-    return flask.render_template('geographical_scale_edit.html', **{
+    return flask.render_template('geo_scale_edit.html', **{
         'mk': MarkupGenerator(app.jinja_env.get_template('widgets_edit.html')),
-        'geographical_scale_schema': geographical_scale_schema,
-        'geographical_scale_id': geographical_scale_id,
+        'geo_scale_schema': geo_scale_schema,
+        'geo_scale_id': geo_scale_id,
     })
 
-@lists.route("/geographical_scales/<int:geographical_scale_id>/")
-def geographical_scale_view(geographical_scale_id):
+@lists.route("/geo_scales/<int:geo_scale_id>/")
+def geo_scale_view(geo_scale_id):
     app = flask.current_app
-    geographical_scales_row = database.get_or_404("geographical_scales",
-            geographical_scale_id)
-    geographical_scale = schema.GeographicalScalesSchema.from_flat(
-            geographical_scales_row)
-    return flask.render_template('geographical_scale_view.html', **{
+    geo_scales_row = database.get_or_404("geo_scales",
+            geo_scale_id)
+    geo_scale = schema.GeographicalScalesSchema.from_flat(
+            geo_scales_row)
+    return flask.render_template('geo_scale_view.html', **{
         'mk': MarkupGenerator(app.jinja_env.get_template('widgets_view.html')),
-        'geographical_scale': geographical_scale,
-        'geographical_scale_id': geographical_scale_id,
+        'geo_scale': geo_scale,
+        'geo_scale_id': geo_scale_id,
     })
 
-@lists.route("/geographical_scales/<int:geographical_scale_id>/delete",
+@lists.route("/geo_scales/<int:geo_scale_id>/delete",
         methods=["POST"])
-def geographical_scale_delete(geographical_scale_id):
+def geo_scale_delete(geo_scale_id):
     session = database.session
-    session['geographical_scales'].delete(geographical_scale_id)
+    session['geo_scales'].delete(geo_scale_id)
     session.commit()
-    return flask.redirect(flask.url_for("lists.geographical_scales_view"))
+    return flask.redirect(flask.url_for("lists.geo_scales_view"))
 
-@lists.route("/geographical_scales/")
-def geographical_scales_view():
-    geographical_scales_rows = database.get_all("geographical_scales")
-    geographical_scales = [
-            schema.GeographicalScale.from_flat(geographical_scales_row)
-            for geographical_scales_row in geographical_scales_rows]
-    return flask.render_template('geographical_scales_view.html', **{
-        'geographical_scales': geographical_scales,
+@lists.route("/geo_scales/")
+def geo_scales_view():
+    geo_scales_rows = database.get_all("geo_scales")
+    geo_scales = [
+            schema.GeographicalScale.from_flat(geo_scales_row)
+            for geo_scales_row in geo_scales_rows]
+    return flask.render_template('geo_scales_view.html', **{
+        'geo_scales': geo_scales,
     })
 
-@lists.route('/geographical_coverages/new/', methods=['GET', 'POST'])
-@lists.route('/geographical_coverages/<int:geographical_coverage_id>/edit',
+@lists.route('/geo_coverages/new/', methods=['GET', 'POST'])
+@lists.route('/geo_coverages/<int:geo_coverage_id>/edit',
         methods=['GET', 'POST'])
-def geographical_coverage_edit(geographical_coverage_id=None):
+def geo_coverage_edit(geo_coverage_id=None):
     app = flask.current_app
     session = database.session
 
-    if geographical_coverage_id is None:
-        geographical_coverages_row = None
+    if geo_coverage_id is None:
+        geo_coverages_row = None
     else:
-        geographical_coverages_row = database.get_or_404("geographical_coverages",
-                geographical_coverage_id)
-        geographical_coverage_schema = schema.GeographicalCoveragesSchema.from_flat(
-                geographical_coverages_row)
+        geo_coverages_row = database.get_or_404(
+                "geo_coverages", geo_coverage_id)
+        geo_coverage_schema = schema.GeographicalCoveragesSchema.from_flat(
+                geo_coverages_row)
 
     if flask.request.method == "POST":
-        form_data = dict(schema.GeographicalCoveragesSchema.from_defaults().flatten())
+        form_data = dict(
+                schema.GeographicalCoveragesSchema.from_defaults().flatten())
         form_data.update(flask.request.form.to_dict())
 
-        geographical_coverage_schema = schema.GeographicalCoveragesSchema.from_flat(
+        geo_coverage_schema = schema.GeographicalCoveragesSchema.from_flat(
                 form_data)
 
-        if geographical_coverage_schema.validate():
-            if geographical_coverages_row is None:
-                geographical_coverages_row = session['geographical_coverages'].new()
-            geographical_coverages_row.update(geographical_coverage_schema.flatten())
+        if geo_coverage_schema.validate():
+            if geo_coverages_row is None:
+                geo_coverages_row = session['geo_coverages'].new()
+            geo_coverages_row.update(
+                    geo_coverage_schema.flatten())
 
-            session.save(geographical_coverages_row)
+            session.save(geo_coverages_row)
             session.commit()
 
             flask.flash("Geographical coverage saved", "success")
-            location = flask.url_for("lists.geographical_coverage_view",
-                    geographical_coverage_id=geographical_coverages_row.id)
+            location = flask.url_for("lists.geo_coverage_view",
+                    geo_coverage_id=geo_coverages_row.id)
             return flask.redirect(location)
 
         else:
             flask.flash(u"Errors in trends information", "error")
     else:
-        if geographical_coverage_id:
-            geographical_coverage_schema = schema.GeographicalCoveragesSchema.from_flat(
-                    geographical_coverages_row)
+        if geo_coverage_id:
+            geo_coverage_schema = schema.GeographicalCoveragesSchema.from_flat(
+                    geo_coverages_row)
         else:
-            geographical_coverage_schema = schema.GeographicalCoveragesSchema()
+            geo_coverage_schema = schema.GeographicalCoveragesSchema()
 
-    return flask.render_template('geographical_coverage_edit.html', **{
+    return flask.render_template('geo_coverage_edit.html', **{
         'mk': MarkupGenerator(app.jinja_env.get_template('widgets_edit.html')),
-        'geographical_coverage_schema': geographical_coverage_schema,
-        'geographical_coverage_id': geographical_coverage_id,
+        'geo_coverage_schema': geo_coverage_schema,
+        'geo_coverage_id': geo_coverage_id,
     })
 
-@lists.route("/geographical_coverages/<int:geographical_coverage_id>/")
-def geographical_coverage_view(geographical_coverage_id):
+@lists.route("/geo_coverages/<int:geo_coverage_id>/")
+def geo_coverage_view(geo_coverage_id):
     app = flask.current_app
-    geographical_coverages_row = database.get_or_404("geographical_coverages",
-            geographical_coverage_id)
-    geographical_coverage = schema.GeographicalCoveragesSchema.from_flat(
-            geographical_coverages_row)
-    return flask.render_template('geographical_coverage_view.html', **{
+    geo_coverages_row = database.get_or_404("geo_coverages",
+            geo_coverage_id)
+    geo_coverage = schema.GeographicalCoveragesSchema.from_flat(
+            geo_coverages_row)
+    return flask.render_template('geo_coverage_view.html', **{
         'mk': MarkupGenerator(app.jinja_env.get_template('widgets_view.html')),
-        'geographical_coverage': geographical_coverage,
-        'geographical_coverage_id': geographical_coverage_id,
+        'geo_coverage': geo_coverage,
+        'geo_coverage_id': geo_coverage_id,
     })
 
-@lists.route("/geographical_coverages/<int:geographical_coverage_id>/delete",
+@lists.route("/geo_coverages/<int:geo_coverage_id>/delete",
         methods=["POST"])
-def geographical_coverage_delete(geographical_coverage_id):
+def geo_coverage_delete(geo_coverage_id):
     session = database.session
-    session['geographical_coverages'].delete(geographical_coverage_id)
+    session['geo_coverages'].delete(geo_coverage_id)
     session.commit()
-    return flask.redirect(flask.url_for("lists.geographical_coverages_view"))
+    return flask.redirect(flask.url_for("lists.geo_coverages_view"))
 
-@lists.route("/geographical_coverages/")
-def geographical_coverages_view():
-    geographical_coverages_rows = database.get_all("geographical_coverages")
-    geographical_coverages = [
-            schema.GeographicalCoverage.from_flat(geographical_coverages_row)
-            for geographical_coverages_row in geographical_coverages_rows]
-    return flask.render_template('geographical_coverages_view.html', **{
-        'geographical_coverages': geographical_coverages,
+@lists.route("/geo_coverages/")
+def geo_coverages_view():
+    geo_coverages_rows = database.get_all("geo_coverages")
+    geo_coverages = [
+            schema.GeographicalCoverage.from_flat(geo_coverages_row)
+            for geo_coverages_row in geo_coverages_rows]
+    return flask.render_template('geo_coverages_view.html', **{
+        'geo_coverages': geo_coverages,
     })
 
 @lists.route('/steep_categories/new/', methods=['GET', 'POST'])
@@ -723,7 +799,8 @@ def indicator_edit(indicator_id=None):
             session.commit()
 
             flask.flash("Indicator saved", "success")
-            location = flask.url_for("lists.indicator_view", indicator_id=indicators_row.id)
+            location = flask.url_for("lists.indicator_view",
+                                     indicator_id=indicators_row.id)
             return flask.redirect(location)
 
         else:

@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% from "bits.html" import nav_tabs %}
+{{ nav_tabs('interlinks') }}
+<h3>Edit interlink</h3>
+<form id="interlink_edit" name="interlink_edit" class="form-horizontal" method="post">
+        {{ mk.widget(interlink_schema) }}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save changes</button>
+            {% if interlink_id %}
+            <a class="btn btn-danger remove-interlink"
+                data-toggle="modal" href="#delete-modal">Delete</a>
+
+            {% set cancel_url = url_for('flis.interlink_view',
+                interlink_id=interlink_id) %}
+            {% else %}
+                {% set cancel_url = url_for('flis.interlinks_listing')
+                %}
+            {% endif %}
+            <a class="btn" href="{{ cancel_url }}">Cancel</a>
+        </div>
+    </form>
+{% if interlink_id %}
+  {% set delete_url = url_for('flis.interlink_delete',
+    interlink_id=interlink_id) %}
+  <div class="modal fade" id="delete-modal">
+    <div class="modal-header">
+      <a class="close" data-dismiss="modal">×</a>
+      <h3>Confirmation</h3>
+    </div>
+    <div class="modal-body">
+      <p>Are you sure you want to delete this interlink?</p>
+    </div>
+    <div class="modal-footer">
+      <form method="POST" action="{{ delete_url }}" style="display: inline;">
+        <button type="submit" class="btn btn-primary btn-danger">Delete</button>
+      </form>
+      <a class="btn btn-cancel" data-dismiss="modal">Cancel</a>
+    </div>
+  </div>
+{% endif %}
+{% endblock %}

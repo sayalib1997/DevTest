@@ -87,13 +87,13 @@ class ThematicCategoryField(CommonEnum, object):
             value_field='description', key_field=None)
 
 class GeoScaleField(CommonEnum, object):
-    valid_values = ValuesFromTable('geographical_scales', field=None)
-    value_labels = DictFromTable('geographical_scales',
+    valid_values = ValuesFromTable('geo_scales', field=None)
+    value_labels = DictFromTable('geo_scales',
             value_field='code', key_field=None)
 
 class GeoCoverageField(CommonEnum, object):
-    valid_values = ValuesFromTable('geographical_coverages', field=None)
-    value_labels = DictFromTable('geographical_coverages',
+    valid_values = ValuesFromTable('geo_coverages', field=None)
+    value_labels = DictFromTable('geo_coverages',
             value_field='code', key_field=None)
 
 class TimelineField(CommonEnum, object):
@@ -104,6 +104,21 @@ class TimelineField(CommonEnum, object):
 class SteepCategoryField(CommonEnum, object):
     valid_values = ValuesFromTable('steep_categories', field=None)
     value_labels = DictFromTable('steep_categories', value_field='description',
+                                 key_field=None)
+
+class TrendField(CommonEnum, object):
+    valid_values = ValuesFromTable('trends', field=None)
+    value_labels = DictFromTable('trends', value_field='description',
+                                 key_field=None)
+
+class IndicatorField(CommonEnum, object):
+    valid_values = ValuesFromTable('indicators', field=None)
+    value_labels = DictFromTable('indicators', value_field='code',
+                                 key_field=None)
+
+class GMTField(CommonEnum, object):
+    valid_values = ValuesFromTable('gmts', field=None)
+    value_labels = DictFromTable('gmts', value_field='code',
                                  key_field=None)
 
 @validator_validated.connect

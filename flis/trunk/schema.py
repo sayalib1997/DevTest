@@ -5,7 +5,8 @@ import database
 
 from common import (CommonString, CommonDict ,SourceField,
                     ThematicCategoryField, GeoScaleField, GeoCoverageField,
-                    TimelineField, SteepCategoryField)
+                    TimelineField, SteepCategoryField, GMTField, TrendField,
+                    IndicatorField)
 
 _GMTsSchema = fl.Dict.with_properties(widget="simple_schema").of(
     CommonString.named('code')
@@ -200,14 +201,14 @@ class GeographicalScale(dict):
     id = None
 
     @staticmethod
-    def from_flat(geographical_scales_row):
-        geographical_scale = GeographicalScalesSchema.from_flat(
-                geographical_scales_row)
+    def from_flat(geo_scales_row):
+        geo_scale = GeographicalScalesSchema.from_flat(
+                geo_scales_row)
 
-        geographical_scale = geographical_scale.value
-        geographical_scale.id = geographical_scales_row.id
+        geo_scale = geo_scale.value
+        geo_scale.id = geo_scales_row.id
 
-        return geographical_scale
+        return geo_scale
 
 _GeographicalCoveragesSchema = fl.Dict.with_properties(widget="simple_schema").of(
     CommonString.named('code')
@@ -231,14 +232,14 @@ class GeographicalCoverage(dict):
     id = None
 
     @staticmethod
-    def from_flat(geographical_coverages_row):
-        geographical_coverage = GeographicalCoveragesSchema.from_flat(
-                geographical_coverages_row)
+    def from_flat(geo_coverages_row):
+        geo_coverage = GeographicalCoveragesSchema.from_flat(
+                geo_coverages_row)
 
-        geographical_coverage = geographical_coverage.value
-        geographical_coverage.id = geographical_coverages_row.id
+        geo_coverage = geo_coverage.value
+        geo_coverage.id = geo_coverages_row.id
 
-        return geographical_coverage
+        return geo_coverage
 
 _SteepCategoriesSchema = fl.Dict.with_properties(widget="simple_schema").of(
     CommonString.named('code')
@@ -310,11 +311,11 @@ _IndicatorsSchema = fl.Dict.with_properties(widget="simple_schema").of(
         .with_properties(label=u"Description",
                          not_empty_error=u"Please provide the description")
         .using(optional=False),
-    GeoScaleField.named('geographical_scale')
+    GeoScaleField.named('geo_scale')
         .with_properties(label=u"Geo scale",
                          not_empty_error=u"Please select the geo scale")
         .using(optional=False, child_type=fl.Integer),
-    GeoCoverageField.named('geographical_coverage')
+    GeoCoverageField.named('geo_coverage')
         .with_properties(label=u"Geo coverage",
                          not_empty_error=u"Please select the geo coverage")
         .using(optional=False, child_type=fl.Integer),
@@ -386,4 +387,48 @@ class Indicator(dict):
           return flask.url_for("static", filename=filename)
         else:
           return None
+
+_InterlinksSchema = fl.Dict.with_properties(widget="simple_schema").of(
+    GMTField.named('gmt')
+        .with_properties(label=u"GMT",
+                         not_empty_error=u"Please select the GMT")
+        .using(optional=False, child_type=fl.Integer),
+    TrendField.named('trend')
+        .with_properties(label=u"Trend",
+                         not_empty_error=u"Please select the trend")
+        .using(optional=False, child_type=fl.Integer),
+    IndicatorField.named('indicator1')
+        .with_properties(label=u"Indicator",
+                         not_empty_error=u"Please select the indicator")
+        .using(optional=False, child_type=fl.Integer),
+    IndicatorField.named('indicator2')
+        .with_properties(label=u"Indicator")
+        .using(optional=True, child_type=fl.Integer),
+    IndicatorField.named('indicator3')
+        .with_properties(label=u"Indicator")
+        .using(optional=True, child_type=fl.Integer),
+    IndicatorField.named('indicator4')
+        .with_properties(label=u"Indicator")
+        .using(optional=True, child_type=fl.Integer),
+)
+
+class InterlinksSchema(_InterlinksSchema):
+
+    @property
+    def value(self):
+        return Interlink(super(InterlinksSchema, self).value)
+
+class Interlink(dict):
+
+    id = None
+
+    @staticmethod
+    def from_flat(interlinks_row):
+        interlink = InterlinksSchema.from_flat(interlinks_row)
+
+        self = interlink.value
+        self.schema = interlink
+        self.id = interlinks_row.id
+
+        return self
 

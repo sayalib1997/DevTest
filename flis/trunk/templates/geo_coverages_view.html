@@ -4,27 +4,27 @@
 <h3>Geographical coverages</h3>
 <div class="btn-toolbar">
   <div class="btn-group">
-    <a href="{{ url_for('lists.geographical_coverage_edit') }}"
+    <a href="{{ url_for('lists.geo_coverage_edit') }}"
        class="btn btn-primary"> Add geographical coverage</a>
   </div>
 </div>
 <div class="row">
   <div class="span4">
     <form class="form-horizontal">
-      <table class="table table-bordered geographical_coverage">
+      <table class="table table-bordered geo_coverage">
         <thead>
           <tr>
             <th>Geographical coverage</th>
           </tr>
         </thead>
         <tbody>
-          {%- for geographical_coverage in geographical_coverages %}
+          {%- for geo_coverage in geo_coverages %}
           <tr>
             <td>
-                <a href="{{ url_for('lists.geographical_coverage_edit',
-                    geographical_coverage_id=geographical_coverage.id) }}">
-                    {{ geographical_coverage["code"] }}
-                    ({{ geographical_coverage["description"] }})
+                <a href="{{ url_for('lists.geo_coverage_edit',
+                    geo_coverage_id=geo_coverage.id) }}">
+                    {{ geo_coverage["code"] }}
+                    ({{ geo_coverage["description"] }})
               </a>
             </td>
           </tr>

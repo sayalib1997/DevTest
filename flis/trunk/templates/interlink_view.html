@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% from "bits.html" import nav_tabs %}
+{{ nav_tabs('interlinks') }}
+    <div class="btn-toolbar">
+        <div class="btn-group">
+            {% set edit_url = url_for('flis.interlink_edit', interlink_id=interlink_id) %}
+            <a class="btn" href="{{ edit_url }}">Edit</a>
+        </div>
+        <div class="btn-group">
+            {% set interlinks_url = url_for('flis.interlinks_listing') %}
+            <a class="btn" href="{{ interlinks_url }}">Back to interlinks</a>
+        </div>
+    </div>
+    {{ mk.widget(interlink) }}
+{% endblock %}

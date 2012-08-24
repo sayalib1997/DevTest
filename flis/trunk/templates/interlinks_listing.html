@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block content %}
+{% from "bits.html" import nav_tabs %}
+{{ nav_tabs('interlinks') }}
+<h3>Interlinks</h3>
+<div class="btn-toolbar">
+  <div class="btn-group">
+    <a href="{{ url_for('flis.interlink_edit') }}"
+       class="btn btn-primary"> Add interlink</a>
+  </div>
+</div>
+<div class="row">
+  <div class="span4">
+    <form class="form-horizontal">
+      <table class="table table-bordered interlinks">
+        <thead>
+          <tr>
+            <th>GMT</th>
+            <th>Trend</th>
+            <th>Interlink</th>
+            <th>Interlink</th>
+            <th>Interlink</th>
+            <th>Interlink</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for interlink in interlinks %}
+          <tr>
+            <td>
+              <a href="{{ url_for('flis.interlink_edit',
+                                   interlink_id=interlink.id) }}">
+                {{ interlink.schema["gmt"].value_labels[interlink['gmt']] }}
+              </a>
+            </td>
+            <td>
+              {{ interlink.schema["trend"].value_labels[interlink['trend']] }}
+            </td>
+            <td>
+              {{ interlink.schema["indicator1"].value_labels[interlink['indicator1']] }}
+            </td>
+            <td>
+              {{ interlink.schema["indicator2"].value_labels[interlink['indicator2']] }}
+            </td>
+            <td>
+              {{ interlink.schema["indicator3"].value_labels[interlink['indicator3']] }}
+            </td>
+            <td>
+              {{ interlink.schema["indicator4"].value_labels[interlink['indicator4']] }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </form>
+  </div>
+
+  <div class="span6"></div>
+</div>
+{% endblock %}
