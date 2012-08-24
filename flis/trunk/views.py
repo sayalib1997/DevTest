@@ -699,23 +699,22 @@ def indicator_edit(indicator_id=None):
 
 
         uploaded_file = flask.request.files['file']
+        file_error = None
         if uploaded_file.filename != u'':
-            limit = flask.current_app.config.get('FILE_SIZE_LIMIT_MB') * MByte
-            if indicators_row:
-                try:
-                    _delete_file(indicators_row)
-                except IndicatorMissingFile:
-                    pass
+            mb_limit = flask.current_app.config.get('FILE_SIZE_LIMIT_MB')
+            limit = mb_limit * MByte
             try:
                 _save_file(form_data, uploaded_file, limit)
-                # response["error"] = "success"
+                if indicators_row:
+                    try:
+                        _delete_file(indicators_row)
+                    except IndicatorMissingFile:
+                        pass
             except FileSizeLimitExceeded:
-                pass# response["error"] = "File size limit exceeded (%d MB)" % limit
-        else:
-            pass# response["error"] = "File not valid"
+                file_error = "File size limit exceeded (%d MB)" % mb_limit
 
         indicator_schema = schema.IndicatorsSchema.from_flat(form_data)
-        if indicator_schema.validate():
+        if indicator_schema.validate() and not file_error:
             if indicators_row is None:
                 indicators_row = session['indicators'].new()
             indicators_row.update(indicator_schema.flatten())
@@ -729,6 +728,9 @@ def indicator_edit(indicator_id=None):
 
         else:
             flask.flash(u"Errors in indicators information", "error")
+            if file_error:
+                indicator_schema['file_id'].valid = False
+                indicator_schema['file_id'].errors.append(file_error)
     else:
         if indicator_id:
             indicator_schema = schema.IndicatorsSchema.from_flat(indicators_row)

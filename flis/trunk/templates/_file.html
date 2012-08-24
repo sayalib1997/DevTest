@@ -13,11 +13,13 @@
 </script>
 
 <fieldset>
-  <div class="control-group ">
+  {% set file_field = indicator_schema['file_id'] %}
+  {% set error_cls = 'error' if file_field.errors else '' %}
+  <div class="control-group {{ error_cls }} ">
     <label class="control-label" for="f_file_id">Example of file</label>
     <div class="controls">
       <div id="file">
-        {% if indicator and indicator.has_file %}
+        {% if indicator and indicator_schema['file_id'] %}
           <a href="{{ indicator.file }}" >{{ indicator.file_id }}</a>
           <a href=""
              class="btn btn-danger remove-file"
@@ -25,13 +27,16 @@
              Remove
           </a>
         {% endif %}
+        {% for message in file_field.errors %}
+          <span class="help-inline">{{ message }}</span>
+        {% endfor %}
       </div>
 
       <div class="caption">
         <div id="file-input-container" class="file-input-container">
-          {% set file_id = indicator.file_id|default('') %}
+          {% set file_id = indicator_schema.file_id|default('') %}
           <input type="hidden" id="file_id" name="file_id" value="{{file_id}}"/>
-          <input type="file" id="file" name="file" value="{{file_id}}"/>
+          <input type="file" id="file" name="file" />
           <div class="err" style="margin-left: 6px; display: none"></div>
         </div>
       </div>
