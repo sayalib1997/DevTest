@@ -4,10 +4,13 @@ import flaskext.script
 from path import path
 from werkzeug import SharedDataMiddleware
 import views
+from raven.contrib.flask import Sentry
 
 default_config = {
         'HTABLES_ENGINE': 'sqlite',
     }
+
+sentry = Sentry()
 
 def create_app():
     instance_path = path(__file__).abspath().parent/'instance'
@@ -16,6 +19,9 @@ def create_app():
                       instance_relative_config=True)
     app.config.update(default_config)
     app.config.from_pyfile("settings.py", silent=True)
+
+    sentry.init_app(app)
+
     app.register_blueprint(views.lists)
     app.register_blueprint(views.flis)
     _my_extensions = app.jinja_options["extensions"] + ["jinja2.ext.do"]

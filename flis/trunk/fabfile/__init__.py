@@ -51,6 +51,8 @@ def install():
 
     if not exists(app['instance_var']):
         run("mkdir -p '%(instance_var)s'" % app)
+    if not exists(app['instance_var']/'files'):
+        run("mkdir -p '%(instance_var)s/files'" % app)
 
     secret_key_path = app['instance_var']/'secret_key.txt'
     if not exists(secret_key_path):
@@ -72,8 +74,8 @@ def service(action):
             'name': 'flis',
         })
 
-
 @task
 def deploy():
     execute('install')
     execute('service', 'restart')
+

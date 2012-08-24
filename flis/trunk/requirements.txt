@@ -14,3 +14,4 @@ psycopg2==2.4.5
 -e git+git://github.com/eaudeweb/flatkit.git@master#egg=flatkit-dev
 supervisor==3.0a12
 Werkzeug==0.8.3
+raven==2.0.5

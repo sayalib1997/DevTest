@@ -652,12 +652,19 @@ def _save_file(form_data, uploaded_file, limit=None):
         tmp.seek(0)
 
         filename = uploaded_file.filename
+        filename, ext = filename.rsplit('.', 1)
         user_files_folder = flask.safe_join(
             path(app.root_path), app.config['USER_FILES_PATH'])
 
-        with open(flask.safe_join(user_files_folder, filename), "w+") as dst_file:
+        new_name = filename
+        count = 0
+        while path(flask.safe_join(user_files_folder, new_name+'.'+ext)).exists():
+            count += 1
+            new_name = filename + '_' + str(count)
+        new_name = new_name + '.' + ext
+        with open(flask.safe_join(user_files_folder, new_name), "w+") as dst_file:
             _copy_file(tmp, dst_file)
-    form_data["file_id"] = filename
+    form_data["file_id"] = new_name
 
 class IndicatorMissingFile(Exception):
     pass
