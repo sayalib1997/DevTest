@@ -47,7 +47,7 @@ def install():
 
     if not exists(app['sandbox']):
         run("virtualenv --distribute '%(sandbox)s'" % app)
-        run("%(sandbox)s/bin/pip install -r %(repo)s/requirements.txt" % app)
+    run("%(sandbox)s/bin/pip install -r %(repo)s/requirements.txt" % app)
 
     if not exists(app['instance_var']):
         run("mkdir -p '%(instance_var)s'" % app)
