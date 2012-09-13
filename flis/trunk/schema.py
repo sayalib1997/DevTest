@@ -1,6 +1,5 @@
 import flatland as fl
 import flask
-from werkzeug import secure_filename
 import database
 
 from common import (CommonString, CommonDict ,SourceField,

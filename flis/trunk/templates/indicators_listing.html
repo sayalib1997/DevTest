@@ -15,6 +15,20 @@
         <thead>
           <tr>
             <th>Indicator name</th>
+            <th>Thematic category</th>
+            <th>Relevant to GMTs...</th>
+            <th>Relevant to trends...</th>
+            <th>Indicator description (title)</th>
+            <th>End year</th>
+            <th>Base year</th>
+            <th>Temporal coverage</th>
+            <th>Geographical scale</th>
+            <th>Geographical coverage</th>
+            <th>Source</th>
+            <th>Data source</th>
+            <th>Background report</th>
+            <th>Ownership</th>
+            <th>Example graphics</th>
           </tr>
         </thead>
         <tbody>
@@ -24,6 +38,60 @@
               <a href="{{ url_for('lists.indicator_edit',
                                    indicator_id=indicator.id) }}">
                 {{ indicator["code"] }}</a>
+            </td>
+            <td>
+                {{ indicator_schema['thematic_category']
+                    .value_labels[indicator["thematic_category"]] }}
+            </td>
+            <td>
+                {%- for indicator in gmts[indicator['id']] %}
+                    {{ indicator }}{%- if not loop.last %}, {% endif -%}
+                {%- endfor %}
+            </td>
+            <td>
+                {%- for indicator in trends[indicator['id']] %}
+                    {{ indicator }}{%- if not loop.last %}, {% endif -%}
+                {%- endfor %}
+            </td>
+            <td>
+                {{ indicator["description"] }}
+            </td>
+            <td>
+                {{ indicator["time_coverage"]['end_year'] }}
+            </td>
+            <td>
+                {{ indicator["time_coverage"]["base_year"] }}
+            </td>
+            <td>
+                {{ indicator_schema["time_coverage"]["timeline"]
+                    .value_labels[indicator["time_coverage"]["timeline"]] }}
+            </td>
+            <td>
+                {{ indicator_schema['geo_scale']
+                    .value_labels[indicator['geo_scale']] }}
+            </td>
+            <td>
+                {{ indicator_schema['geo_coverage']
+                    .value_labels[indicator['geo_coverage']] }}
+            </td>
+            <td>
+                {{ indicator_schema['source']
+                    .value_labels[indicator["source"]] }}
+            </td>
+            <td>
+                {{ indicator["url"] }}
+            </td>
+            <td>
+                {{ indicator["background_report"] }}
+            </td>
+            <td>
+                {{ indicator["ownership"] }}
+            </td>
+            <td>
+                {% if indicator["file"] %}
+                    <a href="{{ indicator["file"] }}">
+                        {{ indicator["file"].rsplit('/')[-1] }}</a>
+                {% endif %}
             </td>
           </tr>
           {% endfor %}

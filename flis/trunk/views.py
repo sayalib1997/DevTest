@@ -22,10 +22,10 @@ def gmt_edit(gmt_id=None):
     if gmt_id is None:
         gmts_row = None
     else:
-        gmts_row = database.get_or_404("gmts", gmt_id)
+        gmts_row = database.get_or_404('gmts', gmt_id)
         gmt_schema = schema.GMT.from_flat(gmts_row)
 
-    if flask.request.method == "POST":
+    if flask.request.method == 'POST':
         form_data = dict(schema.GMTsSchema.from_defaults().flatten())
         form_data.update(flask.request.form.to_dict())
 
@@ -39,11 +39,11 @@ def gmt_edit(gmt_id=None):
             session.save(gmts_row)
             session.commit()
 
-            flask.flash("GMT saved", "success")
-            location = flask.url_for("flis.gmt_view", gmt_id=gmts_row.id)
+            flask.flash('GMT saved', 'success')
+            location = flask.url_for('flis.gmt_view', gmt_id=gmts_row.id)
             return flask.redirect(location)
         else:
-            flask.flash(u"Errors in GMT information", "error")
+            flask.flash(u'Errors in GMT information', 'error')
     else:
         if gmt_id:
             gmt_schema = schema.GMTsSchema.from_flat(gmts_row)
@@ -59,7 +59,7 @@ def gmt_edit(gmt_id=None):
 @flis.route('/gmts/<int:gmt_id>/')
 def gmt_view(gmt_id):
     app = flask.current_app
-    gmts_row = database.get_or_404("gmts", gmt_id)
+    gmts_row = database.get_or_404('gmts', gmt_id)
     gmt = schema.GMTsSchema.from_flat(gmts_row)
     return flask.render_template('gmt_view.html', **{
         'mk': MarkupGenerator(app.jinja_env.get_template('widgets_view.html')),
@@ -67,16 +67,16 @@ def gmt_view(gmt_id):
         'gmt_id': gmt_id,
     })
 
-@flis.route('/gmts/<int:gmt_id>/delete', methods=["POST"])
+@flis.route('/gmts/<int:gmt_id>/delete', methods=['POST'])
 def gmt_delete(gmt_id):
     session = database.session
     session['gmts'].delete(gmt_id)
     session.commit()
-    return flask.redirect(flask.url_for("flis.gmts_listing"))
+    return flask.redirect(flask.url_for('flis.gmts_listing'))
 
 @flis.route('/gmts/')
 def gmts_listing():
-    gmts_rows = database.get_all("gmts")
+    gmts_rows = database.get_all('gmts')
     gmts = [schema.GMT.from_flat(gmts_row)
         for gmts_row in gmts_rows]
     return flask.render_template('gmts_listing.html', **{
@@ -92,10 +92,10 @@ def interlink_edit(interlink_id=None):
     if interlink_id is None:
         interlinks_row = None
     else:
-        interlinks_row = database.get_or_404("interlinks", interlink_id)
+        interlinks_row = database.get_or_404('interlinks', interlink_id)
         interlink_schema = schema.Interlink.from_flat(interlinks_row)
 
-    if flask.request.method == "POST":
+    if flask.request.method == 'POST':
         form_data = dict(schema.InterlinksSchema.from_defaults().flatten())
         form_data.update(flask.request.form.to_dict())
 
@@ -109,12 +109,12 @@ def interlink_edit(interlink_id=None):
             session.save(interlinks_row)
             session.commit()
 
-            flask.flash("Interlink saved", "success")
-            location = flask.url_for("flis.interlink_view",
+            flask.flash('Interlink saved', 'success')
+            location = flask.url_for('flis.interlink_view',
                     interlink_id=interlinks_row.id)
             return flask.redirect(location)
         else:
-            flask.flash(u"Errors in Interlink information", "error")
+            flask.flash(u'Errors in Interlink information', 'error')
     else:
         if interlink_id:
             interlink_schema = schema.InterlinksSchema.from_flat(interlinks_row)
@@ -130,7 +130,7 @@ def interlink_edit(interlink_id=None):
 @flis.route('/interlinks/<int:interlink_id>/')
 def interlink_view(interlink_id):
     app = flask.current_app
-    interlinks_row = database.get_or_404("interlinks", interlink_id)
+    interlinks_row = database.get_or_404('interlinks', interlink_id)
     interlink = schema.InterlinksSchema.from_flat(interlinks_row)
     return flask.render_template('interlink_view.html', **{
         'mk': MarkupGenerator(app.jinja_env.get_template('widgets_view.html')),
@@ -138,16 +138,16 @@ def interlink_view(interlink_id):
         'interlink_id': interlink_id,
     })
 
-@flis.route('/interlinks/<int:interlink_id>/delete', methods=["POST"])
+@flis.route('/interlinks/<int:interlink_id>/delete', methods=['POST'])
 def interlink_delete(interlink_id):
     session = database.session
     session['interlinks'].delete(interlink_id)
     session.commit()
-    return flask.redirect(flask.url_for("flis.interlinks_listing"))
+    return flask.redirect(flask.url_for('flis.interlinks_listing'))
 
 @flis.route('/interlinks/')
 def interlinks_listing():
-    interlinks_rows = database.get_all("interlinks")
+    interlinks_rows = database.get_all('interlinks')
     interlinks = [schema.Interlink.from_flat(interlinks_row)
         for interlinks_row in interlinks_rows]
     return flask.render_template('interlinks_listing.html', **{
@@ -166,10 +166,10 @@ def source_edit(source_id=None):
     if source_id is None:
         sources_row = None
     else:
-        sources_row = database.get_or_404("sources", source_id)
+        sources_row = database.get_or_404('sources', source_id)
         source_schema = schema.SourcesSchema.from_flat(sources_row)
 
-    if flask.request.method == "POST":
+    if flask.request.method == 'POST':
         form_data = dict(schema.SourcesSchema.from_defaults().flatten())
         form_data.update(flask.request.form.to_dict())
 
@@ -183,13 +183,13 @@ def source_edit(source_id=None):
             session.save(sources_row)
             session.commit()
 
-            flask.flash("Source saved", "success")
-            location = flask.url_for("lists.source_view",
+            flask.flash('Source saved', 'success')
+            location = flask.url_for('lists.source_view',
                                      source_id=sources_row.id)
             return flask.redirect(location)
 
         else:
-            flask.flash(u"Errors in sources information", "error")
+            flask.flash(u'Errors in sources information', 'error')
     else:
         if source_id:
             source_schema = schema.SourcesSchema.from_flat(sources_row)
@@ -202,10 +202,10 @@ def source_edit(source_id=None):
         'source_id': source_id,
     })
 
-@lists.route("/sources/<int:source_id>/")
+@lists.route('/sources/<int:source_id>/')
 def source_view(source_id):
     app = flask.current_app
-    sources_row = database.get_or_404("sources", source_id)
+    sources_row = database.get_or_404('sources', source_id)
     source = schema.SourcesSchema.from_flat(sources_row)
     return flask.render_template('source_view.html', **{
         'mk': MarkupGenerator(app.jinja_env.get_template('widgets_view.html')),
@@ -213,18 +213,18 @@ def source_view(source_id):
         'source_id': source_id,
     })
 
-@lists.route("/sources/<int:source_id>/delete", methods=["POST"])
+@lists.route('/sources/<int:source_id>/delete', methods=['POST'])
 def source_delete(source_id):
-    #sources_row = database.get_or_404("sources", source_id)
+    #sources_row = database.get_or_404('sources', source_id)
 
     session = database.session
     session['sources'].delete(source_id)
     session.commit()
-    return flask.redirect(flask.url_for("lists.sources_view"))
+    return flask.redirect(flask.url_for('lists.sources_view'))
 
-@lists.route("/sources/")
+@lists.route('/sources/')
 def sources_view():
-    sources_rows = database.get_all("sources")
+    sources_rows = database.get_all('sources')
     sources = [schema.Source.from_flat(sources_row)
         for sources_row in sources_rows]
     return flask.render_template('sources_view.html', **{
@@ -240,10 +240,10 @@ def trend_edit(trend_id=None):
     if trend_id is None:
         trends_row = None
     else:
-        trends_row = database.get_or_404("trends", trend_id)
+        trends_row = database.get_or_404('trends', trend_id)
         trend_schema = schema.TrendsSchema.from_flat(trends_row)
 
-    if flask.request.method == "POST":
+    if flask.request.method == 'POST':
         form_data = dict(schema.TrendsSchema.from_defaults().flatten())
         form_data.update(flask.request.form.to_dict())
 
@@ -257,12 +257,12 @@ def trend_edit(trend_id=None):
             session.save(trends_row)
             session.commit()
 
-            flask.flash("Trend saved", "success")
-            location = flask.url_for("lists.trend_view", trend_id=trends_row.id)
+            flask.flash('Trend saved', 'success')
+            location = flask.url_for('lists.trend_view', trend_id=trends_row.id)
             return flask.redirect(location)
 
         else:
-            flask.flash(u"Errors in trends information", "error")
+            flask.flash(u'Errors in trends information', 'error')
     else:
         if trend_id:
             trend_schema = schema.TrendsSchema.from_flat(trends_row)
@@ -275,10 +275,10 @@ def trend_edit(trend_id=None):
         'trend_id': trend_id,
     })
 
-@lists.route("/trends/<int:trend_id>/")
+@lists.route('/trends/<int:trend_id>/')
 def trend_view(trend_id):
     app = flask.current_app
-    trends_row = database.get_or_404("trends", trend_id)
+    trends_row = database.get_or_404('trends', trend_id)
     trend = schema.TrendsSchema.from_flat(trends_row)
     return flask.render_template('trend_view.html', **{
         'mk': MarkupGenerator(app.jinja_env.get_template('widgets_view.html')),
@@ -286,18 +286,18 @@ def trend_view(trend_id):
         'trend_id': trend_id,
     })
 
-@lists.route("/trends/<int:trend_id>/delete", methods=["POST"])
+@lists.route('/trends/<int:trend_id>/delete', methods=['POST'])
 def trend_delete(trend_id):
-    #trends_row = database.get_or_404("trends", trend_id)
+    #trends_row = database.get_or_404('trends', trend_id)
 
     session = database.session
     session['trends'].delete(trend_id)
     session.commit()
-    return flask.redirect(flask.url_for("lists.trends_view"))
+    return flask.redirect(flask.url_for('lists.trends_view'))
 
-@lists.route("/trends/")
+@lists.route('/trends/')
 def trends_view():
-    trends_rows = database.get_all("trends")
+    trends_rows = database.get_all('trends')
     trends = [schema.Trend.from_flat(trends_row)
         for trends_row in trends_rows]
     return flask.render_template('trends_view.html', **{
@@ -314,12 +314,12 @@ def thematic_category_edit(thematic_category_id=None):
     if thematic_category_id is None:
         thematic_categories_row = None
     else:
-        thematic_categories_row = database.get_or_404("thematic_categories",
+        thematic_categories_row = database.get_or_404('thematic_categories',
                 thematic_category_id)
         thematic_category_schema = schema.ThematicCategoriesSchema.from_flat(
                 thematic_categories_row)
 
-    if flask.request.method == "POST":
+    if flask.request.method == 'POST':
         form_data = dict(
                 schema.ThematicCategoriesSchema.from_defaults().flatten())
         form_data.update(flask.request.form.to_dict())
@@ -335,13 +335,13 @@ def thematic_category_edit(thematic_category_id=None):
             session.save(thematic_categories_row)
             session.commit()
 
-            flask.flash("Category saved", "success")
-            location = flask.url_for("lists.thematic_category_view",
+            flask.flash('Category saved', 'success')
+            location = flask.url_for('lists.thematic_category_view',
                     thematic_category_id=thematic_categories_row.id)
             return flask.redirect(location)
 
         else:
-            flask.flash(u"Errors in trends information", "error")
+            flask.flash(u'Errors in trends information', 'error')
     else:
         if thematic_category_id:
             thematic_category_schema = schema.ThematicCategoriesSchema.from_flat(
@@ -355,10 +355,10 @@ def thematic_category_edit(thematic_category_id=None):
         'thematic_category_id': thematic_category_id,
     })
 
-@lists.route("/thematic_categories/<int:thematic_category_id>/")
+@lists.route('/thematic_categories/<int:thematic_category_id>/')
 def thematic_category_view(thematic_category_id):
     app = flask.current_app
-    thematic_categories_row = database.get_or_404("thematic_categories",
+    thematic_categories_row = database.get_or_404('thematic_categories',
             thematic_category_id)
     thematic_category = schema.ThematicCategoriesSchema.from_flat(
             thematic_categories_row)
@@ -368,17 +368,17 @@ def thematic_category_view(thematic_category_id):
         'thematic_category_id': thematic_category_id,
     })
 
-@lists.route("/thematic_categories/<int:thematic_category_id>/delete",
-        methods=["POST"])
+@lists.route('/thematic_categories/<int:thematic_category_id>/delete',
+        methods=['POST'])
 def thematic_category_delete(thematic_category_id):
     session = database.session
     session['thematic_categories'].delete(thematic_category_id)
     session.commit()
-    return flask.redirect(flask.url_for("lists.thematic_categories_view"))
+    return flask.redirect(flask.url_for('lists.thematic_categories_view'))
 
-@lists.route("/thematic_categories/")
+@lists.route('/thematic_categories/')
 def thematic_categories_view():
-    thematic_categories_rows = database.get_all("thematic_categories")
+    thematic_categories_rows = database.get_all('thematic_categories')
     thematic_categories = [
             schema.ThematicCategory.from_flat(thematic_categories_row)
             for thematic_categories_row in thematic_categories_rows]
@@ -396,12 +396,12 @@ def geo_scale_edit(geo_scale_id=None):
     if geo_scale_id is None:
         geo_scales_row = None
     else:
-        geo_scales_row = database.get_or_404("geo_scales",
+        geo_scales_row = database.get_or_404('geo_scales',
                 geo_scale_id)
         geo_scale_schema = schema.GeographicalScalesSchema.from_flat(
                 geo_scales_row)
 
-    if flask.request.method == "POST":
+    if flask.request.method == 'POST':
         form_data = dict(
                 schema.GeographicalScalesSchema.from_defaults().flatten())
         form_data.update(flask.request.form.to_dict())
@@ -417,13 +417,13 @@ def geo_scale_edit(geo_scale_id=None):
             session.save(geo_scales_row)
             session.commit()
 
-            flask.flash("Geographical scale saved", "success")
-            location = flask.url_for("lists.geo_scale_view",
+            flask.flash('Geographical scale saved', 'success')
+            location = flask.url_for('lists.geo_scale_view',
                     geo_scale_id=geo_scales_row.id)
             return flask.redirect(location)
 
         else:
-            flask.flash(u"Errors in trends information", "error")
+            flask.flash(u'Errors in trends information', 'error')
     else:
         if geo_scale_id:
             geo_scale_schema = schema.GeographicalScalesSchema.from_flat(
@@ -437,10 +437,10 @@ def geo_scale_edit(geo_scale_id=None):
         'geo_scale_id': geo_scale_id,
     })
 
-@lists.route("/geo_scales/<int:geo_scale_id>/")
+@lists.route('/geo_scales/<int:geo_scale_id>/')
 def geo_scale_view(geo_scale_id):
     app = flask.current_app
-    geo_scales_row = database.get_or_404("geo_scales",
+    geo_scales_row = database.get_or_404('geo_scales',
             geo_scale_id)
     geo_scale = schema.GeographicalScalesSchema.from_flat(
             geo_scales_row)
@@ -450,17 +450,17 @@ def geo_scale_view(geo_scale_id):
         'geo_scale_id': geo_scale_id,
     })
 
-@lists.route("/geo_scales/<int:geo_scale_id>/delete",
-        methods=["POST"])
+@lists.route('/geo_scales/<int:geo_scale_id>/delete',
+        methods=['POST'])
 def geo_scale_delete(geo_scale_id):
     session = database.session
     session['geo_scales'].delete(geo_scale_id)
     session.commit()
-    return flask.redirect(flask.url_for("lists.geo_scales_view"))
+    return flask.redirect(flask.url_for('lists.geo_scales_view'))
 
-@lists.route("/geo_scales/")
+@lists.route('/geo_scales/')
 def geo_scales_view():
-    geo_scales_rows = database.get_all("geo_scales")
+    geo_scales_rows = database.get_all('geo_scales')
     geo_scales = [
             schema.GeographicalScale.from_flat(geo_scales_row)
             for geo_scales_row in geo_scales_rows]
@@ -479,11 +479,11 @@ def geo_coverage_edit(geo_coverage_id=None):
         geo_coverages_row = None
     else:
         geo_coverages_row = database.get_or_404(
-                "geo_coverages", geo_coverage_id)
+                'geo_coverages', geo_coverage_id)
         geo_coverage_schema = schema.GeographicalCoveragesSchema.from_flat(
                 geo_coverages_row)
 
-    if flask.request.method == "POST":
+    if flask.request.method == 'POST':
         form_data = dict(
                 schema.GeographicalCoveragesSchema.from_defaults().flatten())
         form_data.update(flask.request.form.to_dict())
@@ -500,13 +500,13 @@ def geo_coverage_edit(geo_coverage_id=None):
             session.save(geo_coverages_row)
             session.commit()
 
-            flask.flash("Geographical coverage saved", "success")
-            location = flask.url_for("lists.geo_coverage_view",
+            flask.flash('Geographical coverage saved', 'success')
+            location = flask.url_for('lists.geo_coverage_view',
                     geo_coverage_id=geo_coverages_row.id)
             return flask.redirect(location)
 
         else:
-            flask.flash(u"Errors in trends information", "error")
+            flask.flash(u'Errors in trends information', 'error')
     else:
         if geo_coverage_id:
             geo_coverage_schema = schema.GeographicalCoveragesSchema.from_flat(
@@ -520,10 +520,10 @@ def geo_coverage_edit(geo_coverage_id=None):
         'geo_coverage_id': geo_coverage_id,
     })
 
-@lists.route("/geo_coverages/<int:geo_coverage_id>/")
+@lists.route('/geo_coverages/<int:geo_coverage_id>/')
 def geo_coverage_view(geo_coverage_id):
     app = flask.current_app
-    geo_coverages_row = database.get_or_404("geo_coverages",
+    geo_coverages_row = database.get_or_404('geo_coverages',
             geo_coverage_id)
     geo_coverage = schema.GeographicalCoveragesSchema.from_flat(
             geo_coverages_row)
@@ -533,17 +533,17 @@ def geo_coverage_view(geo_coverage_id):
         'geo_coverage_id': geo_coverage_id,
     })
 
-@lists.route("/geo_coverages/<int:geo_coverage_id>/delete",
-        methods=["POST"])
+@lists.route('/geo_coverages/<int:geo_coverage_id>/delete',
+        methods=['POST'])
 def geo_coverage_delete(geo_coverage_id):
     session = database.session
     session['geo_coverages'].delete(geo_coverage_id)
     session.commit()
-    return flask.redirect(flask.url_for("lists.geo_coverages_view"))
+    return flask.redirect(flask.url_for('lists.geo_coverages_view'))
 
-@lists.route("/geo_coverages/")
+@lists.route('/geo_coverages/')
 def geo_coverages_view():
-    geo_coverages_rows = database.get_all("geo_coverages")
+    geo_coverages_rows = database.get_all('geo_coverages')
     geo_coverages = [
             schema.GeographicalCoverage.from_flat(geo_coverages_row)
             for geo_coverages_row in geo_coverages_rows]
@@ -561,12 +561,12 @@ def steep_category_edit(steep_category_id=None):
     if steep_category_id is None:
         steep_categories_row = None
     else:
-        steep_categories_row = database.get_or_404("steep_categories",
+        steep_categories_row = database.get_or_404('steep_categories',
                 steep_category_id)
         steep_category_schema = schema.SteepCategoriesSchema.from_flat(
                 steep_categories_row)
 
-    if flask.request.method == "POST":
+    if flask.request.method == 'POST':
         form_data = dict(schema.SteepCategoriesSchema.from_defaults().flatten())
         form_data.update(flask.request.form.to_dict())
 
@@ -581,13 +581,13 @@ def steep_category_edit(steep_category_id=None):
             session.save(steep_categories_row)
             session.commit()
 
-            flask.flash("Geographical coverage saved", "success")
-            location = flask.url_for("lists.steep_category_view",
+            flask.flash('Geographical coverage saved', 'success')
+            location = flask.url_for('lists.steep_category_view',
                     steep_category_id=steep_categories_row.id)
             return flask.redirect(location)
 
         else:
-            flask.flash(u"Errors in trends information", "error")
+            flask.flash(u'Errors in trends information', 'error')
     else:
         if steep_category_id:
             steep_category_schema = schema.SteepCategoriesSchema.from_flat(
@@ -601,10 +601,10 @@ def steep_category_edit(steep_category_id=None):
         'steep_category_id': steep_category_id,
     })
 
-@lists.route("/steep_categories/<int:steep_category_id>/")
+@lists.route('/steep_categories/<int:steep_category_id>/')
 def steep_category_view(steep_category_id):
     app = flask.current_app
-    steep_categories_row = database.get_or_404("steep_categories",
+    steep_categories_row = database.get_or_404('steep_categories',
             steep_category_id)
     steep_category = schema.SteepCategoriesSchema.from_flat(
             steep_categories_row)
@@ -614,17 +614,17 @@ def steep_category_view(steep_category_id):
         'steep_category_id': steep_category_id,
     })
 
-@lists.route("/steep_categories/<int:steep_category_id>/delete",
-        methods=["POST"])
+@lists.route('/steep_categories/<int:steep_category_id>/delete',
+        methods=['POST'])
 def steep_category_delete(steep_category_id):
     session = database.session
     session['steep_categories'].delete(steep_category_id)
     session.commit()
-    return flask.redirect(flask.url_for("lists.steep_categories_listing"))
+    return flask.redirect(flask.url_for('lists.steep_categories_listing'))
 
-@lists.route("/steep_categories/")
+@lists.route('/steep_categories/')
 def steep_categories_listing():
-    steep_categories_rows = database.get_all("steep_categories")
+    steep_categories_rows = database.get_all('steep_categories')
     steep_categories = [
             schema.GeographicalCoverage.from_flat(steep_categories_row)
             for steep_categories_row in steep_categories_rows]
@@ -641,10 +641,10 @@ def timeline_edit(timeline_id=None):
     if timeline_id is None:
         timelines_row = None
     else:
-        timelines_row = database.get_or_404("timelines", timeline_id)
+        timelines_row = database.get_or_404('timelines', timeline_id)
         timeline_schema = schema.TimelinesSchema.from_flat(timelines_row)
 
-    if flask.request.method == "POST":
+    if flask.request.method == 'POST':
         form_data = dict(schema.TimelinesSchema.from_defaults().flatten())
         form_data.update(flask.request.form.to_dict())
 
@@ -658,13 +658,13 @@ def timeline_edit(timeline_id=None):
             session.save(timelines_row)
             session.commit()
 
-            flask.flash("Timeline saved", "success")
-            location = flask.url_for("lists.timeline_view",
+            flask.flash('Timeline saved', 'success')
+            location = flask.url_for('lists.timeline_view',
                                      timeline_id=timelines_row.id)
             return flask.redirect(location)
 
         else:
-            flask.flash(u"Errors in timeline information", "error")
+            flask.flash(u'Errors in timeline information', 'error')
     else:
         if timeline_id:
             timeline_schema = schema.TimelinesSchema.from_flat(
@@ -678,10 +678,10 @@ def timeline_edit(timeline_id=None):
         'timeline_id': timeline_id,
     })
 
-@lists.route("/timelines/<int:timeline_id>/")
+@lists.route('/timelines/<int:timeline_id>/')
 def timeline_view(timeline_id):
     app = flask.current_app
-    timelines_row = database.get_or_404("timelines", timeline_id)
+    timelines_row = database.get_or_404('timelines', timeline_id)
     timeline = schema.TimelinesSchema.from_flat(timelines_row)
     return flask.render_template('timeline_view.html', **{
         'mk': MarkupGenerator(app.jinja_env.get_template('widgets_view.html')),
@@ -689,16 +689,16 @@ def timeline_view(timeline_id):
         'timeline_id': timeline_id,
     })
 
-@lists.route("/timelines/<int:timeline_id>/delete", methods=["POST"])
+@lists.route('/timelines/<int:timeline_id>/delete', methods=['POST'])
 def timeline_delete(timeline_id):
     session = database.session
     session['timelines'].delete(timeline_id)
     session.commit()
-    return flask.redirect(flask.url_for("lists.timelines_listing"))
+    return flask.redirect(flask.url_for('lists.timelines_listing'))
 
-@lists.route("/timelines/")
+@lists.route('/timelines/')
 def timelines_listing():
-    timelines_rows = database.get_all("timelines")
+    timelines_rows = database.get_all('timelines')
     timelines = [
         schema.Timeline.from_flat(timelines_row)
         for timelines_row in timelines_rows]
@@ -738,22 +738,22 @@ def _save_file(form_data, uploaded_file, limit=None):
             count += 1
             new_name = filename + '_' + str(count)
         new_name = new_name + '.' + ext
-        with open(flask.safe_join(user_files_folder, new_name), "w+") as dst_file:
+        with open(flask.safe_join(user_files_folder, new_name), 'w+') as dst_file:
             _copy_file(tmp, dst_file)
-    form_data["file_id"] = new_name
+    form_data['file_id'] = new_name
 
 class IndicatorMissingFile(Exception):
     pass
 
 def _delete_file(indicators_row):
     app = flask.current_app
-    file_id = indicators_row.get("file_id", None)
+    file_id = indicators_row.get('file_id', None)
     if file_id:
         user_files_folder = flask.safe_join(
             path(app.root_path), app.config['USER_FILES_PATH'])
         file_path = flask.safe_join(user_files_folder, file_id)
         path(file_path).remove_p()
-        del indicators_row["file_id"]
+        del indicators_row['file_id']
     else:
         raise IndicatorMissingFile
 
@@ -766,10 +766,10 @@ def indicator_edit(indicator_id=None):
     if indicator_id is None:
         indicators_row = None
     else:
-        indicators_row = database.get_or_404("indicators", indicator_id)
+        indicators_row = database.get_or_404('indicators', indicator_id)
         indicator_schema = schema.IndicatorsSchema.from_flat(indicators_row)
 
-    if flask.request.method == "POST":
+    if flask.request.method == 'POST':
         form_data = dict(schema.IndicatorsSchema.from_defaults().flatten())
         form_data.update(flask.request.form.to_dict())
 
@@ -787,7 +787,7 @@ def indicator_edit(indicator_id=None):
                     except IndicatorMissingFile:
                         pass
             except FileSizeLimitExceeded:
-                file_error = "File size limit exceeded (%d MB)" % mb_limit
+                file_error = 'File size limit exceeded (%d MB)' % mb_limit
 
         indicator_schema = schema.IndicatorsSchema.from_flat(form_data)
         if indicator_schema.validate() and not file_error:
@@ -798,13 +798,13 @@ def indicator_edit(indicator_id=None):
             session.save(indicators_row)
             session.commit()
 
-            flask.flash("Indicator saved", "success")
-            location = flask.url_for("lists.indicator_view",
+            flask.flash('Indicator saved', 'success')
+            location = flask.url_for('lists.indicator_view',
                                      indicator_id=indicators_row.id)
             return flask.redirect(location)
 
         else:
-            flask.flash(u"Errors in indicators information", "error")
+            flask.flash(u'Errors in indicators information', 'error')
             if file_error:
                 indicator_schema['file_id'].valid = False
                 indicator_schema['file_id'].errors.append(file_error)
@@ -825,10 +825,10 @@ def indicator_edit(indicator_id=None):
         'indicator_id': indicator_id,
     })
 
-@lists.route("/indicators/<int:indicator_id>/")
+@lists.route('/indicators/<int:indicator_id>/')
 def indicator_view(indicator_id):
     app = flask.current_app
-    indicators_row = database.get_or_404("indicators", indicator_id)
+    indicators_row = database.get_or_404('indicators', indicator_id)
     indicator = schema.IndicatorsSchema.from_flat(indicators_row)
     return flask.render_template('indicator_view.html', **{
         'mk': MarkupGenerator(app.jinja_env.get_template('widgets_view.html')),
@@ -836,23 +836,47 @@ def indicator_view(indicator_id):
         'indicator_id': indicator_id,
     })
 
-@lists.route("/indicators/<int:indicator_id>/delete", methods=["POST"])
+@lists.route('/indicators/<int:indicator_id>/delete', methods=['POST'])
 def indicator_delete(indicator_id):
 
     session = database.session
-    indicators_row = database.get_or_404("indicators", indicator_id)
+    indicators_row = database.get_or_404('indicators', indicator_id)
     _delete_file(indicators_row)
     session['indicators'].delete(indicator_id)
     session.commit()
-    return flask.redirect(flask.url_for("lists.indicators_listing"))
+    return flask.redirect(flask.url_for('lists.indicators_listing'))
 
-@lists.route("/indicators/")
+@lists.route('/indicators/')
 def indicators_listing():
-    indicators_rows = database.get_all("indicators")
-    indicators = [schema.Indicator.from_flat(indicators_row)
-        for indicators_row in indicators_rows]
+    indicators_rows = database.get_all('indicators')
+    indicators = []
+    for indicators_row in indicators_rows:
+        indicator = schema.Indicator.from_flat(indicators_row)
+        indicator['id'] = indicators_row.id
+        indicators.append(indicator)
+    indicator_schema = schema.IndicatorsSchema()
+    interlinks_rows = database.get_all('interlinks')
+    interlinks = [schema.InterlinksSchema.from_flat(interlinks_row)
+        for interlinks_row in interlinks_rows]
+    trends = {}
+    gmts = {}
+    for indicator in indicators:
+        trends[indicator['id']] = set()
+        gmts[indicator['id']] = set()
+        for interlink in interlinks:
+            if indicator['id'] == interlink['indicator1'].value or \
+               indicator['id'] == interlink['indicator2'].value or \
+               indicator['id'] == interlink['indicator3'].value or \
+               indicator['id'] == interlink['indicator4'].value:
+                   trends[indicator['id']].add(
+                       interlink['trend'].value_labels[interlink['trend'].value])
+                   gmts[indicator['id']].add(
+                       interlink['gmt'].value_labels[interlink['gmt'].value])
     return flask.render_template('indicators_listing.html', **{
         'indicators': indicators,
+        'indicator_schema': indicator_schema,
+        'trends': trends,
+        'gmts': gmts,
     })
 
 class MarkupGenerator(flatland.out.markup.Generator):
