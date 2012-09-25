@@ -9,7 +9,7 @@ MByte = 1024*1024
 
 flis = flask.Blueprint('flis', __name__)
 
-@flis.route('/')
+#@flis.route('/')
 def home():
     return flask.render_template('interlinks.html')
 
@@ -145,6 +145,7 @@ def interlink_delete(interlink_id):
     session.commit()
     return flask.redirect(flask.url_for('flis.interlinks_listing'))
 
+@flis.route('/')
 @flis.route('/interlinks/')
 def interlinks_listing():
     interlinks_rows = database.get_all('interlinks')
