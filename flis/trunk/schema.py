@@ -9,15 +9,15 @@ from common import (CommonString, CommonDict ,SourceField,
 
 _GMTsSchema = fl.Dict.with_properties(widget="simple_schema").of(
     CommonString.named('code')
-        .with_properties(label=u"Code",
+        .with_properties(label=u"Code*",
                          not_empty_error=u"Please provide the code")
         .using(optional=False),
     SteepCategoryField.named('steep_category')
-        .with_properties(label=u"Steep category",
+        .with_properties(label=u"Steep category*",
                          not_empty_error=u"Please select the steep category")
         .using(optional=False, child_type=fl.Integer),
     CommonString.named('description')
-        .with_properties(label=u"Description",
+        .with_properties(label=u"Description*",
                          not_empty_error=u"Please provide the description")
         .using(optional=False),
     SourceField.named('source')
@@ -25,7 +25,7 @@ _GMTsSchema = fl.Dict.with_properties(widget="simple_schema").of(
                          not_empty_error=u"Please select the source")
         .using(optional=False, child_type=fl.Integer),
     CommonString.named('url')
-        .with_properties(label=u"URL",
+        .with_properties(label=u"URL*",
                          not_empty_error=(u"Please provide the URL "
                              u"(to published GMT brief)"))
         .using(optional=False),
