@@ -9,7 +9,7 @@ MByte = 1024*1024
 
 flis = flask.Blueprint('flis', __name__)
 
-#@flis.route('/')
+@flis.route('/home')
 def home():
     return flask.render_template('interlinks.html')
 
