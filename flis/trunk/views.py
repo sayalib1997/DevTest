@@ -755,8 +755,6 @@ def _delete_file(indicators_row):
         file_path = flask.safe_join(user_files_folder, file_id)
         path(file_path).remove_p()
         del indicators_row['file_id']
-    else:
-        raise IndicatorMissingFile
 
 @lists.route('/indicators/new/', methods=['GET', 'POST'])
 @lists.route('/indicators/<int:indicator_id>/edit', methods=['GET', 'POST'])
