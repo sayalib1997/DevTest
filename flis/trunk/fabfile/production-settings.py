@@ -8,5 +8,6 @@ if secret_key_path.isfile():
 
 HTABLES_ENGINE = 'postgresql'
 HTABLES_POSTGRESQL_URI = "postgresql://edw:edw@localhost/flis"
+ZOPE_TEMPLATE_PATH = 'http://projects.eionet.europa.eu/flis-services-project/flis_templates/frame'
 USER_FILES_PATH = "instance/files"
 FILE_SIZE_LIMIT_MB = 10

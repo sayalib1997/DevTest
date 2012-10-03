@@ -1,6 +1,8 @@
-{% extends "settings.html" %}
+{% extends "layout.html" %}
 
-{% block settings_content %}
+{% block content %}
+  {% from "bits.html" import nav_tabs %}
+  {{ nav_tabs('indicators') }}
     <h3>Edit indicator</h3>
     <form id="indicator_edit" name="indicator_edit" class="form-horizontal"
         method="post" enctype="multipart/form-data">

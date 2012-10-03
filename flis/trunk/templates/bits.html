@@ -32,8 +32,14 @@
   <li class="{{ 'active' if active == 'interlinks' else '' }}">
     <a href="{{ url_for('flis.interlinks_listing') }}">Interlinks</a>
   </li>
+  <li class="{{ 'active' if active == 'indicators' else '' }}">
+    <a href="{{ url_for('lists.indicators_listing') }}">Indicators</a>
+  </li>
   <li class="{{ 'active' if active == 'gmts' else '' }}">
     <a href="{{ url_for('flis.gmts_listing') }}">GMT</a>
+  </li>
+  <li class="{{ 'active' if active == 'sources' else '' }}">
+    <a href="{{ url_for('lists.sources_view') }}">Sources</a>
   </li>
 
   <li class="dropdown {{ 'active' if active == 'settings' else '' }}">
@@ -44,10 +50,10 @@
     </a>
 
     <ul class="dropdown-menu">
-      <li>
+      <!--<li>
         <a href="{{ url_for('lists.sources_view') }}">
           Sources</a>
-      </li>
+      </li>-->
       <li>
         <a href="{{ url_for('lists.trends_view') }}">
           Trends</a>
@@ -72,10 +78,10 @@
         <a href="{{ url_for('lists.timelines_listing') }}">
           Timelines</a>
       </li>
-      <li>
+      <!--<li>
         <a href="{{ url_for('lists.indicators_listing') }}">
           Indicators</a>
-      </li>
+      </li>-->
 
     </ul>
 

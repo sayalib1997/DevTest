@@ -1,6 +1,8 @@
-{% extends "settings.html" %}
+{% extends "layout.html" %}
 
-{% block settings_content %}
+{% block content %}
+{% from "bits.html" import nav_tabs %}
+{{ nav_tabs('sources') }}
     <div class="btn-toolbar">
         <div class="btn-group">
             {% set edit_url = url_for('lists.source_edit', source_id=source_id) %}

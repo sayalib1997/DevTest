@@ -1,3 +1,4 @@
+from functools import wraps
 import flask
 import flatland.out.markup
 import schema
@@ -5,9 +6,27 @@ import database
 import tempfile
 from path import path
 
+import frame
+
 MByte = 1024*1024
 
 flis = flask.Blueprint('flis', __name__)
+flis.before_request(frame.get_frame_before_request)
+
+def edit_is_allowed():
+    if flask.current_app.config.get('SKIP_EDIT_AUTHORIZATION', False):
+        return True
+    roles = getattr(flask.g, 'user_roles', [])
+    return bool('Contributor' in roles)
+
+def require_edit_permission(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if edit_is_allowed():
+            return func(*args, **kwargs)
+        else:
+            return "Please log in to access this view."
+    return wrapper
 
 @flis.route('/home')
 def home():
@@ -157,6 +176,7 @@ def interlinks_listing():
 
 
 lists = flask.Blueprint('lists', __name__)
+lists.before_request(frame.get_frame_before_request)
 
 @lists.route('/sources/new/', methods=['GET', 'POST'])
 @lists.route('/sources/<int:source_id>/edit', methods=['GET', 'POST'])

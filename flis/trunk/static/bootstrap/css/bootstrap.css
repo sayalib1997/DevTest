@@ -3305,6 +3305,7 @@ input[type="submit"].btn.btn-mini {
 
 .nav-tabs {
   border-bottom: 1px solid #ddd;
+  height: 35px;
 }
 
 .nav-tabs > li {

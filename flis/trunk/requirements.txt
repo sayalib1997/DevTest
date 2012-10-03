@@ -8,6 +8,7 @@ distribute==0.6.24
 flatland==dev
 htables==0.4b5
 simplejson==2.6.1
+requests==0.14.1
 path.py==2.3
 psycopg2==2.4.5
 -e git+git://github.com/eaudeweb/Flask-HTables.git@master#egg=Flask_HTables-dev

@@ -1,13 +1,16 @@
 import flask
+import jinja2
 import database
 import flaskext.script
 from path import path
 from werkzeug import SharedDataMiddleware
 import views
 from raven.contrib.flask import Sentry
+import frame
 
 default_config = {
         'HTABLES_ENGINE': 'sqlite',
+        'FRAME_URL': None,
     }
 
 sentry = Sentry()
@@ -25,7 +28,13 @@ def create_app():
     app.register_blueprint(views.lists)
     app.register_blueprint(views.flis)
     _my_extensions = app.jinja_options["extensions"] + ["jinja2.ext.do"]
-    app.jinja_options = dict(app.jinja_options, extensions=_my_extensions)
+    template_loader = jinja2.ChoiceLoader([
+        frame.FrameTemplateLoader(),
+        app.create_global_jinja_loader(),
+    ])
+    app.jinja_options = dict(app.jinja_options,
+                             extensions=_my_extensions,
+                             loader=template_loader)
     database.initialize_app(app)
     if app.config['DEBUG']:
         files_path = path(app.root_path)
