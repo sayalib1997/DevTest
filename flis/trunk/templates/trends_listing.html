@@ -1,37 +1,44 @@
 {% extends "settings.html" %}
 
 {% block settings_content %}
-<h3>Trends</h3>
-<div class="btn-toolbar">
-  <div class="btn-group">
-    <a href="{{ url_for('lists.trend_edit') }}"
-       class="btn btn-primary">Add trend</a>
+  <h3>Trends</h3>
+  {% if not trends %}
+    <p>&nbsp;</p>
+    <p>No trend defined yet.</p>
+    <p>&nbsp;</p>
+  {% endif %}
+  <div class="btn-toolbar">
+    <div class="btn-group">
+      <a href="{{ url_for('lists.trend_edit') }}"
+         class="btn btn-primary">Add trend</a>
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="span4">
-    <form class="form-horizontal">
-      <table class="table table-bordered trends">
-        <thead>
-          <tr>
-            <th>Trend name</th>
-          </tr>
-        </thead>
-        <tbody>
-          {%- for trend in trends %}
-          <tr>
-            <td>
-              <a href="{{ url_for('lists.trend_view',
-                                   trend_id=trend.id) }}">
-                {{ trend["description"] }}</a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </form>
-  </div>
+  {% if trends %}
+    <div class="row">
+      <div class="span4">
+        <form class="form-horizontal">
+          <table class="table table-bordered trends">
+            <thead>
+              <tr>
+                <th>Trend name</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for trend in trends %}
+              <tr>
+                <td>
+                  <a href="{{ url_for('lists.trend_view',
+                                       trend_id=trend.id) }}">
+                    {{ trend["description"] }}</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </form>
+      </div>
 
-  <div class="span6"></div>
-</div>
+      <div class="span6"></div>
+    </div>
+  {% endif %}
 {% endblock %}

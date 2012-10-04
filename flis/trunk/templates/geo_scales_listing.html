@@ -1,39 +1,46 @@
 {% extends "settings.html" %}
 
 {% block settings_content %}
-<h3>Geographical scales</h3>
-<div class="btn-toolbar">
-  <div class="btn-group">
-    <a href="{{ url_for('lists.geo_scale_edit') }}"
-       class="btn btn-primary"> Add geographical scale</a>
+  <h3>Geographical scales</h3>
+  {% if not geo_scales %}
+    <p>&nbsp;</p>
+    <p>No geographical scale defined yet.</p>
+    <p>&nbsp;</p>
+  {% endif %}
+  <div class="btn-toolbar">
+    <div class="btn-group">
+      <a href="{{ url_for('lists.geo_scale_edit') }}"
+         class="btn btn-primary"> Add geographical scale</a>
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="span4">
-    <form class="form-horizontal">
-      <table class="table table-bordered geo_scale">
-        <thead>
-          <tr>
-            <th>Geographical scale</th>
-          </tr>
-        </thead>
-        <tbody>
-          {%- for geo_scale in geo_scales %}
-          <tr>
-            <td>
-                <a href="{{ url_for('lists.geo_scale_view',
-                    geo_scale_id=geo_scale.id) }}">
-                    {{ geo_scale["code"] }}
-                    ({{ geo_scale["description"] }})
-              </a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </form>
-  </div>
+  {% if geo_scales %}
+    <div class="row">
+      <div class="span4">
+        <form class="form-horizontal">
+          <table class="table table-bordered geo_scale">
+            <thead>
+              <tr>
+                <th>Geographical scale</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for geo_scale in geo_scales %}
+              <tr>
+                <td>
+                    <a href="{{ url_for('lists.geo_scale_view',
+                        geo_scale_id=geo_scale.id) }}">
+                        {{ geo_scale["code"] }}
+                        ({{ geo_scale["description"] }})
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </form>
+      </div>
 
-  <div class="span6"></div>
-</div>
+      <div class="span6"></div>
+    </div>
+  {% endif %}
 {% endblock %}

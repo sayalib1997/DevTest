@@ -1,39 +1,46 @@
 {% extends "settings.html" %}
 
 {% block settings_content %}
-<h3>Geographical coverages</h3>
-<div class="btn-toolbar">
-  <div class="btn-group">
-    <a href="{{ url_for('lists.geo_coverage_edit') }}"
-       class="btn btn-primary"> Add geographical coverage</a>
+  <h3>Geographical coverages</h3>
+  {% if not geo_coverages %}
+    <p>&nbsp;</p>
+    <p>No geographical coverage defined yet.</p>
+    <p>&nbsp;</p>
+  {% endif %}
+  <div class="btn-toolbar">
+    <div class="btn-group">
+      <a href="{{ url_for('lists.geo_coverage_edit') }}"
+         class="btn btn-primary"> Add geographical coverage</a>
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="span4">
-    <form class="form-horizontal">
-      <table class="table table-bordered geo_coverage">
-        <thead>
-          <tr>
-            <th>Geographical coverage</th>
-          </tr>
-        </thead>
-        <tbody>
-          {%- for geo_coverage in geo_coverages %}
-          <tr>
-            <td>
-                <a href="{{ url_for('lists.geo_coverage_view',
-                    geo_coverage_id=geo_coverage.id) }}">
-                    {{ geo_coverage["code"] }}
-                    ({{ geo_coverage["description"] }})
-              </a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </form>
-  </div>
+  {% if geo_coverages %}
+    <div class="row">
+      <div class="span4">
+        <form class="form-horizontal">
+          <table class="table table-bordered geo_coverage">
+            <thead>
+              <tr>
+                <th>Geographical coverage</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for geo_coverage in geo_coverages %}
+              <tr>
+                <td>
+                    <a href="{{ url_for('lists.geo_coverage_view',
+                        geo_coverage_id=geo_coverage.id) }}">
+                        {{ geo_coverage["code"] }}
+                        ({{ geo_coverage["description"] }})
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </form>
+      </div>
 
-  <div class="span6"></div>
-</div>
+      <div class="span6"></div>
+    </div>
+  {% endif %}
 {% endblock %}

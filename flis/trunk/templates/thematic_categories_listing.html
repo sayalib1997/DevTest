@@ -1,39 +1,46 @@
 {% extends "settings.html" %}
 
 {% block settings_content %}
-<h3>Thematic categories</h3>
-<div class="btn-toolbar">
-  <div class="btn-group">
-    <a href="{{ url_for('lists.thematic_category_edit') }}"
-       class="btn btn-primary"> Add category</a>
+  <h3>Thematic categories</h3>
+  {% if not thematic_categories %}
+    <p>&nbsp;</p>
+    <p>No thematic category defined yet.</p>
+    <p>&nbsp;</p>
+  {% endif %}
+  <div class="btn-toolbar">
+    <div class="btn-group">
+      <a href="{{ url_for('lists.thematic_category_edit') }}"
+         class="btn btn-primary"> Add category</a>
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="span4">
-    <form class="form-horizontal">
-      <table class="table table-bordered thematic_category">
-        <thead>
-          <tr>
-            <th>Thematic category</th>
-          </tr>
-        </thead>
-        <tbody>
-          {%- for thematic_category in thematic_categories %}
-          <tr>
-            <td>
-                <a href="{{ url_for('lists.thematic_category_view',
-                    thematic_category_id=thematic_category.id) }}">
-                    {{ thematic_category["code"] }}
-                    ({{ thematic_category["description"] }})
-              </a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </form>
-  </div>
+  {% if thematic_categories %}
+    <div class="row">
+      <div class="span4">
+        <form class="form-horizontal">
+          <table class="table table-bordered thematic_category">
+            <thead>
+              <tr>
+                <th>Thematic category</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for thematic_category in thematic_categories %}
+              <tr>
+                <td>
+                    <a href="{{ url_for('lists.thematic_category_view',
+                        thematic_category_id=thematic_category.id) }}">
+                        {{ thematic_category["code"] }}
+                        ({{ thematic_category["description"] }})
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </form>
+      </div>
 
-  <div class="span6"></div>
-</div>
+      <div class="span6"></div>
+    </div>
+  {% endif %}
 {% endblock %}
