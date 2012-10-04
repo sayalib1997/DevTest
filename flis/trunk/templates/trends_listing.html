@@ -21,7 +21,7 @@
           {%- for trend in trends %}
           <tr>
             <td>
-              <a href="{{ url_for('lists.trend_edit',
+              <a href="{{ url_for('lists.trend_view',
                                    trend_id=trend.id) }}">
                 {{ trend["description"] }}</a>
             </td>

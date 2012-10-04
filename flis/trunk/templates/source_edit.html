@@ -15,7 +15,7 @@
             {% set cancel_url = url_for('lists.source_view',
                 source_id=source_id) %}
             {% else %}
-                {% set cancel_url = url_for('lists.sources_view')
+                {% set cancel_url = url_for('lists.sources_listing')
                 %}
             {% endif %}
             <a class="btn" href="{{ cancel_url }}">Cancel</a>

@@ -14,7 +14,7 @@
             {% set cancel_url = url_for('lists.geo_coverage_view',
                 geo_coverage_id=geo_coverage_id) %}
             {% else %}
-                {% set cancel_url = url_for('lists.geo_coverages_view')
+                {% set cancel_url = url_for('lists.geo_coverages_listing')
                 %}
             {% endif %}
             <a class="btn" href="{{ cancel_url }}">Cancel</a>

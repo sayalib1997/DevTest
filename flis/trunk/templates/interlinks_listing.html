@@ -34,7 +34,7 @@
           {%- for interlink in interlinks %}
           <tr>
             <td>
-              <a href="{{ url_for('flis.interlink_edit',
+              <a href="{{ url_for('flis.interlink_view',
                                    interlink_id=interlink.id) }}">
                 {{ interlink.schema["gmt"].value_labels[interlink['gmt']] }}
               </a>

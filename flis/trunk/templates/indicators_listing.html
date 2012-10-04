@@ -43,7 +43,7 @@
           {%- for indicator in indicators %}
           <tr>
             <td>
-              <a href="{{ url_for('lists.indicator_edit',
+              <a href="{{ url_for('lists.indicator_view',
                                    indicator_id=indicator.id) }}">
                 {{ indicator["code"] }}</a>
             </td>

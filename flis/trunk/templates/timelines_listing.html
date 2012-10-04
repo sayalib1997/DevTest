@@ -21,7 +21,7 @@
           {%- for timeline in timelines %}
           <tr>
             <td>
-                <a href="{{ url_for('lists.timeline_edit',
+                <a href="{{ url_for('lists.timeline_view',
                     timeline_id=timeline.id) }}">
                     {{ timeline["title"] }}
               </a>

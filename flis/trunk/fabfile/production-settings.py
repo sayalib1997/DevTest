@@ -11,3 +11,4 @@ HTABLES_POSTGRESQL_URI = "postgresql://edw:edw@localhost/flis"
 FRAME_URL = 'http://projects.eionet.europa.eu/flis-services-project/flis_templates/frame'
 USER_FILES_PATH = "instance/files"
 FILE_SIZE_LIMIT_MB = 10
+FRAME_COOKIES = ['__ac', '_ZopeId']

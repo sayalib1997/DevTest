@@ -13,11 +13,15 @@ MByte = 1024*1024
 flis = flask.Blueprint('flis', __name__)
 flis.before_request(frame.get_frame_before_request)
 
+EDITOR_ROLES = ['Manager', 'Administrator']
+
 def edit_is_allowed():
     if flask.current_app.config.get('SKIP_EDIT_AUTHORIZATION', False):
         return True
     roles = getattr(flask.g, 'user_roles', [])
-    return bool('Contributor' in roles)
+    for role in roles:
+        if role in EDITOR_ROLES:
+            return True
 
 def require_edit_permission(func):
     @wraps(func)
@@ -27,10 +31,6 @@ def require_edit_permission(func):
         else:
             return "Please log in to access this view."
     return wrapper
-
-@flis.route('/home')
-def home():
-    return flask.render_template('interlinks.html')
 
 @flis.route('/gmts/new/', methods=['GET', 'POST'])
 @flis.route('/gmts/<int:gmt_id>/edit', methods=['GET', 'POST'])
@@ -102,8 +102,10 @@ def gmts_listing():
         'gmts': gmts,
     })
 
+@flis.route('/flis/interlinks/new/', methods=['GET', 'POST'])
 @flis.route('/interlinks/new/', methods=['GET', 'POST'])
 @flis.route('/interlinks/<int:interlink_id>/edit', methods=['GET', 'POST'])
+#@require_edit_permission
 def interlink_edit(interlink_id=None):
     app = flask.current_app
     session = database.session
@@ -241,14 +243,14 @@ def source_delete(source_id):
     session = database.session
     session['sources'].delete(source_id)
     session.commit()
-    return flask.redirect(flask.url_for('lists.sources_view'))
+    return flask.redirect(flask.url_for('lists.sources_listing'))
 
 @lists.route('/sources/')
-def sources_view():
+def sources_listing():
     sources_rows = database.get_all('sources')
     sources = [schema.Source.from_flat(sources_row)
         for sources_row in sources_rows]
-    return flask.render_template('sources_view.html', **{
+    return flask.render_template('sources_listing.html', **{
         'sources': sources,
     })
 
@@ -314,14 +316,14 @@ def trend_delete(trend_id):
     session = database.session
     session['trends'].delete(trend_id)
     session.commit()
-    return flask.redirect(flask.url_for('lists.trends_view'))
+    return flask.redirect(flask.url_for('lists.trends_listing'))
 
 @lists.route('/trends/')
-def trends_view():
+def trends_listing():
     trends_rows = database.get_all('trends')
     trends = [schema.Trend.from_flat(trends_row)
         for trends_row in trends_rows]
-    return flask.render_template('trends_view.html', **{
+    return flask.render_template('trends_listing.html', **{
         'trends': trends,
     })
 
@@ -395,15 +397,15 @@ def thematic_category_delete(thematic_category_id):
     session = database.session
     session['thematic_categories'].delete(thematic_category_id)
     session.commit()
-    return flask.redirect(flask.url_for('lists.thematic_categories_view'))
+    return flask.redirect(flask.url_for('lists.thematic_categories_listing'))
 
 @lists.route('/thematic_categories/')
-def thematic_categories_view():
+def thematic_categories_listing():
     thematic_categories_rows = database.get_all('thematic_categories')
     thematic_categories = [
             schema.ThematicCategory.from_flat(thematic_categories_row)
             for thematic_categories_row in thematic_categories_rows]
-    return flask.render_template('thematic_categories_view.html', **{
+    return flask.render_template('thematic_categories_listing.html', **{
         'thematic_categories': thematic_categories,
     })
 
@@ -477,15 +479,15 @@ def geo_scale_delete(geo_scale_id):
     session = database.session
     session['geo_scales'].delete(geo_scale_id)
     session.commit()
-    return flask.redirect(flask.url_for('lists.geo_scales_view'))
+    return flask.redirect(flask.url_for('lists.geo_scales_listing'))
 
 @lists.route('/geo_scales/')
-def geo_scales_view():
+def geo_scales_listing():
     geo_scales_rows = database.get_all('geo_scales')
     geo_scales = [
             schema.GeographicalScale.from_flat(geo_scales_row)
             for geo_scales_row in geo_scales_rows]
-    return flask.render_template('geo_scales_view.html', **{
+    return flask.render_template('geo_scales_listing.html', **{
         'geo_scales': geo_scales,
     })
 
@@ -560,15 +562,15 @@ def geo_coverage_delete(geo_coverage_id):
     session = database.session
     session['geo_coverages'].delete(geo_coverage_id)
     session.commit()
-    return flask.redirect(flask.url_for('lists.geo_coverages_view'))
+    return flask.redirect(flask.url_for('lists.geo_coverages_listing'))
 
 @lists.route('/geo_coverages/')
-def geo_coverages_view():
+def geo_coverages_listing():
     geo_coverages_rows = database.get_all('geo_coverages')
     geo_coverages = [
             schema.GeographicalCoverage.from_flat(geo_coverages_row)
             for geo_coverages_row in geo_coverages_rows]
-    return flask.render_template('geo_coverages_view.html', **{
+    return flask.render_template('geo_coverages_listing.html', **{
         'geo_coverages': geo_coverages,
     })
 

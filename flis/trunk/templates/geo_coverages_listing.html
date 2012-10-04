@@ -21,7 +21,7 @@
           {%- for geo_coverage in geo_coverages %}
           <tr>
             <td>
-                <a href="{{ url_for('lists.geo_coverage_edit',
+                <a href="{{ url_for('lists.geo_coverage_view',
                     geo_coverage_id=geo_coverage.id) }}">
                     {{ geo_coverage["code"] }}
                     ({{ geo_coverage["description"] }})

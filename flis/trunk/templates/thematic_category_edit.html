@@ -14,7 +14,7 @@
             {% set cancel_url = url_for('lists.thematic_category_view',
                 thematic_category_id=thematic_category_id) %}
             {% else %}
-                {% set cancel_url = url_for('lists.thematic_categories_view')
+                {% set cancel_url = url_for('lists.thematic_categories_listing')
                 %}
             {% endif %}
             <a class="btn" href="{{ cancel_url }}">Cancel</a>

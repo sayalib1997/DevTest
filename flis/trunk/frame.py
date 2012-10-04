@@ -30,6 +30,8 @@ class FrameTemplateLoader(jinja2.BaseLoader):
         frame_response = getattr(flask.g, 'frame_response', None)
 
         if template != 'frame.html' or frame_response is None:
+            #TODO sa nu arunce excetie pentru ca loaderul nu o sa mai intrebe
+            #niciodata. Grait Alex.
             raise jinja2.TemplateNotFound(template)
 
         path = ':frame-templates:%s' % template

@@ -39,7 +39,7 @@
     <a href="{{ url_for('flis.gmts_listing') }}">GMT</a>
   </li>
   <li class="{{ 'active' if active == 'sources' else '' }}">
-    <a href="{{ url_for('lists.sources_view') }}">Sources</a>
+    <a href="{{ url_for('lists.sources_listing') }}">Sources</a>
   </li>
 
   <li class="dropdown {{ 'active' if active == 'settings' else '' }}">
@@ -51,23 +51,23 @@
 
     <ul class="dropdown-menu">
       <!--<li>
-        <a href="{{ url_for('lists.sources_view') }}">
+        <a href="{{ url_for('lists.sources_listing') }}">
           Sources</a>
       </li>-->
       <li>
-        <a href="{{ url_for('lists.trends_view') }}">
+        <a href="{{ url_for('lists.trends_listing') }}">
           Trends</a>
       </li>
       <li>
-        <a href="{{ url_for('lists.thematic_categories_view') }}">
+        <a href="{{ url_for('lists.thematic_categories_listing') }}">
           Thematic categories</a>
       </li>
       <li>
-        <a href="{{ url_for('lists.geo_scales_view') }}">
+        <a href="{{ url_for('lists.geo_scales_listing') }}">
           Geographical scale</a>
       </li>
       <li>
-        <a href="{{ url_for('lists.geo_coverages_view') }}">
+        <a href="{{ url_for('lists.geo_coverages_listing') }}">
           Geographical coverage</a>
       </li>
       <li>

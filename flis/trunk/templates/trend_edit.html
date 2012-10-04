@@ -12,7 +12,7 @@
             {% set cancel_url = url_for('lists.trend_view',
                 trend_id=trend_id) %}
             {% else %}
-                {% set cancel_url = url_for('lists.trends_view')
+                {% set cancel_url = url_for('lists.trends_listing')
                 %}
             {% endif %}
             <a class="btn"

@@ -28,7 +28,7 @@
             {%- for source in sources %}
             <tr>
               <td>
-                <a href="{{ url_for('lists.source_edit',
+                <a href="{{ url_for('lists.source_view',
                                      source_id=source.id) }}">
                   {{ source["short_name"] }} ({{ source["long_name"] }})
                 </a>

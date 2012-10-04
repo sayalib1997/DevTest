@@ -21,7 +21,7 @@
           {%- for steep_category in steep_categories %}
           <tr>
             <td>
-                <a href="{{ url_for('lists.steep_category_edit',
+                <a href="{{ url_for('lists.steep_category_view',
                     steep_category_id=steep_category.id) }}">
                     {{ steep_category["code"] }}
                     ({{ steep_category["description"] }})

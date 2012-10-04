@@ -21,7 +21,7 @@
           {%- for geo_scale in geo_scales %}
           <tr>
             <td>
-                <a href="{{ url_for('lists.geo_scale_edit',
+                <a href="{{ url_for('lists.geo_scale_view',
                     geo_scale_id=geo_scale.id) }}">
                     {{ geo_scale["code"] }}
                     ({{ geo_scale["description"] }})

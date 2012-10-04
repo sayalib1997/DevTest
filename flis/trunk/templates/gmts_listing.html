@@ -29,7 +29,7 @@
           {%- for gmt in gmts %}
           <tr>
             <td>
-              <a href="{{ url_for('flis.gmt_edit',
+              <a href="{{ url_for('flis.gmt_view',
                                    gmt_id=gmt.id) }}">
                 {{ gmt["description"] }}</a>
             </td>

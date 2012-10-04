@@ -21,7 +21,7 @@
           {%- for thematic_category in thematic_categories %}
           <tr>
             <td>
-                <a href="{{ url_for('lists.thematic_category_edit',
+                <a href="{{ url_for('lists.thematic_category_view',
                     thematic_category_id=thematic_category.id) }}">
                     {{ thematic_category["code"] }}
                     ({{ thematic_category["description"] }})
