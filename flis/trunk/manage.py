@@ -10,6 +10,7 @@ import frame
 
 default_config = {
         'HTABLES_ENGINE': 'sqlite',
+        'HTTP_PROXIED': False,
         'FRAME_URL': None,
     }
 
@@ -42,6 +43,9 @@ def create_app():
         app.wsgi_app = SharedDataMiddleware(app.wsgi_app, {
             "/static/files": files_path,
         })
+    if app.config["HTTP_PROXIED"]:
+        from revproxy import ReverseProxied
+        app.wsgi_app = ReverseProxied(app.wsgi_app)
     return app
 
 manager = flaskext.script.Manager(create_app)
