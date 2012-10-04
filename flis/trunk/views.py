@@ -32,9 +32,18 @@ def require_edit_permission(func):
             return "Please log in to access this view."
     return wrapper
 
+def get_user_id():
+    return getattr(flask.g, 'user_id', '')
+
 @flis.route('/gmts/new/', methods=['GET', 'POST'])
 @flis.route('/gmts/<int:gmt_id>/edit', methods=['GET', 'POST'])
 def gmt_edit(gmt_id=None):
+    if not edit_is_allowed():
+        return flask.render_template('gmt_edit.html', **{
+        'user_id': get_user_id(),
+        'gmt_id': gmt_id,
+    })
+
     app = flask.current_app
     session = database.session
 

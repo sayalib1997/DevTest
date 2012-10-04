@@ -4,23 +4,31 @@
     {% from "bits.html" import nav_tabs %}
     {{ nav_tabs('gmts') }}
     <h3>Edit GMT</h3>
-    <form id="gmt_edit" name="gmt_edit" class="form-horizontal" method="post">
-        {{ mk.widget(gmt_schema) }}
-        <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Save changes</button>
-            {% if gmt_id %}
-            <a class="btn btn-danger remove-gmt" data-toggle="modal"
-              href="#delete-modal">Delete</a>
-            {% set cancel_url = url_for('flis.gmt_view',
-                gmt_id=gmt_id) %}
-            {% else %}
-                {% set cancel_url = url_for('flis.gmts_listing')
-                %}
-            {% endif %}
-            <a class="btn"
-               href="{{ cancel_url }}">Cancel</a>
-        </div>
-    </form>
+    {% if gmt_id %}
+        {% set cancel_url = url_for('flis.gmt_view', gmt_id=gmt_id) %}
+    {% else %}
+        {% set cancel_url = url_for('flis.gmts_listing') %}
+    {% endif %}
+    {% if mk %}
+        <form id="gmt_edit" name="gmt_edit" class="form-horizontal" method="post">
+            {{ mk.widget(gmt_schema) }}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save changes</button>
+                {% if gmt_id %}
+                <a class="btn btn-danger remove-gmt" data-toggle="modal"
+                  href="#delete-modal">Delete</a>
+                {% endif %}
+                <a class="btn" href="{{ cancel_url }}">Cancel</a>
+            </div>
+        </form>
+    {% else %}
+        {% if user_id == None %}
+            <p class="alert">This page is restricted. Please logon to check credentials.</p>
+        {% else %}
+            <p class="alert alert-error">Your account doesn't have edit credentials.</p>
+        {% endif %}
+        <a class="btn" href="{{ cancel_url }}">Back</a>
+    {% endif %}
 {% if gmt_id %}
   {% set delete_url = url_for('flis.gmt_delete', gmt_id=gmt_id) %}
   <div class="modal fade" id="delete-modal">
