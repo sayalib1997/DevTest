@@ -4,23 +4,33 @@
 {% from "bits.html" import nav_tabs %}
 {{ nav_tabs('interlinks') }}
 <h3>Edit interlink</h3>
-<form id="interlink_edit" name="interlink_edit" class="form-horizontal" method="post">
+{% if interlink_id %}
+    {% set cancel_url = url_for('flis.interlink_view',
+        interlink_id=interlink_id) %}
+{% else %}
+    {% set cancel_url = url_for('flis.interlinks_listing') %}
+{% endif %}
+{% if mk %}
+    <form id="interlink_edit" name="interlink_edit" class="form-horizontal"
+        method="post">
         {{ mk.widget(interlink_schema) }}
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">Save changes</button>
             {% if interlink_id %}
             <a class="btn btn-danger remove-interlink"
                 data-toggle="modal" href="#delete-modal">Delete</a>
-
-            {% set cancel_url = url_for('flis.interlink_view',
-                interlink_id=interlink_id) %}
-            {% else %}
-                {% set cancel_url = url_for('flis.interlinks_listing')
-                %}
             {% endif %}
             <a class="btn" href="{{ cancel_url }}">Cancel</a>
         </div>
     </form>
+{% else %}
+    {% if user_id == None %}
+        <p class="alert">This page is restricted. Please logon to check credentials.</p>
+    {% else %}
+        <p class="alert alert-error">Your account doesn't have edit credentials.</p>
+    {% endif %}
+    <a class="btn" href="{{ cancel_url }}">Back</a>
+{% endif %}
 {% if interlink_id %}
   {% set delete_url = url_for('flis.interlink_delete',
     interlink_id=interlink_id) %}

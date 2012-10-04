@@ -97,6 +97,11 @@ def gmt_view(gmt_id):
 
 @flis.route('/gmts/<int:gmt_id>/delete', methods=['POST'])
 def gmt_delete(gmt_id):
+    if not edit_is_allowed():
+        return flask.render_template('gmt_edit.html', **{
+        'user_id': get_user_id(),
+        'gmt_id': gmt_id,
+    })
     session = database.session
     session['gmts'].delete(gmt_id)
     session.commit()
@@ -116,6 +121,11 @@ def gmts_listing():
 @flis.route('/interlinks/<int:interlink_id>/edit', methods=['GET', 'POST'])
 #@require_edit_permission
 def interlink_edit(interlink_id=None):
+    if not edit_is_allowed():
+        return flask.render_template('interlink_edit.html', **{
+        'user_id': get_user_id(),
+        'interlink_id': interlink_id,
+    })
     app = flask.current_app
     session = database.session
 
@@ -170,6 +180,11 @@ def interlink_view(interlink_id):
 
 @flis.route('/interlinks/<int:interlink_id>/delete', methods=['POST'])
 def interlink_delete(interlink_id):
+    if not edit_is_allowed():
+        return flask.render_template('interlink_edit.html', **{
+        'user_id': get_user_id(),
+        'interlink_id': interlink_id,
+    })
     session = database.session
     session['interlinks'].delete(interlink_id)
     session.commit()
@@ -192,6 +207,11 @@ lists.before_request(frame.get_frame_before_request)
 @lists.route('/sources/new/', methods=['GET', 'POST'])
 @lists.route('/sources/<int:source_id>/edit', methods=['GET', 'POST'])
 def source_edit(source_id=None):
+    if not edit_is_allowed():
+        return flask.render_template('source_edit.html', **{
+        'user_id': get_user_id(),
+        'source_id': source_id,
+    })
     app = flask.current_app
     session = database.session
 
@@ -247,8 +267,11 @@ def source_view(source_id):
 
 @lists.route('/sources/<int:source_id>/delete', methods=['POST'])
 def source_delete(source_id):
-    #sources_row = database.get_or_404('sources', source_id)
-
+    if not edit_is_allowed():
+        return flask.render_template('source_edit.html', **{
+        'user_id': get_user_id(),
+        'source_id': source_id,
+    })
     session = database.session
     session['sources'].delete(source_id)
     session.commit()
@@ -266,6 +289,11 @@ def sources_listing():
 @lists.route('/trends/new/', methods=['GET', 'POST'])
 @lists.route('/trends/<int:trend_id>/edit', methods=['GET', 'POST'])
 def trend_edit(trend_id=None):
+    if not edit_is_allowed():
+        return flask.render_template('trend_edit.html', **{
+        'user_id': get_user_id(),
+        'trend_id': trend_id,
+    })
     app = flask.current_app
     session = database.session
 
@@ -320,8 +348,11 @@ def trend_view(trend_id):
 
 @lists.route('/trends/<int:trend_id>/delete', methods=['POST'])
 def trend_delete(trend_id):
-    #trends_row = database.get_or_404('trends', trend_id)
-
+    if not edit_is_allowed():
+        return flask.render_template('trend_edit.html', **{
+        'user_id': get_user_id(),
+        'trend_id': trend_id,
+    })
     session = database.session
     session['trends'].delete(trend_id)
     session.commit()
@@ -340,6 +371,11 @@ def trends_listing():
 @lists.route('/thematic_categories/<int:thematic_category_id>/edit',
         methods=['GET', 'POST'])
 def thematic_category_edit(thematic_category_id=None):
+    if not edit_is_allowed():
+        return flask.render_template('thematic_category_edit.html', **{
+        'user_id': get_user_id(),
+        'thematic_category_id': thematic_category_id,
+    })
     app = flask.current_app
     session = database.session
 
@@ -403,6 +439,11 @@ def thematic_category_view(thematic_category_id):
 @lists.route('/thematic_categories/<int:thematic_category_id>/delete',
         methods=['POST'])
 def thematic_category_delete(thematic_category_id):
+    if not edit_is_allowed():
+        return flask.render_template('thematic_category_edit.html', **{
+        'user_id': get_user_id(),
+        'thematic_category_id': thematic_category_id,
+    })
     session = database.session
     session['thematic_categories'].delete(thematic_category_id)
     session.commit()
@@ -422,6 +463,11 @@ def thematic_categories_listing():
 @lists.route('/geo_scales/<int:geo_scale_id>/edit',
         methods=['GET', 'POST'])
 def geo_scale_edit(geo_scale_id=None):
+    if not edit_is_allowed():
+        return flask.render_template('geo_scale_edit.html', **{
+        'user_id': get_user_id(),
+        'geo_scale_id': geo_scale_id,
+    })
     app = flask.current_app
     session = database.session
 
@@ -485,6 +531,11 @@ def geo_scale_view(geo_scale_id):
 @lists.route('/geo_scales/<int:geo_scale_id>/delete',
         methods=['POST'])
 def geo_scale_delete(geo_scale_id):
+    if not edit_is_allowed():
+        return flask.render_template('geo_scale_edit.html', **{
+        'user_id': get_user_id(),
+        'geo_scale_id': geo_scale_id,
+    })
     session = database.session
     session['geo_scales'].delete(geo_scale_id)
     session.commit()
@@ -504,6 +555,11 @@ def geo_scales_listing():
 @lists.route('/geo_coverages/<int:geo_coverage_id>/edit',
         methods=['GET', 'POST'])
 def geo_coverage_edit(geo_coverage_id=None):
+    if not edit_is_allowed():
+        return flask.render_template('geo_coverage_edit.html', **{
+        'user_id': get_user_id(),
+        'geo_coverage_id': geo_coverage_id,
+    })
     app = flask.current_app
     session = database.session
 
@@ -568,6 +624,11 @@ def geo_coverage_view(geo_coverage_id):
 @lists.route('/geo_coverages/<int:geo_coverage_id>/delete',
         methods=['POST'])
 def geo_coverage_delete(geo_coverage_id):
+    if not edit_is_allowed():
+        return flask.render_template('geo_coverage_edit.html', **{
+        'user_id': get_user_id(),
+        'geo_coverage_id': geo_coverage_id,
+    })
     session = database.session
     session['geo_coverages'].delete(geo_coverage_id)
     session.commit()
@@ -587,6 +648,11 @@ def geo_coverages_listing():
 @lists.route('/steep_categories/<int:steep_category_id>/edit',
         methods=['GET', 'POST'])
 def steep_category_edit(steep_category_id=None):
+    if not edit_is_allowed():
+        return flask.render_template('steep_category_edit.html', **{
+        'user_id': get_user_id(),
+        'steep_category_id': steep_category_id,
+    })
     app = flask.current_app
     session = database.session
 
@@ -649,6 +715,11 @@ def steep_category_view(steep_category_id):
 @lists.route('/steep_categories/<int:steep_category_id>/delete',
         methods=['POST'])
 def steep_category_delete(steep_category_id):
+    if not edit_is_allowed():
+        return flask.render_template('steep_category_edit.html', **{
+        'user_id': get_user_id(),
+        'steep_category_id': steep_category_id,
+    })
     session = database.session
     session['steep_categories'].delete(steep_category_id)
     session.commit()
@@ -667,6 +738,11 @@ def steep_categories_listing():
 @lists.route('/timelines/new/', methods=['GET', 'POST'])
 @lists.route('/timelines/<int:timeline_id>/edit', methods=['GET', 'POST'])
 def timeline_edit(timeline_id=None):
+    if not edit_is_allowed():
+        return flask.render_template('timeline_edit.html', **{
+        'user_id': get_user_id(),
+        'timeline_id': timeline_id,
+    })
     app = flask.current_app
     session = database.session
 
@@ -723,6 +799,11 @@ def timeline_view(timeline_id):
 
 @lists.route('/timelines/<int:timeline_id>/delete', methods=['POST'])
 def timeline_delete(timeline_id):
+    if not edit_is_allowed():
+        return flask.render_template('timeline_edit.html', **{
+        'user_id': get_user_id(),
+        'timeline_id': timeline_id,
+    })
     session = database.session
     session['timelines'].delete(timeline_id)
     session.commit()
@@ -790,6 +871,11 @@ def _delete_file(indicators_row):
 @lists.route('/indicators/new/', methods=['GET', 'POST'])
 @lists.route('/indicators/<int:indicator_id>/edit', methods=['GET', 'POST'])
 def indicator_edit(indicator_id=None):
+    if not edit_is_allowed():
+        return flask.render_template('indicator_edit.html', **{
+        'user_id': get_user_id(),
+        'indicator_id': indicator_id,
+    })
     app = flask.current_app
     session = database.session
 
@@ -868,7 +954,11 @@ def indicator_view(indicator_id):
 
 @lists.route('/indicators/<int:indicator_id>/delete', methods=['POST'])
 def indicator_delete(indicator_id):
-
+    if not edit_is_allowed():
+        return flask.render_template('indicator_edit.html', **{
+        'user_id': get_user_id(),
+        'indicator_id': indicator_id,
+    })
     session = database.session
     indicators_row = database.get_or_404('indicators', indicator_id)
     _delete_file(indicators_row)
