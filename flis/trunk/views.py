@@ -13,7 +13,7 @@ MByte = 1024*1024
 flis = flask.Blueprint('flis', __name__)
 flis.before_request(frame.get_frame_before_request)
 
-EDITOR_ROLES = ['Manager', 'Administrator']
+EDITOR_ROLES = ['Authenticated']
 
 def edit_is_allowed():
     if flask.current_app.config.get('SKIP_EDIT_AUTHORIZATION', False):
