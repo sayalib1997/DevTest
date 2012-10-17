@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+
+<div class="btn-toolbar">
+  <div class="btn-group">
+    <a class="btn" href="{% url trend_edit trend.id %}">
+      Edit {{ trend.description }}</a>
+  </div>
+
+  <div class="btn-group">
+    <a class="btn" href="{% url trends %}">Back to trends</a>
+  </div>
+</div>
+
+<table class="table table-bordered table-condensed">
+  <tbody>
+    <tr>
+      <th class="span2">Code</th>
+      <td>{{ trend.code }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">Description</th>
+      <td>{{ trend.description }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">Source</th>
+      <td>{{ trend.source }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">URL</th>
+      <td>{{ trend.url }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">Ownership</th>
+      <td>{{ trend.ownership }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">Summary</th>
+      <td><div>{{ trend.summary }}</div></td>
+    </tr>
+  </tbody>
+</table>
+
+{% endblock %}

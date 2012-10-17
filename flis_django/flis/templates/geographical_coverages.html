@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+
+<h3>Geographical coverages</h3>
+
+<div class="btn-toolbar">
+  <div class="btn-group">
+    <a href="{% url geographical_coverage_new %}"
+       class="btn btn-primary">Add geographical coverage</a>
+  </div>
+</div>
+
+{% if not object_list %}
+  <p><br />No geographical coverages defined yet.<br /></p>
+{% endif %}
+
+{% if object_list %}
+<table class="table table-bordered sources" style="width: 400px;">
+  <thead>
+    <tr>
+      <th>Geographic coverage name</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for object in object_list %}
+    <tr>
+      <td>
+        <a href="{% url geographical_coverage_view object.id %}">
+            {{ object.code }} ({{ object.description }})</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% load utils %}
+
+<ul class="nav nav-tabs">
+
+  <li class="{% active request '^/sources' %}">
+    <a href="{% url sources %}">Sources</a>
+  </li>
+
+
+  <li class="dropdown {% active request '^/settings' %}">
+    <a class="dropdown-toggle" data-toggle="dropdown">
+      Settings <b class="caret"></b>
+    </a>
+
+    <ul class="dropdown-menu">
+
+      <li>
+        <a href="{% url trends %}">Trends</a>
+      </li>
+
+      <li>
+        <a href="{% url thematic_categories %}">Thematic categories</a>
+      </li>
+
+
+      <li>
+        <a href="{% url geographical_scales %}">Geograohical scale</a>
+      </li>
+
+      <li>
+        <a href="{% url geographical_coverages %}">Geograohical coverages</a>
+      </li>
+
+      <li>
+        <a href="{% url steep_categories %}">Steep categories</a>
+      </li>
+
+    </ul>
+  </li>
+
+</ul>

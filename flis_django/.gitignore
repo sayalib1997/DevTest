@@ -1,0 +1,5 @@
+*.log
+*.pot
+*.pyc
+sandbox
+local_settings.py

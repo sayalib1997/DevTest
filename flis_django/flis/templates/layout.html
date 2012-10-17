@@ -1,0 +1,48 @@
+{% extends 'frame.html' %}
+{% load assets %}
+
+
+{% block head %}
+
+  <meta charset="utf-8">
+  <title>FLIS</title>
+
+  {% assets "css" %}
+    <link rel="stylesheet" href="{{ ASSET_URL }}" />
+  {% endassets %}
+
+  {% assets "js" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+  {% endassets %}
+
+{% endblock %}
+
+
+{% block messages %}
+
+{% if messages %}
+<div class="messages">
+  {% for message in messages %}
+    <p class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %}">
+      {{ message }}</p>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% endblock messages %}
+
+
+{% block flis_content %}
+
+  <div class="container">
+    {% include 'nav_tabs.html' %}
+    {% block content %}{% endblock %}
+  </div>
+
+  <script>
+    $(function () {
+      $("input[type=file]").uniform();
+    });
+   </script>
+
+{% endblock flis_content %}
