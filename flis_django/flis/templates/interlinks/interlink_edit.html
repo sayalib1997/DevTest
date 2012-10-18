@@ -1,0 +1,93 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+
+<h3>Edit interlink</h3>
+
+<form class="form-horizontal" method="post">
+
+  <fieldset>
+    <div class="control-group {% if form.gmt.errors %}error{% endif %}">
+      <label class="control-label" for="id_gmt">
+        {{ form.gmt.label }}</label>
+      <div class="controls">
+        {{ form.gmt }}
+        <span class="help-inline">{{ form.gmt.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.trend.errors %}error{% endif %}">
+      <label class="control-label" for="id_trend">
+        {{ form.trend.label }}</label>
+      <div class="controls">
+        {{ form.trend }}
+        <span class="help-inline">{{ form.trend.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.indicator_1.errors %}error{% endif %}">
+      <label class="control-label" for="id_indicator_1">
+        {{ form.indicator_1.label }}</label>
+      <div class="controls">
+        {{ form.indicator_1 }}
+        <span class="help-inline">{{ form.indicator_1.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.indicator_2.errors %}error{% endif %}">
+      <label class="control-label" for="id_indicator_2">
+        {{ form.indicator_2.label }}</label>
+      <div class="controls">
+        {{ form.indicator_2 }}
+        <span class="help-inline">{{ form.indicator_2.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.indicator_3.errors %}error{% endif %}">
+      <label class="control-label" for="id_indicator_3">
+        {{ form.indicator_3.label }}</label>
+      <div class="controls">
+        {{ form.indicator_3 }}
+        <span class="help-inline">{{ form.indicator_3.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.indicator_4.errors %}error{% endif %}">
+      <label class="control-label" for="id_indicator_4">
+        {{ form.indicator_4.label }}</label>
+      <div class="controls">
+        {{ form.indicator_4 }}
+        <span class="help-inline">{{ form.indicator_4.errors.0 }}</span>
+      </div>
+    </div>
+
+  </fieldset>
+
+  {% include "form_actions.html" %}
+
+</form>
+
+{% if object %}
+<div class="modal fade" id="delete-modal">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3>Confirmation</h3>
+  </div>
+
+  <div class="modal-body">
+    <p>Are you sure you want to delete this interlink?</p>
+  </div>
+
+  <div class="modal-footer">
+    <form method="POST" action="{% url interlink_delete object.pk %}"
+          style="display: inline;">
+      <button type="submit" class="btn btn-primary btn-danger">
+        Delete</button>
+    </form>
+    <a class="btn btn-cancel" data-dismiss="modal">Cancel</a>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,4 +1,5 @@
 import re
+from path import path
 from django import template
 
 
@@ -10,3 +11,8 @@ def active(request, pattern):
     if re.search(pattern, request.path):
         return 'active'
     return ''
+
+
+@register.filter
+def filename(value):
+    return path(value.file.name).basename()

@@ -8,7 +8,7 @@ class Source(models.Model):
     long_name = models.CharField(max_length=512)
     year_of_publication = models.CharField(max_length=512)
     author = models.CharField(max_length=512)
-    url = models.CharField(max_length=512)
+    url = models.URLField(max_length=512)
     summary = models.TextField(null=True, blank=True, default='')
 
     def __unicode__(self):
@@ -24,9 +24,12 @@ class Trend(models.Model):
     code = models.CharField(max_length=256)
     description = models.CharField(max_length=512)
 
-    url = models.CharField(max_length=512)
+    url = models.URLField(max_length=512)
     ownership = models.CharField(max_length=512)
     summary = models.TextField(null=True, blank=True, default='')
+
+    def __unicode__(self):
+        return self.description
 
     def get_absolute_url(self):
         return reverse('trend_view', kwargs={'pk': self.pk})
@@ -37,6 +40,9 @@ class ThematicCategory(models.Model):
     code = models.CharField(max_length=256)
     description = models.CharField(max_length=512)
 
+    def __unicode__(self):
+        return '%s (%s)' % (self.code, self.description)
+
     def get_absolute_url(self):
         return reverse('thematic_category_view', kwargs={'pk': self.pk})
 
@@ -46,6 +52,9 @@ class GeographicalScale(models.Model):
     code = models.CharField(max_length=256)
     description = models.CharField(max_length=512)
 
+    def __unicode__(self):
+        return '%s (%s)' % (self.code, self.description)
+
     def get_absolute_url(self):
         return reverse('geographical_scale_view', kwargs={'pk': self.pk})
 
@@ -54,6 +63,9 @@ class GeographicalCoverage(models.Model):
 
     code = models.CharField(max_length=256)
     description = models.CharField(max_length=512)
+
+    def __unicode__(self):
+        return '%s (%s)' % (self.code, self.description)
 
     def get_absolute_url(self):
         return reverse('geographical_coverage_view', kwargs={'pk': self.pk})
@@ -87,9 +99,11 @@ class Indicator(models.Model):
     thematic_category = models.ForeignKey(ThematicCategory,
                                           related_name='thematic_category')
     geographical_scale = models.ForeignKey(GeographicalScale,
-                                         related_name='geographical_scale')
+                                           related_name='geographical_scale',
+                                           null=True, blank=True)
     geographic_coverage = models.ForeignKey(GeographicalCoverage,
-                                            related_name='geographic_coverage')
+                                            related_name='geographic_coverage',
+                                            null=True, blank=True)
     timeline = models.ForeignKey(Timeline, related_name='timeline')
     source = models.ForeignKey(Source, related_name='sources_indicator')
 
@@ -99,20 +113,33 @@ class Indicator(models.Model):
     end_year = models.CharField(max_length=256)
     url = models.URLField(max_length=512)
     ownership = models.CharField(max_length=512)
-    file_id = models.FileField(upload_to='indicator', max_length=256,
+    file_id = models.FileField(upload_to='files', max_length=256,
                                null=True, blank=True, default='')
+
+    def __unicode__(self):
+        return self.code
+
+    def get_absolute_url(self):
+        return reverse('indicator_view', kwargs={'pk': self.pk})
 
 
 class GMT(models.Model):
 
     steep_category = models.ForeignKey(SteepCategory,
-                                       related_name='steep_category')
+                                       related_name='steep_category',
+                                       null=True, blank=True)
     source = models.ForeignKey(Source, related_name='sources_gmt')
     code = models.CharField(max_length=256)
     description = models.CharField(max_length=512)
     url = models.URLField(max_length=512)
     ownership = models.CharField(max_length=512)
     summary = models.TextField(null=True, blank=True, default='')
+
+    def __unicode__(self):
+        return self.code
+
+    def get_absolute_url(self):
+        return reverse('gmt_view', kwargs={'pk': self.pk})
 
 
 class Interlink(models.Model):
@@ -126,5 +153,11 @@ class Interlink(models.Model):
                                     null=True, blank=True)
     indicator_4 = models.ForeignKey(Indicator, related_name='indicator_4',
                                     null=True, blank=True)
+
+    def __unicode__(self):
+        return self.gmt.code
+
+    def get_absolute_url(self):
+        return reverse('interlink_view', kwargs={'pk': self.pk})
 
 

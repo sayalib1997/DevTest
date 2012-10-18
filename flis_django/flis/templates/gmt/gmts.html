@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+
+<h3>GMTs</h3>
+
+<div class="btn-toolbar">
+  <div class="btn-group">
+    <a href="{% url gmt_new %}" class="btn btn-primary">Add GMT</a>
+  </div>
+</div>
+
+{% if not object_list %}
+  <p><br />No gmt defined yet.<br /></p>
+{% endif %}
+
+{% if object_list %}
+<table class="table table-bordered sources" style="width: 400px;">
+  <thead>
+    <tr>
+      <th>GMT</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for object in object_list %}
+    <tr>
+      <td>
+        <a href="{% url gmt_view object.id %}">{{ object }}</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% if is_paginated %}
+  {% include "paginator.html" %}
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,97 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+
+<h3>Indicators</h3>
+
+<div class="btn-toolbar">
+  <div class="btn-group">
+    <a href="{% url indicator_new %}"
+       class="btn btn-primary">Add indicator</a>
+  </div>
+</div>
+
+{% if not object_list %}
+  <p><br />No indicator defined yet.<br /></p>
+{% endif %}
+
+{% if object_list %}
+<table class="table table-bordered sources" style="width: 400px;">
+  <thead>
+    <tr>
+      <th>Indicator name</th>
+      <th>Thematic category</th>
+      <th>Relevant to GMTs...</th>
+      <th>Relevant to trends...</th>
+      <th>Indicator description (title)</th>
+      <th>End year</th>
+      <th>Base year</th>
+      <th>Temporal coverage</th>
+      <th>Geographical scale</th>
+      <th>Geographical coverage</th>
+      <th>Source</th>
+      <th>Data source</th>
+      <th>Background report</th>
+      <th>Ownership</th>
+      <th>Example graphics</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    {% for object in object_list %}
+    <tr>
+      <td>
+        <a href="{% url indicator_view object.id %}">
+          {{ object }}</a>
+      </td>
+
+      <td>{{ object.thematic_category }}</td>
+
+      <td></td>
+
+      <td></td>
+
+      <td>{{ object.description }}</td>
+
+      <td>{{ object.end_year }}</td>
+
+      <td>{{ object.base_year }}</td>
+
+      <td>{{ object.timeline }}</td>
+
+      <td>{{ object.geographical_scale }}</td>
+
+      <td>{{ object.geographical_coverage }}</td>
+
+      <td>{{ object.source }}</td>
+
+      <td>
+        {% if object.url %}
+          <a href="{{ object.url }}">{{ object.url }}</a>
+        {% endif %}
+      </td>
+
+      <td></td>
+
+      <td>{{ object.ownership }}</td>
+
+      <td>
+        {% if object.file_id %}
+          <a href="{{ object.file_id.url }}">{{ object.file_id.name }}</a>
+        {% endif %}
+      </td>
+
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+{% endif %}
+
+{% if is_paginated %}
+  {% include "paginator.html" %}
+{% endif %}
+
+{% endblock %}

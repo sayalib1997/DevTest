@@ -2,6 +2,18 @@
 
 <ul class="nav nav-tabs">
 
+  <li class="{% active request '^/$' %} {% active request '^/interlinks' %}">
+    <a href="{% url interlinks %}">Interlinks</a>
+  </li>
+
+  <li class="{% active request '^/indicators' %}">
+    <a href="{% url indicators %}">Indicators</a>
+  </li>
+
+  <li class="{% active request '^/gmts' %}">
+    <a href="{% url gmts %}">GMTs</a>
+  </li>
+
   <li class="{% active request '^/sources' %}">
     <a href="{% url sources %}">Sources</a>
   </li>
@@ -13,6 +25,10 @@
     </a>
 
     <ul class="dropdown-menu">
+
+      <li>
+        <a href="{% url interlinks %}">Interlinks</a>
+      </li>
 
       <li>
         <a href="{% url trends %}">Trends</a>

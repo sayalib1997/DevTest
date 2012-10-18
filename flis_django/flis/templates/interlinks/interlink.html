@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+
+<div class="btn-toolbar">
+  <div class="btn-group">
+    <a class="btn" href="{% url interlink_edit object.id %}">
+      Edit</a>
+  </div>
+
+  <div class="btn-group">
+    <a class="btn" href="{% url interlinks %}">Back to interlinks</a>
+  </div>
+</div>
+
+
+<table class="table table-bordered table-condensed">
+  <tbody>
+    <tr>
+      <th class="span2">GMT</th>
+      <td>{{ object.gmt }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">Trend</th>
+      <td>{{ object.trend }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">Indicator</th>
+      <td>{{ object.indicator_1 }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">Indicator</th>
+      <td>{{ object.indicator_2 }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">Indicator</th>
+      <td>{{ object.indicator_3 }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">Indicator</th>
+      <td><div>{{ object.indicator_4 }}</div></td>
+    </tr>
+  </tbody>
+</table>
+
+{% endblock %}

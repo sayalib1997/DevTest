@@ -1,0 +1,100 @@
+{% extends 'layout.html' %}
+{% load utils %}
+
+
+{% block content %}
+
+<div class="btn-toolbar">
+  <div class="btn-group">
+    <a class="btn" href="{% url indicator_edit object.id %}">
+      Edit {{ object }}</a>
+  </div>
+
+  <div class="btn-group">
+    <a class="btn" href="{% url indicators %}">Back to indicators</a>
+  </div>
+</div>
+
+
+<table class="table table-bordered table-condensed">
+  <tbody>
+    <tr>
+      <th class="span2">Code</th>
+      <td>{{ object.code }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">Thematic category</th>
+      <td>{{ object.thematic_category }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">Description</th>
+      <td>{{ object.description }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">Geo Scale</th>
+      <td>{{ object.geographical_scale }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">Geo coverage</th>
+      <td>{{ object.geographical_coverage }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">Timeline</th>
+      <td>
+        <table class="table table-bordered table-condensed">
+          <tbody>
+            <tr>
+              <th class="span2">Base year</th>
+              <td>{{ object.base_year }}</td>
+            </tr>
+
+            <tr>
+              <th class="span2">End year</th>
+              <td>{{ object.end_year }}</td>
+            </tr>
+
+            <tr>
+              <th class="span2">Timeline</th>
+              <td>{{ object.timeline }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <th class="span2">Source</th>
+      <td>{{ object.source }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">URL (to online availability)</th>
+      <td>
+        {% if object.url %}
+          <a href="{{ object.url }}">{{ object.url }}</a>
+        {% endif %}
+      </td>
+    </tr>
+
+    <tr>
+      <th class="span2">Ownership</th>
+      <td>{{ object.ownership }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">Example of file</th>
+      <td>
+        {% if object.file_id %}
+          <a href="{{ object.file_id.url }}">{{ object.file_id|filename }}</a>
+        {% endif %}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+
+<div class="btn-toolbar">
+  <div class="btn-group">
+    <a class="btn" href="{% url gmt_edit object.id %}">
+      Edit {{ object }}</a>
+  </div>
+
+  <div class="btn-group">
+    <a class="btn" href="{% url gmts %}">Back to gmts</a>
+  </div>
+</div>
+
+<table class="table table-bordered table-condensed">
+  <tbody>
+    <tr>
+      <th class="span2">Code</th>
+      <td>{{ object.code }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">Steep Category</th>
+      <td>{{ object.steep_category }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">Description</th>
+      <td>{{ object.description }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">Source</th>
+      <td>{{ object.source }}</td>
+    </tr>
+
+    <tr>
+      <th class="span2">URL (to online availability)</th>
+      <td><a href="{{ object.url }}">{{ object.url }}</a></td>
+    </tr>
+
+    <tr>
+      <th class="span2">Summary</th>
+      <td><div>{{ object.summary }}</div></td>
+    </tr>
+  </tbody>
+</table>
+
+{% endblock %}

@@ -7,13 +7,29 @@ from flis import views
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', views.Home.as_view(), name='home'),
+    url(r'^$', views.Interlinks.as_view(), name='interlinks'),
+    url(r'^interlinks/new$', views.InterlinkCreate.as_view(), name='interlink_new'),
+    url(r'^interlinks/(?P<pk>\d+)/edit$', views.InterlinkEdit.as_view(), name='interlink_edit'),
+    url(r'^interlinks/(?P<pk>\d+)/$', views.Interlink.as_view(), name='interlink_view'),
+    url(r'^interlinks/(?P<pk>\d+)/delete$', views.InterlinkDelete.as_view(), name='interlink_delete'),
 
     url(r'^sources$', views.Sources.as_view(), name='sources'),
     url(r'^sources/new$', views.SourceCreate.as_view(), name='source_new'),
     url(r'^sources/(?P<pk>\d+)/edit$', views.SourceEdit.as_view(), name='source_edit'),
     url(r'^sources/(?P<pk>\d+)/$', views.Source.as_view(), name='source_view'),
     url(r'^sources/(?P<pk>\d+)/delete$', views.SourceDelete.as_view(), name='source_delete'),
+
+    url(r'^indicators$', views.Indicators.as_view(), name='indicators'),
+    url(r'^indicators/new$', views.IndicatorCreate.as_view(), name='indicator_new'),
+    url(r'^indicators/(?P<pk>\d+)/edit$', views.IndicatorEdit.as_view(), name='indicator_edit'),
+    url(r'^indicators/(?P<pk>\d+)/$', views.Indicator.as_view(), name='indicator_view'),
+    url(r'^indicators/(?P<pk>\d+)/delete$', views.IndicatorDelete.as_view(), name='indicator_delete'),
+
+    url(r'^gmts$', views.GMTs.as_view(), name='gmts'),
+    url(r'^gmts/new$', views.GMTCreate.as_view(), name='gmt_new'),
+    url(r'^gmts/(?P<pk>\d+)/edit$', views.GMTEdit.as_view(), name='gmt_edit'),
+    url(r'^gmts/(?P<pk>\d+)/$', views.GMT.as_view(), name='gmt_view'),
+    url(r'^gmts/(?P<pk>\d+)/delete$', views.GMTDelete.as_view(), name='gmt_delete'),
 
     url(r'^settings/trends$', views.Trends.as_view(), name='trends'),
     url(r'^settings/trends/new$', views.TrendCreate.as_view(), name='trend_new'),
@@ -52,8 +68,6 @@ urlpatterns = patterns('',
     url(r'^settings/timelines/(?P<pk>\d+)/$', views.Timeline.as_view(), name='timeline_view'),
     url(r'^settings/timelines/(?P<pk>\d+)/delete$', views.TimelineDelete.as_view(), name='timeline_delete'),
 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
