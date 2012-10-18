@@ -48,7 +48,7 @@ class InterlinkEdit(UpdateView):
 
 
 class InterlinkDelete(DeleteView):
-    model = models.Source
+    model = models.Interlink
     success_url = reverse_lazy('interlinks')
 
 
