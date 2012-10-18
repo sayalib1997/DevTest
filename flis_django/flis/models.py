@@ -76,7 +76,7 @@ class Timeline(models.Model):
     title = models.CharField(max_length=512)
 
     def __unicode__(self):
-        return title
+        return self.title
 
     def get_absolute_url(self):
         return reverse('timeline_view', kwargs={'pk': self.pk})
