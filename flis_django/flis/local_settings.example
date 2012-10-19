@@ -1,0 +1,30 @@
+from path import path
+
+HOSTNAME = "http://localhost:8000"
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'flis',                      # Or path to database file if using sqlite3.
+        'USER': 'root',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
+        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+    }
+}
+
+FRAME_URL = 'http://projects.eionet.europa.eu/flis-services-project/flis_templates/frame'
+
+FRAME_COOKIES = ['__ac', '_ZopeId']
+
+SKIP_EDIT_AUTHORIZATION = True
+
+MEDIA_ROOT = path('/var/local/flis_django/instance')
+
+MEDIA_URL = '/static/files'
+
+STATICFILES_DIRS = (
+    ('files', MEDIA_ROOT.joinpath('files')),
+)
+
+ASSETS_DEBUG = True

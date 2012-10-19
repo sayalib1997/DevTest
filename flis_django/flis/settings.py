@@ -92,12 +92,15 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
+    'flis.frame.Loader',
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
 #     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
+    'flis.frame.RequestMiddleware',
+    'flis.frame.UserMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',

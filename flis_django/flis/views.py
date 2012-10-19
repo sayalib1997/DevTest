@@ -418,4 +418,3 @@ class TimelineDelete(DeleteView):
 
     model = models.Timeline
     success_url = reverse_lazy('timelines')
-
