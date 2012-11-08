@@ -37,17 +37,34 @@
     <div class="modal fade" id="delete-modal">
       <div class="modal-header">
         <a class="close" data-dismiss="modal">×</a>
-        <h3>Confirmation</h3>
+        {% if not referenced %}
+          <h3>Confirmation</h3>
+        {% else %}
+          <h3>Information</h3>
+        {% endif %}
       </div>
-      <div class="modal-body">
-        <p>Are you sure you want to delete this source?</p>
-      </div>
-      <div class="modal-footer">
-        <form method="POST" action="{{ delete_url }}" style="display: inline;">
-          <button type="submit" class="btn btn-primary btn-danger">Delete</button>
-        </form>
-        <a class="btn btn-cancel" data-dismiss="modal">Cancel</a>
-      </div>
+      {% if not referenced %}
+        <div class="modal-body">
+          <p>Are you sure you want to delete this source?</p>
+        </div>
+        <div class="modal-footer">
+          <form method="POST" action="{{ delete_url }}" style="display: inline;">
+            <button type="submit" class="btn btn-primary btn-danger">Delete</button>
+          </form>
+          <a class="btn btn-cancel" data-dismiss="modal">Cancel</a>
+        </div>
+      {% else %}
+        <div class="modal-body">
+          <p>This object cannot be deleted because is referenced in other objects:</p>
+          {% for reference in referenced %}
+            <p><a href="/{{ reference }}">{{ reference }}</a></p>
+          {% endfor %}
+          <p>References must be removed before deletion</p>
+        </div>
+        <div class="modal-footer">
+          <a class="btn btn-cancel" data-dismiss="modal">OK</a>
+        </div>
+      {% endif %}
     </div>
   {% endif %}
 {% endblock %}

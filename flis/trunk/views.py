@@ -14,6 +14,33 @@ flis = flask.Blueprint('flis', __name__)
 flis.before_request(frame.get_frame_before_request)
 
 EDITOR_ROLES = ['Authenticated']
+REFERENCES = {
+    'trends': {'sources': ['source']},
+    'gmts': {'sources': ['source'], 'steep_categories': ['steep_category']},
+    'indicators': {
+                    'thematic_categories': ['thematic_category'],
+                    'geo_scales': ['geo_scale'],
+                    'geo_coverages': ['geo_coverage'],
+                    'timelines': ['time_coverage_timeline'],
+                    'sources': ['source'],
+                    },
+    'interlinks': {
+                    'gmts': ['gmt'],
+                    'trends': ['trend'],
+                    'indicators': ['indicator1', 'indicator2', 'indicator3', 'indicator4'],
+                  }
+}
+
+def is_referenced(table, row_id):
+    found = []
+    for r_table, r_values in REFERENCES.items():
+        if table in r_values.keys():
+            rows = database.get_all(r_table)
+            for row in rows:
+                for field in r_values[table]:
+                    if row[field] == str(row_id):
+                        found.append('%s/%s' % (r_table, row.id))
+    return found
 
 def edit_is_allowed():
     if flask.current_app.config.get('SKIP_EDIT_AUTHORIZATION', False):
@@ -47,11 +74,14 @@ def gmt_edit(gmt_id=None):
     app = flask.current_app
     session = database.session
 
+    referenced = False
+
     if gmt_id is None:
         gmts_row = None
     else:
         gmts_row = database.get_or_404('gmts', gmt_id)
         gmt_schema = schema.GMT.from_flat(gmts_row)
+        referenced = is_referenced(table='gmts', row_id=gmt_id)
 
     if flask.request.method == 'POST':
         form_data = dict(schema.GMTsSchema.from_defaults().flatten())
@@ -82,6 +112,7 @@ def gmt_edit(gmt_id=None):
         'mk': MarkupGenerator(app.jinja_env.get_template('widgets_edit.html')),
         'gmt_schema': gmt_schema,
         'gmt_id': gmt_id,
+        'referenced': referenced,
     })
 
 @flis.route('/gmts/<int:gmt_id>/')
@@ -215,11 +246,14 @@ def source_edit(source_id=None):
     app = flask.current_app
     session = database.session
 
+    referenced = False
+
     if source_id is None:
         sources_row = None
     else:
         sources_row = database.get_or_404('sources', source_id)
         source_schema = schema.SourcesSchema.from_flat(sources_row)
+        referenced = is_referenced(table='sources', row_id=source_id)
 
     if flask.request.method == 'POST':
         form_data = dict(schema.SourcesSchema.from_defaults().flatten())
@@ -252,6 +286,7 @@ def source_edit(source_id=None):
         'mk': MarkupGenerator(app.jinja_env.get_template('widgets_edit.html')),
         'source_schema': source_schema,
         'source_id': source_id,
+        'referenced': referenced,
     })
 
 @lists.route('/sources/<int:source_id>/')
@@ -297,11 +332,14 @@ def trend_edit(trend_id=None):
     app = flask.current_app
     session = database.session
 
+    referenced = False
+
     if trend_id is None:
         trends_row = None
     else:
         trends_row = database.get_or_404('trends', trend_id)
         trend_schema = schema.TrendsSchema.from_flat(trends_row)
+        referenced = is_referenced(table='trends', row_id=trend_id)
 
     if flask.request.method == 'POST':
         form_data = dict(schema.TrendsSchema.from_defaults().flatten())
@@ -333,6 +371,7 @@ def trend_edit(trend_id=None):
         'mk': MarkupGenerator(app.jinja_env.get_template('widgets_edit.html')),
         'trend_schema': trend_schema,
         'trend_id': trend_id,
+        'referenced': referenced,
     })
 
 @lists.route('/trends/<int:trend_id>/')
@@ -379,6 +418,8 @@ def thematic_category_edit(thematic_category_id=None):
     app = flask.current_app
     session = database.session
 
+    referenced = False
+
     if thematic_category_id is None:
         thematic_categories_row = None
     else:
@@ -386,6 +427,8 @@ def thematic_category_edit(thematic_category_id=None):
                 thematic_category_id)
         thematic_category_schema = schema.ThematicCategoriesSchema.from_flat(
                 thematic_categories_row)
+        referenced = is_referenced(table='thematic_categories',
+                row_id=thematic_category_id)
 
     if flask.request.method == 'POST':
         form_data = dict(
@@ -421,6 +464,7 @@ def thematic_category_edit(thematic_category_id=None):
         'mk': MarkupGenerator(app.jinja_env.get_template('widgets_edit.html')),
         'thematic_category_schema': thematic_category_schema,
         'thematic_category_id': thematic_category_id,
+        'referenced': referenced,
     })
 
 @lists.route('/thematic_categories/<int:thematic_category_id>/')
@@ -471,6 +515,8 @@ def geo_scale_edit(geo_scale_id=None):
     app = flask.current_app
     session = database.session
 
+    referenced = False
+
     if geo_scale_id is None:
         geo_scales_row = None
     else:
@@ -478,6 +524,7 @@ def geo_scale_edit(geo_scale_id=None):
                 geo_scale_id)
         geo_scale_schema = schema.GeographicalScalesSchema.from_flat(
                 geo_scales_row)
+        referenced = is_referenced(table='geo_scales', row_id=geo_scale_id)
 
     if flask.request.method == 'POST':
         form_data = dict(
@@ -513,6 +560,7 @@ def geo_scale_edit(geo_scale_id=None):
         'mk': MarkupGenerator(app.jinja_env.get_template('widgets_edit.html')),
         'geo_scale_schema': geo_scale_schema,
         'geo_scale_id': geo_scale_id,
+        'referenced': referenced,
     })
 
 @lists.route('/geo_scales/<int:geo_scale_id>/')
@@ -563,6 +611,8 @@ def geo_coverage_edit(geo_coverage_id=None):
     app = flask.current_app
     session = database.session
 
+    referenced = False
+
     if geo_coverage_id is None:
         geo_coverages_row = None
     else:
@@ -570,6 +620,8 @@ def geo_coverage_edit(geo_coverage_id=None):
                 'geo_coverages', geo_coverage_id)
         geo_coverage_schema = schema.GeographicalCoveragesSchema.from_flat(
                 geo_coverages_row)
+        referenced = is_referenced(table='geo_coverages',
+                row_id=geo_coverage_id)
 
     if flask.request.method == 'POST':
         form_data = dict(
@@ -606,6 +658,7 @@ def geo_coverage_edit(geo_coverage_id=None):
         'mk': MarkupGenerator(app.jinja_env.get_template('widgets_edit.html')),
         'geo_coverage_schema': geo_coverage_schema,
         'geo_coverage_id': geo_coverage_id,
+        'referenced': referenced,
     })
 
 @lists.route('/geo_coverages/<int:geo_coverage_id>/')
@@ -656,6 +709,8 @@ def steep_category_edit(steep_category_id=None):
     app = flask.current_app
     session = database.session
 
+    referenced = False
+
     if steep_category_id is None:
         steep_categories_row = None
     else:
@@ -663,6 +718,7 @@ def steep_category_edit(steep_category_id=None):
                 steep_category_id)
         steep_category_schema = schema.SteepCategoriesSchema.from_flat(
                 steep_categories_row)
+        referenced = is_referenced(table='steep_categories', row_id=steep_category_id)
 
     if flask.request.method == 'POST':
         form_data = dict(schema.SteepCategoriesSchema.from_defaults().flatten())
@@ -697,6 +753,7 @@ def steep_category_edit(steep_category_id=None):
         'mk': MarkupGenerator(app.jinja_env.get_template('widgets_edit.html')),
         'steep_category_schema': steep_category_schema,
         'steep_category_id': steep_category_id,
+        'referenced': referenced,
     })
 
 @lists.route('/steep_categories/<int:steep_category_id>/')
@@ -746,11 +803,14 @@ def timeline_edit(timeline_id=None):
     app = flask.current_app
     session = database.session
 
+    referenced = False
+
     if timeline_id is None:
         timelines_row = None
     else:
         timelines_row = database.get_or_404('timelines', timeline_id)
         timeline_schema = schema.TimelinesSchema.from_flat(timelines_row)
+        referenced = is_referenced(table='timelines', row_id=timeline_id)
 
     if flask.request.method == 'POST':
         form_data = dict(schema.TimelinesSchema.from_defaults().flatten())
@@ -784,6 +844,7 @@ def timeline_edit(timeline_id=None):
         'mk': MarkupGenerator(app.jinja_env.get_template('widgets_edit.html')),
         'timeline_schema': timeline_schema,
         'timeline_id': timeline_id,
+        'referenced': referenced,
     })
 
 @lists.route('/timelines/<int:timeline_id>/')
@@ -879,11 +940,14 @@ def indicator_edit(indicator_id=None):
     app = flask.current_app
     session = database.session
 
+    referenced = False
+
     if indicator_id is None:
         indicators_row = None
     else:
         indicators_row = database.get_or_404('indicators', indicator_id)
         indicator_schema = schema.IndicatorsSchema.from_flat(indicators_row)
+        referenced = is_referenced(table='indicators', row_id=indicator_id)
 
     if flask.request.method == 'POST':
         form_data = dict(schema.IndicatorsSchema.from_defaults().flatten())
@@ -939,6 +1003,7 @@ def indicator_edit(indicator_id=None):
         'indicator_schema': indicator_schema,
         'indicator': indicator,
         'indicator_id': indicator_id,
+        'referenced': referenced,
     })
 
 @lists.route('/indicators/<int:indicator_id>/')
