@@ -14,39 +14,6 @@
   </div>
 </div>
 
-
-<table class="table table-bordered table-condensed">
-  <tbody>
-    <tr>
-      <th class="span2">GMT</th>
-      <td>{{ object.gmt }}</td>
-    </tr>
-
-    <tr>
-      <th class="span2">Trend</th>
-      <td>{{ object.trend }}</td>
-    </tr>
-
-    <tr>
-      <th class="span2">Indicator</th>
-      <td>{{ object.indicator_1 }}</td>
-    </tr>
-
-    <tr>
-      <th class="span2">Indicator</th>
-      <td>{{ object.indicator_2 }}</td>
-    </tr>
-
-    <tr>
-      <th class="span2">Indicator</th>
-      <td>{{ object.indicator_3 }}</td>
-    </tr>
-
-    <tr>
-      <th class="span2">Indicator</th>
-      <td><div>{{ object.indicator_4 }}</div></td>
-    </tr>
-  </tbody>
-</table>
+{{ object.as_table }}
 
 {% endblock %}

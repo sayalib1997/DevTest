@@ -6,7 +6,7 @@
 <div class="btn-toolbar">
   <div class="btn-group">
     <a class="btn" href="{% url thematic_category_edit object.id %}">
-      Edit {{ thematic_category.code }}</a>
+      Edit {{ object.code }}</a>
   </div>
 
   <div class="btn-group">
@@ -14,19 +14,6 @@
   </div>
 </div>
 
-
-<table class="table table-bordered table-condensed">
-  <tbody>
-    <tr>
-      <th class="span2">Code</th>
-      <td>{{ object.code }}</td>
-    </tr>
-
-    <tr>
-      <th class="span2">Description</th>
-      <td>{{ object.description }}</td>
-    </tr>
-  </tbody>
-</table>
+{{ object.as_table }}
 
 {% endblock %}

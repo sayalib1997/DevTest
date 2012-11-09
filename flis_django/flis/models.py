@@ -1,12 +1,42 @@
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.utils.safestring import mark_safe
+from flis import markup
 
 
-class Source(models.Model):
+class BaseModel():
 
-    short_name = models.CharField(max_length=512)
-    long_name = models.CharField(max_length=512)
-    year_of_publication = models.CharField(max_length=512)
+    def as_table(self):
+
+        page = markup.page()
+        page.table(class_='table table-bordered table-condensed')
+        page.tbody()
+
+        for field in self._meta.fields:
+            if field.name == 'id':
+                continue
+            field_name = field.verbose_name
+            field_value = getattr(self, field.name, None)
+            page.tr()
+            page.th(field_name, class_='span2')
+
+            if field.name == 'url':
+                page.td('<a href="{url}">{url}</a>'.format(url=field_value))
+            else:
+                page.td(str(field_value))
+            page.tr.close()
+
+        page.tbody.close()
+        page.table.close()
+        return mark_safe(page)
+
+
+class Source(models.Model, BaseModel):
+
+    short_name = models.CharField(max_length=512, verbose_name='Short name')
+    long_name = models.CharField(max_length=512, verbose_name='Long name')
+    year_of_publication = models.CharField(max_length=512,
+                                           verbose_name='Year of publication')
     author = models.CharField(max_length=512)
     url = models.URLField(max_length=512)
     summary = models.TextField(null=True, blank=True, default='')
@@ -18,15 +48,16 @@ class Source(models.Model):
         return reverse('source_view', kwargs={'pk': self.pk})
 
 
-class Trend(models.Model):
+class Trend(models.Model, BaseModel):
 
-    source = models.ForeignKey(Source, related_name='sources_trend')
-    code = models.CharField(max_length=256)
-    description = models.CharField(max_length=512)
-
-    url = models.URLField(max_length=512)
-    ownership = models.CharField(max_length=512)
-    summary = models.TextField(null=True, blank=True, default='')
+    code = models.CharField(max_length=256, verbose_name='Code')
+    description = models.CharField(max_length=512, verbose_name='Description')
+    source = models.ForeignKey(Source, related_name='sources_trend',
+                               verbose_name='Source')
+    url = models.URLField(max_length=512, verbose_name='URL')
+    ownership = models.CharField(max_length=512, verbose_name='Ownership')
+    summary = models.TextField(null=True, blank=True, default='',
+                               verbose_name='Summary')
 
     def __unicode__(self):
         return self.description
@@ -35,10 +66,10 @@ class Trend(models.Model):
         return reverse('trend_view', kwargs={'pk': self.pk})
 
 
-class ThematicCategory(models.Model):
+class ThematicCategory(models.Model, BaseModel):
 
-    code = models.CharField(max_length=256)
-    description = models.CharField(max_length=512)
+    code = models.CharField(max_length=256, verbose_name='Code')
+    description = models.CharField(max_length=512, verbose_name='Description')
 
     def __unicode__(self):
         return '%s (%s)' % (self.code, self.description)
@@ -47,10 +78,10 @@ class ThematicCategory(models.Model):
         return reverse('thematic_category_view', kwargs={'pk': self.pk})
 
 
-class GeographicalScale(models.Model):
+class GeographicalScale(models.Model, BaseModel):
 
-    code = models.CharField(max_length=256)
-    description = models.CharField(max_length=512)
+    code = models.CharField(max_length=256, verbose_name='Code')
+    description = models.CharField(max_length=512, verbose_name='Description')
 
     def __unicode__(self):
         return '%s (%s)' % (self.code, self.description)
@@ -59,10 +90,10 @@ class GeographicalScale(models.Model):
         return reverse('geographical_scale_view', kwargs={'pk': self.pk})
 
 
-class GeographicalCoverage(models.Model):
+class GeographicalCoverage(models.Model, BaseModel):
 
-    code = models.CharField(max_length=256)
-    description = models.CharField(max_length=512)
+    code = models.CharField(max_length=256, verbose_name='Code')
+    description = models.CharField(max_length=512, verbose_name='Description')
 
     def __unicode__(self):
         return '%s (%s)' % (self.code, self.description)
@@ -71,10 +102,10 @@ class GeographicalCoverage(models.Model):
         return reverse('geographical_coverage_view', kwargs={'pk': self.pk})
 
 
-class SteepCategory(models.Model):
+class SteepCategory(models.Model, BaseModel):
 
-    code = models.CharField(max_length=256)
-    description = models.CharField(max_length=512)
+    code = models.CharField(max_length=256, verbose_name='Code')
+    description = models.CharField(max_length=512, verbose_name='Description')
 
     def __unicode__(self):
         return '%s (%s)' % (self.code, self.description)
@@ -83,9 +114,9 @@ class SteepCategory(models.Model):
         return reverse('steep_category_view', kwargs={'pk': self.pk})
 
 
-class Timeline(models.Model):
+class Timeline(models.Model, BaseModel):
 
-    title = models.CharField(max_length=512)
+    title = models.CharField(max_length=512, verbose_name='Title')
 
     def __unicode__(self):
         return self.title
@@ -94,27 +125,34 @@ class Timeline(models.Model):
         return reverse('timeline_view', kwargs={'pk': self.pk})
 
 
-class Indicator(models.Model):
+class Indicator(models.Model, BaseModel):
+
+    code = models.CharField(max_length=256, verbose_name='Code')
+    description = models.CharField(max_length=512, verbose_name='Description')
 
     thematic_category = models.ForeignKey(ThematicCategory,
-                                          related_name='thematic_category')
+                                          related_name='thematic_category',
+                                          verbose_name='Thematic category')
     geographical_scale = models.ForeignKey(GeographicalScale,
                                            related_name='geographical_scale',
+                                           verbose_name='Geographical scale',
                                            null=True, blank=True)
     geographic_coverage = models.ForeignKey(GeographicalCoverage,
                                             related_name='geographic_coverage',
+                                            verbose_name='Geographical coverage',
                                             null=True, blank=True)
-    timeline = models.ForeignKey(Timeline, related_name='timeline')
-    source = models.ForeignKey(Source, related_name='sources_indicator')
+    timeline = models.ForeignKey(Timeline, related_name='timeline',
+                                 verbose_name='Timeline')
+    source = models.ForeignKey(Source, related_name='sources_indicator',
+                               verbose_name='Source')
 
-    code = models.CharField(max_length=256)
-    description = models.CharField(max_length=512)
-    base_year = models.CharField(max_length=256)
-    end_year = models.CharField(max_length=256)
-    url = models.URLField(max_length=512)
-    ownership = models.CharField(max_length=512)
+    base_year = models.CharField(max_length=256, verbose_name='Base year')
+    end_year = models.CharField(max_length=256, verbose_name='End year')
+    url = models.URLField(max_length=512, verbose_name='URL')
+    ownership = models.CharField(max_length=512, verbose_name='Ownership')
     file_id = models.FileField(upload_to='files', max_length=256,
-                               null=True, blank=True, default='')
+                               null=True, blank=True, default='',
+                               verbose_name='File')
 
     def __unicode__(self):
         return self.code
@@ -123,17 +161,20 @@ class Indicator(models.Model):
         return reverse('indicator_view', kwargs={'pk': self.pk})
 
 
-class GMT(models.Model):
+class GMT(models.Model, BaseModel):
 
+    code = models.CharField(max_length=256, verbose_name='Code')
     steep_category = models.ForeignKey(SteepCategory,
                                        related_name='steep_category',
+                                       verbose_name='Steep Category',
                                        null=True, blank=True)
-    source = models.ForeignKey(Source, related_name='sources_gmt')
-    code = models.CharField(max_length=256)
-    description = models.CharField(max_length=512)
-    url = models.URLField(max_length=512)
-    ownership = models.CharField(max_length=512)
-    summary = models.TextField(null=True, blank=True, default='')
+    description = models.CharField(max_length=512, verbose_name='Description')
+    source = models.ForeignKey(Source, related_name='sources_gmt',
+                               verbose_name='Source')
+    url = models.URLField(max_length=512, verbose_name='URL')
+    ownership = models.CharField(max_length=512, verbose_name='Ownership')
+    summary = models.TextField(null=True, blank=True, default='',
+                               verbose_name='Summary')
 
     def __unicode__(self):
         return self.code
@@ -142,16 +183,21 @@ class GMT(models.Model):
         return reverse('gmt_view', kwargs={'pk': self.pk})
 
 
-class Interlink(models.Model):
+class Interlink(models.Model, BaseModel):
 
-    gmt = models.ForeignKey(GMT, related_name='gmt')
-    trend = models.ForeignKey(Trend, related_name='trend')
-    indicator_1 = models.ForeignKey(Indicator, related_name='indicator_1')
+    gmt = models.ForeignKey(GMT, related_name='gmt', verbose_name='GMT')
+    trend = models.ForeignKey(Trend, related_name='trend',
+                              verbose_name='Trend')
+    indicator_1 = models.ForeignKey(Indicator, related_name='indicator_1',
+                                    verbose_name='Indicator')
     indicator_2 = models.ForeignKey(Indicator, related_name='indicator_2',
+                                    verbose_name='Indicator',
                                     null=True, blank=True)
     indicator_3 = models.ForeignKey(Indicator, related_name='indicator_3',
+                                    verbose_name='Indicator',
                                     null=True, blank=True)
     indicator_4 = models.ForeignKey(Indicator, related_name='indicator_4',
+                                    verbose_name='Indicator',
                                     null=True, blank=True)
 
     def __unicode__(self):

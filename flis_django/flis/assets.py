@@ -14,6 +14,7 @@ CSS_ASSETS = (
     'bootstrap/css/bootstrap-responsive.css',
     'css/uniform.default.css',
     'css/chosen.css',
+    'css/style.css',
 )
 
 
