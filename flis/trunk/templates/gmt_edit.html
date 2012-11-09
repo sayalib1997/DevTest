@@ -31,6 +31,7 @@
     {% endif %}
 {% if gmt_id %}
   {% set delete_url = url_for('flis.gmt_delete', gmt_id=gmt_id) %}
+  {% set site_url = url_for('flis.home_page') %}
   <div class="modal fade" id="delete-modal">
     <div class="modal-header">
       <a class="close" data-dismiss="modal">×</a>
@@ -54,7 +55,7 @@
         <div class="modal-body">
           <p>This object cannot be deleted because is referenced in other objects:</p>
           {% for reference in referenced %}
-            <p><a href="/{{ reference }}">{{ reference }}</a></p>
+            <p><a href="{{ site_url }}{{ reference }}">{{ reference }}</a></p>
           {% endfor %}
           <p>References must be removed before deletion</p>
         </div>

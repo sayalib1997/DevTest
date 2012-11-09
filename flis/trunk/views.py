@@ -222,6 +222,9 @@ def interlink_delete(interlink_id):
     return flask.redirect(flask.url_for('flis.interlinks_listing'))
 
 @flis.route('/')
+def home_page():
+    return flask.redirect(flask.url_for('flis.interlinks_listing'))
+
 @flis.route('/interlinks/')
 def interlinks_listing():
     interlinks_rows = database.get_all('interlinks')
