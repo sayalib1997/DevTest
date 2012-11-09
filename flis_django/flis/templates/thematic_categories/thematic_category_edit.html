@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% load utils %}
 
 
 {% block content %}
@@ -39,18 +40,26 @@
     <h3>Confirmation</h3>
   </div>
 
+  {% if object|has_referenced_items %}
+
+  {% include "referenced_objects.html" %}
+
+  {% else %}
+
   <div class="modal-body">
     <p>Are you sure you want to delete this thematic category?</p>
   </div>
 
   <div class="modal-footer">
-    <form method="POST" action="{% url thematic_category_delete object.id %}"
-          style="display: inline;">
+    <form method="POST" action="{% url thematic_category_delete object.id %}" style="display: inline;">
       <button type="submit" class="btn btn-primary btn-danger">
         Delete</button>
     </form>
     <a class="btn btn-cancel" data-dismiss="modal">Cancel</a>
   </div>
+
+  {% endif %}
+
 </div>
 {% endif %}
 

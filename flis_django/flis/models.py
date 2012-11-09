@@ -52,8 +52,9 @@ class Trend(models.Model, BaseModel):
 
     code = models.CharField(max_length=256, verbose_name='Code')
     description = models.CharField(max_length=512, verbose_name='Description')
-    source = models.ForeignKey(Source, related_name='sources_trend',
-                               verbose_name='Source')
+    source = models.ForeignKey(Source, related_name='trends',
+                               verbose_name='Source',
+                               on_delete=models.PROTECT)
     url = models.URLField(max_length=512, verbose_name='URL')
     ownership = models.CharField(max_length=512, verbose_name='Ownership')
     summary = models.TextField(null=True, blank=True, default='',
@@ -131,20 +132,25 @@ class Indicator(models.Model, BaseModel):
     description = models.CharField(max_length=512, verbose_name='Description')
 
     thematic_category = models.ForeignKey(ThematicCategory,
-                                          related_name='thematic_category',
-                                          verbose_name='Thematic category')
+                                          related_name='Indicators',
+                                          verbose_name='Thematic category',
+                                          on_delete=models.PROTECT)
     geographical_scale = models.ForeignKey(GeographicalScale,
-                                           related_name='geographical_scale',
+                                           related_name='Indicators',
                                            verbose_name='Geographical scale',
-                                           null=True, blank=True)
+                                           null=True, blank=True,
+                                           on_delete=models.PROTECT)
     geographic_coverage = models.ForeignKey(GeographicalCoverage,
-                                            related_name='geographic_coverage',
+                                            related_name='Indicators',
                                             verbose_name='Geographical coverage',
-                                            null=True, blank=True)
+                                            null=True, blank=True,
+                                            on_delete=models.PROTECT)
     timeline = models.ForeignKey(Timeline, related_name='timeline',
-                                 verbose_name='Timeline')
+                                 verbose_name='Timeline',
+                                 on_delete=models.PROTECT)
     source = models.ForeignKey(Source, related_name='sources_indicator',
-                               verbose_name='Source')
+                               verbose_name='Source',
+                               on_delete=models.PROTECT)
 
     base_year = models.CharField(max_length=256, verbose_name='Base year')
     end_year = models.CharField(max_length=256, verbose_name='End year')
@@ -165,12 +171,14 @@ class GMT(models.Model, BaseModel):
 
     code = models.CharField(max_length=256, verbose_name='Code')
     steep_category = models.ForeignKey(SteepCategory,
-                                       related_name='steep_category',
+                                       related_name='gmts',
                                        verbose_name='Steep Category',
-                                       null=True, blank=True)
+                                       null=True, blank=True,
+                                       on_delete=models.PROTECT)
     description = models.CharField(max_length=512, verbose_name='Description')
-    source = models.ForeignKey(Source, related_name='sources_gmt',
-                               verbose_name='Source')
+    source = models.ForeignKey(Source, related_name='gmts',
+                               verbose_name='Source',
+                               on_delete=models.PROTECT)
     url = models.URLField(max_length=512, verbose_name='URL')
     ownership = models.CharField(max_length=512, verbose_name='Ownership')
     summary = models.TextField(null=True, blank=True, default='',
@@ -185,20 +193,25 @@ class GMT(models.Model, BaseModel):
 
 class Interlink(models.Model, BaseModel):
 
-    gmt = models.ForeignKey(GMT, related_name='gmt', verbose_name='GMT')
-    trend = models.ForeignKey(Trend, related_name='trend',
-                              verbose_name='Trend')
-    indicator_1 = models.ForeignKey(Indicator, related_name='indicator_1',
-                                    verbose_name='Indicator')
-    indicator_2 = models.ForeignKey(Indicator, related_name='indicator_2',
+    gmt = models.ForeignKey(GMT, related_name='interlinks', verbose_name='GMT')
+    trend = models.ForeignKey(Trend, related_name='interlinks',
+                              verbose_name='Trend',
+                              on_delete=models.PROTECT)
+    indicator_1 = models.ForeignKey(Indicator, related_name='interlinks_indicator_1',
                                     verbose_name='Indicator',
-                                    null=True, blank=True)
-    indicator_3 = models.ForeignKey(Indicator, related_name='indicator_3',
+                                    on_delete=models.PROTECT)
+    indicator_2 = models.ForeignKey(Indicator, related_name='interlinks_indicator_2',
                                     verbose_name='Indicator',
-                                    null=True, blank=True)
-    indicator_4 = models.ForeignKey(Indicator, related_name='indicator_4',
+                                    null=True, blank=True,
+                                    on_delete=models.PROTECT)
+    indicator_3 = models.ForeignKey(Indicator, related_name='interlinks_indicator_3',
                                     verbose_name='Indicator',
-                                    null=True, blank=True)
+                                    null=True, blank=True,
+                                    on_delete=models.PROTECT)
+    indicator_4 = models.ForeignKey(Indicator, related_name='interlinks_indicator_4',
+                                    verbose_name='Indicator',
+                                    null=True, blank=True,
+                                    on_delete=models.PROTECT)
 
     def __unicode__(self):
         return self.gmt.code

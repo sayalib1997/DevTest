@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% load utils %}
 
 
 {% block content %}
@@ -31,6 +32,12 @@
     <h3>Confirmation</h3>
   </div>
 
+  {% if object|has_referenced_items %}
+
+    {% include "referenced_objects.html" %}
+
+  {% else %}
+
   <div class="modal-body">
     <p>Are you sure you want to delete this timeline ?</p>
   </div>
@@ -42,6 +49,9 @@
     </form>
     <a class="btn btn-cancel" data-dismiss="modal">Cancel</a>
   </div>
+
+  {% endif %}
+
 </div>
 {% endif %}
 

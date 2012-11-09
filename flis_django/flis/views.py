@@ -204,7 +204,7 @@ class TrendEdit(UpdateView):
     template_name = 'trends/trend_edit.html'
 
     def get_context_data(self, *args, **kwargs):
-        context = super(TrendCreate, self).get_context_data(*args, **kwargs)
+        context = super(TrendEdit, self).get_context_data(*args, **kwargs)
         context['cancel_url'] = context['object'].get_absolute_url()
         return context
 
