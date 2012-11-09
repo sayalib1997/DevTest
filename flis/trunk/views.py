@@ -31,6 +31,20 @@ REFERENCES = {
                   }
 }
 
+TABLES = ['interlinks', 'indicators', 'gmts', 'sources', 'trends',
+          'thematic_categories', 'geo_scales', 'geo_coverages',
+          'steep_categories', 'timelines']
+
+@flis.route('/export/')
+def export():
+    datadict = {}
+    for table in TABLES:
+        rows = {}
+        for row in database.get_all(table):
+            rows[row.id] = row
+        datadict[table] = rows
+    return flask.json.dumps(datadict)
+
 def is_referenced(table, row_id):
     found = []
     for r_table, r_values in REFERENCES.items():
