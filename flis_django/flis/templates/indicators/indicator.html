@@ -92,7 +92,8 @@
       <th class="span2">Example of file</th>
       <td>
         {% if object.file_id %}
-          <a href="{{ object.file_id.url }}">{{ object.file_id|filename }}</a>
+          <a href="{{ HOSTNAME }}{{ object.file_id.url }}">
+            {{ object.file_id|filename }}</a>
         {% endif %}
       </td>
     </tr>

@@ -1,6 +1,7 @@
 import re
 from path import path
 from django import template
+from django.conf import settings
 
 
 register = template.Library()
@@ -8,6 +9,11 @@ register = template.Library()
 
 @register.simple_tag
 def active(request, pattern):
+    if getattr(settings, 'FORCE_SCRIPT_NAME', None):
+        pattern = pattern % settings.FORCE_SCRIPT_NAME
+    else:
+        pattern = pattern % ''
+
     if re.search(pattern, request.path):
         return 'active'
     return ''

@@ -2,28 +2,28 @@
 
 <ul class="nav nav-tabs">
 
-  <li class="{% active request '^/$' %} {% active request '^/interlinks' %}">
+  <li class="{% active request '^%s/$' %}">
     <a href="{% url interlinks %}">Interlinks</a>
   </li>
 
-  <li class="{% active request '^/indicators' %}">
+  <li class="{% active request '^%s/indicators' %}">
     <a href="{% url indicators %}">Indicators</a>
   </li>
 
-  <li class="{% active request '^/trends' %}">
+  <li class="{% active request '^%s/trends' %}">
     <a href="{% url trends %}">Trends</a>
   </li>
 
-  <li class="{% active request '^/gmts' %}">
+  <li class="{% active request '^%s/gmts' %}">
     <a href="{% url gmts %}">GMTs</a>
   </li>
 
-  <li class="{% active request '^/sources' %}">
+  <li class="{% active request '^%s/sources' %}">
     <a href="{% url sources %}">Sources</a>
   </li>
 
 
-  <li class="dropdown {% active request '^/settings' %}">
+  <li class="dropdown {% active request '^%s/settings' %}">
     <a class="dropdown-toggle" data-toggle="dropdown">
       Settings <b class="caret"></b>
     </a>
