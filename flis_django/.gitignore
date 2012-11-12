@@ -2,5 +2,6 @@
 *.pot
 *.pyc
 sandbox
+instance
 .DS_Store
 local_settings.py

@@ -36,6 +36,7 @@ Quick installation
 
 7. Set up the MySQL database::
     mysql > CREATE SCHEMA flis CHARACTER SET utf8 COLLATE utf8_general_ci;
+    postgres > CREATE DATABASE flis WITH ENCODING 'UTF-8';
     ./manage.py syncdb
     ./manage.py migrate
 
