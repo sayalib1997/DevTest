@@ -87,6 +87,8 @@ SECRET_KEY = 'n_ht-dmak+3ij5q_&amp;r1gfozzmiy3jpvax)a7g**=9ea-l1a#e2'
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
+    'flis.template.context_processor.util',
+
 )
 
 
