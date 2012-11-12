@@ -5,4 +5,5 @@ requests==0.14.1
 path.py==2.3
 webassets==0.7.1
 South==0.7.6
+psycopg2==2.4.4
 django-cleanup==0.1.5
