@@ -31,6 +31,7 @@ class Command(BaseCommand):
             source = models.Source.objects.get(pk=row['source'])
             new_row = dict(row)
             new_row['source'] = source
+            new_row.pop('url')
             models.Trend.objects.create(**new_row)
 
         for field, row in data['indicators'].items():
@@ -52,6 +53,7 @@ class Command(BaseCommand):
             new_row['timeline'] = models.Timeline\
                 .objects.get(pk=row['time_coverage_timeline'])
             new_row.pop('time_coverage_timeline')
+            new_row.pop('url')
             models.Indicator.objects.create(**new_row)
 
 
@@ -60,6 +62,7 @@ class Command(BaseCommand):
             new_row['source'] = models.Source.objects.get(pk=row['source'])
             new_row['steep_category'] = models.SteepCategory\
                 .objects.get(pk=row['steep_category'])
+            new_row.pop('url')
             models.GMT.objects.create(**new_row)
 
         for field, row in data['interlinks'].items():

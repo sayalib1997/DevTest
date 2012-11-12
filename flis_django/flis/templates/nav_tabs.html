@@ -10,6 +10,10 @@
     <a href="{% url indicators %}">Indicators</a>
   </li>
 
+  <li class="{% active request '^/trends' %}">
+    <a href="{% url trends %}">Trends</a>
+  </li>
+
   <li class="{% active request '^/gmts' %}">
     <a href="{% url gmts %}">GMTs</a>
   </li>
@@ -25,10 +29,6 @@
     </a>
 
     <ul class="dropdown-menu">
-
-      <li>
-        <a href="{% url trends %}">Trends</a>
-      </li>
 
       <li>
         <a href="{% url thematic_categories %}">Thematic categories</a>

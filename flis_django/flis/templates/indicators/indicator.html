@@ -72,14 +72,16 @@
       <td>{{ object.source }}</td>
     </tr>
 
+    {% with url=object.source.url %}
     <tr>
       <th class="span2">URL (to online availability)</th>
       <td>
-        {% if object.url %}
-          <a href="{{ object.url }}">{{ object.url }}</a>
+        {% if url %}
+          <a href="{{ url }}">{{ url }}</a>
         {% endif %}
       </td>
     </tr>
+    {% endwith %}
 
     <tr>
       <th class="span2">Ownership</th>

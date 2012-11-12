@@ -35,7 +35,7 @@ Quick installation
 
 
 7. Set up the MySQL database::
-    mysql > CREATE SCHEMA flis;
+    mysql > CREATE SCHEMA flis CHARACTER SET utf8 COLLATE utf8_general_ci;
     ./manage.py syncdb
     ./manage.py migrate
 

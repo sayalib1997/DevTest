@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.encoding import smart_unicode
 from django.core.urlresolvers import reverse
 from django.utils.safestring import mark_safe
 from flis import markup
@@ -7,6 +8,8 @@ from flis import markup
 class BaseModel():
 
     def as_table(self):
+
+        source = None
 
         page = markup.page()
         page.table(class_='table table-bordered table-condensed')
@@ -17,14 +20,22 @@ class BaseModel():
                 continue
             field_name = field.verbose_name
             field_value = getattr(self, field.name, None)
+
             page.tr()
             page.th(field_name, class_='span2')
-
-            if field.name == 'url':
-                page.td('<a href="{url}">{url}</a>'.format(url=field_value))
-            else:
+            if field_name == 'Source':
+                source = field_value
+            if not isinstance(field_value, basestring):
                 page.td(str(field_value))
+            else:
+                page.td(field_value.encode('utf-8'))
             page.tr.close()
+
+        if source:
+           page.tr()
+           page.th('URL', class_='span2')
+           page.td(page.td('<a href="{url}">{url}</a>'.format(url=source.url)))
+           page.tr.close()
 
         page.tbody.close()
         page.table.close()
@@ -55,7 +66,7 @@ class Trend(models.Model, BaseModel):
     source = models.ForeignKey(Source, related_name='trends',
                                verbose_name='Source',
                                on_delete=models.PROTECT)
-    url = models.URLField(max_length=512, verbose_name='URL')
+    # url = models.URLField(max_length=512, verbose_name='URL')
     ownership = models.CharField(max_length=512, verbose_name='Ownership')
     summary = models.TextField(null=True, blank=True, default='',
                                verbose_name='Summary')
@@ -154,7 +165,7 @@ class Indicator(models.Model, BaseModel):
 
     base_year = models.CharField(max_length=256, verbose_name='Base year')
     end_year = models.CharField(max_length=256, verbose_name='End year')
-    url = models.URLField(max_length=512, verbose_name='URL')
+    # url = models.URLField(max_length=512, verbose_name='URL')
     ownership = models.CharField(max_length=512, verbose_name='Ownership')
     file_id = models.FileField(upload_to='files', max_length=256,
                                null=True, blank=True, default='',
@@ -179,7 +190,7 @@ class GMT(models.Model, BaseModel):
     source = models.ForeignKey(Source, related_name='gmts',
                                verbose_name='Source',
                                on_delete=models.PROTECT)
-    url = models.URLField(max_length=512, verbose_name='URL')
+    # url = models.URLField(max_length=512, verbose_name='URL')
     ownership = models.CharField(max_length=512, verbose_name='Ownership')
     summary = models.TextField(null=True, blank=True, default='',
                                verbose_name='Summary')
