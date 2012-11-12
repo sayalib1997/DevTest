@@ -79,7 +79,8 @@
 
       <td>
         {% if object.file_id %}
-          <a href="{{ object.file_id.url }}">{{ object.file_id.name }}</a>
+          <a href="{{ HOSTNAME }}{{ object.file_id.url }}">
+            {{ object.file_id.name }}</a>
         {% endif %}
       </td>
 
