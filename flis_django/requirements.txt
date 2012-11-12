@@ -1,6 +1,5 @@
 django==1.4
 gunicorn==0.14.6
-mysql-python>=1.2
 requests==0.14.1
 path.py==2.3
 webassets==0.7.1
