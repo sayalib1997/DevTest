@@ -151,7 +151,7 @@ class Indicator(models.Model, BaseModel):
                                            verbose_name='Geographical scale',
                                            null=True, blank=True,
                                            on_delete=models.PROTECT)
-    geographic_coverage = models.ForeignKey(GeographicalCoverage,
+    geographical_coverage = models.ForeignKey(GeographicalCoverage,
                                             related_name='Indicators',
                                             verbose_name='Geographical coverage',
                                             null=True, blank=True,
