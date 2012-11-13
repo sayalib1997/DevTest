@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% load utils %}
 
 
 {% block content %}
@@ -49,9 +50,32 @@
 
       <td>{{ object.thematic_category }}</td>
 
-      <td></td>
+      {% with interlinks=object|get_interlinks %}
+      <td>
+        <ul class="simple_list">
+        {% for gmt in interlinks|get_gmts_from_interlinks %}
+          <li>
+            <a href="{{ gmt.get_absolute_url }}">{{ gmt}}</a>
+          </li>
+        {% empty %}
+          <li>No relevant gmt</li>
+        {% endfor %}
+        </ul>
+      </td>
 
-      <td></td>
+      <td>
+        <ul class="simple_list">
+        {% for trend in interlinks|get_trends_from_interlinks %}
+          <li>
+            <a href="{{ trend.get_absolute_url }}">{{ trend}}</a>
+          </li>
+        {% empty %}
+          <li>No relevant trend</li>
+        {% endfor %}
+        </ul>
+
+      </td>
+      {% endwith %}
 
       <td>{{ object.description }}</td>
 
