@@ -48,7 +48,7 @@ class Command(BaseCommand):
             row.pop('file_id', None)
             new_row = dict(row)
             new_row['source'] = models.Source.objects.get(pk=row['source'])
-            new_row['geographic_coverage'] = models.GeographicalCoverage \
+            new_row['geographical_coverage'] = models.GeographicalCoverage \
                 .objects.get(pk=row['geo_coverage'])
             new_row.pop('geo_coverage')
             new_row['geographical_scale'] = models.GeographicalScale\
