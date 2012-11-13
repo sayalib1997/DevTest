@@ -6,30 +6,40 @@ from flis import models
 class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
+
+        indicator_map = {}
+
         with open(args[0]) as f:
             data = json.loads(f.read())
 
         for field, row in data['steep_categories'].items():
+            row['pk'] = field
             models.SteepCategory.objects.create(**row)
 
         for field, row in data['geo_coverages'].items():
+            row['pk'] = field
             models.GeographicalCoverage.objects.create(**row)
 
         for field, row in data['geo_scales'].items():
+            row['pk'] = field
             models.GeographicalScale.objects.create(**row)
 
         for field, row in data['sources'].items():
+            row['pk'] = field
             models.Source.objects.create(**row)
 
         for field, row in data['thematic_categories'].items():
+            row['pk'] = field
             models.ThematicCategory.objects.create(**row)
 
         for field, row in data['timelines'].items():
+            row['pk'] = field
             models.Timeline.objects.create(**row)
 
         for field, row in data['trends'].items():
             source = models.Source.objects.get(pk=row['source'])
             new_row = dict(row)
+            new_row['pk'] = field
             new_row['source'] = source
             new_row.pop('url')
             models.Trend.objects.create(**new_row)
@@ -54,11 +64,12 @@ class Command(BaseCommand):
                 .objects.get(pk=row['time_coverage_timeline'])
             new_row.pop('time_coverage_timeline')
             new_row.pop('url')
-            models.Indicator.objects.create(**new_row)
-
+            indicator = models.Indicator.objects.create(**new_row)
+            indicator_map[field] = indicator.id
 
         for field, row in data['gmts'].items():
             new_row = dict(row)
+            new_row['pk'] = field
             new_row['source'] = models.Source.objects.get(pk=row['source'])
             new_row['steep_category'] = models.SteepCategory\
                 .objects.get(pk=row['steep_category'])
@@ -67,24 +78,25 @@ class Command(BaseCommand):
 
         for field, row in data['interlinks'].items():
             new_row = dict(row)
+            new_row['pk'] = field
             new_row['gmt'] = models.GMT.objects.get(pk=row['gmt'])
             new_row['trend'] = models.Trend.objects.get(pk=row['trend'])
 
             if row['indicator1']:
                 new_row['indicator_1'] = models.Indicator\
-                    .objects.get(pk=row['indicator1'])
+                    .objects.get(pk=indicator_map[row['indicator1']])
 
             if row['indicator2']:
                 new_row['indicator_2'] = models.Indicator\
-                    .objects.get(pk=row['indicator2'])
+                    .objects.get(pk=indicator_map[row['indicator2']])
 
             if row['indicator3']:
                 new_row['indicator_3'] = models.Indicator\
-                    .objects.get(pk=row['indicator3'])
+                    .objects.get(pk=indicator_map[row['indicator3']])
 
             if row['indicator4']:
                 new_row['indicator_4'] = models.Indicator\
-                    .objects.get(pk=row['indicator4'])
+                    .objects.get(pk=indicator_map[row['indicator4']])
 
             new_row.pop('indicator1')
             new_row.pop('indicator2')
