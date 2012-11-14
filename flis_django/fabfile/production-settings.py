@@ -1,7 +1,7 @@
 from path import path
 
-HOSTNAME = "http://projects.eionet.europa.eu/flis-services-project/flis_django"
-FORCE_SCRIPT_NAME = '/flis-services-project/flis_django/'
+HOSTNAME = "http://projects.eionet.europa.eu/flis-services-project/flis"
+FORCE_SCRIPT_NAME = '/flis-services-project/flis/'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
