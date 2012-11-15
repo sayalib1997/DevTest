@@ -14,7 +14,6 @@ DATABASES = {
 }
 FRAME_URL = 'http://projects.eionet.europa.eu/flis-services-project/flis_templates/frame'
 FRAME_COOKIES = ['__ac', '_ZopeId']
-SKIP_EDIT_AUTHORIZATION = True
 MEDIA_ROOT = path('/var/local/naaya/flis_django/instance')
 MEDIA_URL = '/static/files'
 ASSETS_DEBUG = True
