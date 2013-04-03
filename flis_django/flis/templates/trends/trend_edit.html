@@ -6,7 +6,7 @@
 
 <h3>Edit trend</h3>
 
-<form class="form-horizontal" method="post">
+<form class="form-horizontal" method="POST" enctype="multipart/form-data">
 
   <fieldset>
 
@@ -61,6 +61,15 @@
       <div class="controls">
         {{ form.summary }}
         <span class="help-inline">{{ form.summary.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.file_id.errors %}error{% endif %}">
+      <label class="control-label" for="id_file_id">
+        {{ form.file_id.label }}</label>
+      <div class="controls">
+        {{ form.file_id }}
+        <span class="help-inline">{{ form.filde_id.errors.0 }}</span>
       </div>
     </div>
 

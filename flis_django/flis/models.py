@@ -19,16 +19,25 @@ class BaseModel():
             if field.name == 'id':
                 continue
             field_name = field.verbose_name
+            field_id = field.name
             field_value = getattr(self, field.name, None)
 
             page.tr()
             page.th(field_name, class_='span2')
+
             if field_name == 'Source':
                 source = field_value
+
+            if field_id == 'file_id' and field_value:
+                page.td('<a href="{url}">{name}</a>'.format(
+                    url=field_value.url, name=field_value.name))
+                continue
+
             if not isinstance(field_value, basestring):
                 page.td(str(field_value))
             else:
                 page.td(field_value.encode('utf-8'))
+
             page.tr.close()
 
         if source:
@@ -70,6 +79,9 @@ class Trend(models.Model, BaseModel):
     ownership = models.CharField(max_length=512, verbose_name='Ownership')
     summary = models.TextField(null=True, blank=True, default='',
                                verbose_name='Summary')
+    file_id = models.FileField(upload_to='files', max_length=256,
+                               null=True, blank=True, default='',
+                               verbose_name='File')
 
     def __unicode__(self):
         return self.description
@@ -194,6 +206,9 @@ class GMT(models.Model, BaseModel):
     ownership = models.CharField(max_length=512, verbose_name='Ownership')
     summary = models.TextField(null=True, blank=True, default='',
                                verbose_name='Summary')
+    file_id = models.FileField(upload_to='files', max_length=256,
+                               null=True, blank=True, default='',
+                               verbose_name='File')
 
     def __unicode__(self):
         return self.code
