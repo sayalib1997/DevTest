@@ -34,9 +34,17 @@ Quick installation
      # Check local.settings.example for configuration details
 
 
-7. Set up the MySQL database::
+7. Set up the:
+   a. MySQL database::
     mysql > CREATE SCHEMA flis CHARACTER SET utf8 COLLATE utf8_general_ci;
     postgres > CREATE DATABASE flis WITH ENCODING 'UTF-8';
+    ./manage.py syncdb
+    ./manage.py migrate
+   b. Postgresql database::
+    root # su - postgres;
+    postgres $ psql template1
+    template1=# CREATE USER edw WITH PASSWORD 'edw';
+    template1=# GRANT ALL PRIVILEGES ON DATABASE reportdb TO edw;
     ./manage.py syncdb
     ./manage.py migrate
 
