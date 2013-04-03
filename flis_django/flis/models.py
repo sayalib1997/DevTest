@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.encoding import smart_unicode
 from django.core.urlresolvers import reverse
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.safestring import mark_safe
 from flis import markup
 
@@ -88,6 +89,27 @@ class Trend(models.Model, BaseModel):
 
     def get_absolute_url(self):
         return reverse('trend_view', kwargs={'pk': self.pk})
+
+
+class GlobalTrend(models.Model, BaseModel):
+
+    title = models.CharField(max_length=512, default='')
+    resource_efficiency_policy = models.TextField(default='')
+    time_frame = models.IntegerField(
+        validators=[MinValueValidator(1900),MaxValueValidator(2500)])
+    purpose = models.TextField(verbose_name='Purpose (What for?) -', default='')
+    geographical_scope = models.CharField(max_length=512, default='')
+    whats_out = models.CharField(max_length=512, verbose_name='What\'s out',
+        default='')
+    file_id = models.FileField(upload_to='files', max_length=256,
+                               null=True, blank=True, default='',
+                               verbose_name='File')
+
+    def __unicode__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('global_trend_view', kwargs={'pk': self.pk})
 
 
 class ThematicCategory(models.Model, BaseModel):

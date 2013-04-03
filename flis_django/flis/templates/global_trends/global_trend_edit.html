@@ -1,0 +1,114 @@
+{% extends 'layout.html' %}
+{% load utils %}
+
+
+{% block content %}
+
+<h3>Edit global trend</h3>
+
+<form class="form-horizontal" method="POST" enctype="multipart/form-data">
+
+  <fieldset>
+
+    <div class="control-group {% if form.title.errors %}error{% endif %}">
+      <label class="control-label" for="id_title">
+        {{ form.title.label }}</label>
+      <div class="controls">
+        {{ form.title }}
+        <span class="help-inline">{{ form.title.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.resource_efficiency_policy.errors %}error{% endif %}">
+      <label class="control-label" for="id_resource_efficiency_policy">
+        {{ form.resource_efficiency_policy.label }}</label>
+      <div class="controls">
+        {{ form.resource_efficiency_policy }}
+        <span class="help-inline">{{ form.resource_efficiency_policy.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.time_frame.errors %}error{% endif %}">
+      <label class="control-label" for="id_time_frame">
+        {{ form.time_frame.label }}</label>
+      <div class="controls">
+        {{ form.time_frame }}
+        <span class="help-inline">{{ form.time_frame.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.purpose.errors %}error{% endif %}">
+      <label class="control-label" for="id_purpose">
+        {{ form.purpose.label }}</label>
+      <div class="controls">
+        {{ form.purpose }}
+        <span class="help-inline">{{ form.purpose.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.geographical_scope.errors %}error{% endif %}">
+      <label class="control-label" for="id_geographical_scope">
+        {{ form.geographical_scope.label }}</label>
+      <div class="controls">
+        {{ form.geographical_scope }}
+        <span class="help-inline">{{ form.geographical_scope.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.whats_out.errors %}error{% endif %}">
+      <label class="control-label" for="id_whats_out">
+        {{ form.whats_out.label }}</label>
+      <div class="controls">
+        {{ form.whats_out }}
+        <span class="help-inline">{{ form.whats_out.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.file_id.errors %}error{% endif %}">
+      <label class="control-label" for="id_file_id">
+        {{ form.file_id.label }}</label>
+      <div class="controls">
+        {{ form.file_id }}
+        <span class="help-inline">{{ form.file_id.errors.0 }}</span>
+      </div>
+    </div>
+
+  </fieldset>
+
+  {% include "form_actions.html" %}
+
+</form>
+
+{% if object %}
+
+<div class="modal fade" id="delete-modal">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3>Confirmation</h3>
+  </div>
+
+  {% if object|has_referenced_items %}
+
+  {% include "referenced_objects.html" %}
+
+  {% else %}
+
+  <div class="modal-body">
+    <p>Are you sure you want to delete this global trend?</p>
+  </div>
+
+  <div class="modal-footer">
+    <form method="POST" action="{% url global_trend_delete object.id %}"
+          style="display: inline;">
+      <button type="submit" class="btn btn-primary btn-danger">
+        Delete</button>
+    </form>
+    <a class="btn btn-cancel" data-dismiss="modal">Cancel</a>
+  </div>
+
+  {% endif %}
+</div>
+
+{% endif %}
+
+{% endblock %}

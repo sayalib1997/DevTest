@@ -215,6 +215,46 @@ class TrendDelete(DeleteView):
     success_url = reverse_lazy('trends')
 
 
+class GlobalTrends(ListView):
+
+    model = models.GlobalTrend
+    template_name = 'global_trends/global_trends.html'
+    paginate_by = PER_PAGE
+
+
+class GlobalTrend(DetailView):
+
+    model = models.GlobalTrend
+    template_name = 'global_trends/global_trend.html'
+
+
+class GlobalTrendCreate(CreateView):
+
+    model = models.GlobalTrend
+    template_name = 'global_trends/global_trend_edit.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(GlobalTrendCreate, self).get_context_data(*args, **kwargs)
+        context['cancel_url'] = reverse_lazy('global_trends')
+        return context
+
+
+class GlobalTrendEdit(UpdateView):
+
+    model = models.GlobalTrend
+    template_name = 'global_trends/global_trend_edit.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(GlobalTrendEdit, self).get_context_data(*args, **kwargs)
+        context['cancel_url'] = context['object'].get_absolute_url()
+        return context
+
+
+class GlobalTrendDelete(DeleteView):
+    model = models.GlobalTrend
+    success_url = reverse_lazy('global_trends')
+
+
 class ThematicCategories(ListView):
 
     model = models.ThematicCategory
