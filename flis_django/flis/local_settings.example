@@ -27,4 +27,7 @@ STATICFILES_DIRS = (
     ('files', MEDIA_ROOT.joinpath('files')),
 )
 
+
+# EXCLUDE_TABS = ('global_trends',)
+
 ASSETS_DEBUG = True
