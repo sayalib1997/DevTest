@@ -32,13 +32,6 @@
   </li>
   {% endif %}
 
-  {% if 'global_trends' not in EXCLUDE_TABS %}
-  <li class="{% active request '^%s/global_trends' %}">
-    <a href="{% url global_trends %}">
-      Global trends affecting EU ressource efficiency</a>
-  </li>
-  {% endif %}
-
   {% if 'settings' not in EXCLUDE_TABS %}
   <li class="dropdown {% active request '^%s/settings' %}">
     <a class="dropdown-toggle" data-toggle="dropdown">

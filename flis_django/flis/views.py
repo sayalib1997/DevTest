@@ -322,64 +322,64 @@ class TrendDelete(DeleteView):
         return super(TrendDelete, self).dispatch(*args, **kwargs)
 
 
-class GlobalTrends(ListView):
+# class GlobalTrends(ListView):
 
-    model = models.GlobalTrend
-    template_name = 'global_trends/global_trends.html'
-    paginate_by = PER_PAGE
+#     model = models.GlobalTrend
+#     template_name = 'global_trends/global_trends.html'
+#     paginate_by = PER_PAGE
 
-    @method_decorator(auth.is_view_excluded('global_trends'))
-    def dispatch(self, *args, **kwargs):
-        return super(GlobalTrends, self).dispatch(*args, **kwargs)
-
-
-class GlobalTrend(DetailView):
-
-    model = models.GlobalTrend
-    template_name = 'global_trends/global_trend.html'
-
-    @method_decorator(auth.is_view_excluded('global_trends'))
-    def dispatch(self, *args, **kwargs):
-        return super(GlobalTrend, self).dispatch(*args, **kwargs)
+#     @method_decorator(auth.is_view_excluded('global_trends'))
+#     def dispatch(self, *args, **kwargs):
+#         return super(GlobalTrends, self).dispatch(*args, **kwargs)
 
 
-class GlobalTrendCreate(CreateView):
+# class GlobalTrend(DetailView):
 
-    model = models.GlobalTrend
-    template_name = 'global_trends/global_trend_edit.html'
+#     model = models.GlobalTrend
+#     template_name = 'global_trends/global_trend.html'
 
-    @method_decorator(auth.is_view_excluded('global_trends'))
-    def dispatch(self, *args, **kwargs):
-        return super(GlobalTrendCreate, self).dispatch(*args, **kwargs)
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(GlobalTrendCreate, self).get_context_data(*args, **kwargs)
-        context['cancel_url'] = reverse_lazy('global_trends')
-        return context
+#     @method_decorator(auth.is_view_excluded('global_trends'))
+#     def dispatch(self, *args, **kwargs):
+#         return super(GlobalTrend, self).dispatch(*args, **kwargs)
 
 
-class GlobalTrendEdit(UpdateView):
+# class GlobalTrendCreate(CreateView):
 
-    model = models.GlobalTrend
-    template_name = 'global_trends/global_trend_edit.html'
+#     model = models.GlobalTrend
+#     template_name = 'global_trends/global_trend_edit.html'
 
-    @method_decorator(auth.is_view_excluded('global_trends'))
-    def dispatch(self, *args, **kwargs):
-        return super(GlobalTrendEdit, self).dispatch(*args, **kwargs)
+#     @method_decorator(auth.is_view_excluded('global_trends'))
+#     def dispatch(self, *args, **kwargs):
+#         return super(GlobalTrendCreate, self).dispatch(*args, **kwargs)
 
-    def get_context_data(self, *args, **kwargs):
-        context = super(GlobalTrendEdit, self).get_context_data(*args, **kwargs)
-        context['cancel_url'] = context['object'].get_absolute_url()
-        return context
+#     def get_context_data(self, *args, **kwargs):
+#         context = super(GlobalTrendCreate, self).get_context_data(*args, **kwargs)
+#         context['cancel_url'] = reverse_lazy('global_trends')
+#         return context
 
 
-class GlobalTrendDelete(DeleteView):
-    model = models.GlobalTrend
-    success_url = reverse_lazy('global_trends')
+# class GlobalTrendEdit(UpdateView):
 
-    @method_decorator(auth.is_view_excluded('global_trends'))
-    def dispatch(self, *args, **kwargs):
-        return super(GlobalTrendDelete, self).dispatch(*args, **kwargs)
+#     model = models.GlobalTrend
+#     template_name = 'global_trends/global_trend_edit.html'
+
+#     @method_decorator(auth.is_view_excluded('global_trends'))
+#     def dispatch(self, *args, **kwargs):
+#         return super(GlobalTrendEdit, self).dispatch(*args, **kwargs)
+
+#     def get_context_data(self, *args, **kwargs):
+#         context = super(GlobalTrendEdit, self).get_context_data(*args, **kwargs)
+#         context['cancel_url'] = context['object'].get_absolute_url()
+#         return context
+
+
+# class GlobalTrendDelete(DeleteView):
+#     model = models.GlobalTrend
+#     success_url = reverse_lazy('global_trends')
+
+#     @method_decorator(auth.is_view_excluded('global_trends'))
+#     def dispatch(self, *args, **kwargs):
+#         return super(GlobalTrendDelete, self).dispatch(*args, **kwargs)
 
 
 class ThematicCategories(ListView):
