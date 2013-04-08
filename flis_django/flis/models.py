@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from django.utils.encoding import smart_unicode
 from django.core.urlresolvers import reverse
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -30,8 +31,9 @@ class BaseModel():
                 source = field_value
 
             if field_id == 'file_id' and field_value:
-                page.td('<a href="{url}">{name}</a>'.format(
-                    url=field_value.url, name=field_value.name))
+                page.td('<a href="{host}{url}">{name}</a>'.format(
+                  host=settings.HOSTNAME, url=field_value.url,
+                  name=field_value.name))
                 continue
 
             if not isinstance(field_value, basestring):
