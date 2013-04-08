@@ -148,7 +148,7 @@ class GMTs(ListView):
 
     @method_decorator(auth.is_view_excluded('gmts'))
     def dispatch(self, *args, **kwargs):
-        return super(SourceDelete, self).dispatch(*args, **kwargs)
+        return super(GMTs, self).dispatch(*args, **kwargs)
 
 
 class GMT(DetailView):
