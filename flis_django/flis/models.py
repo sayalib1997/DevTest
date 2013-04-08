@@ -4,6 +4,7 @@ from django.utils.encoding import smart_unicode
 from django.core.urlresolvers import reverse
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.safestring import mark_safe
+from path import path
 from flis import markup
 
 
@@ -33,7 +34,7 @@ class BaseModel():
             if field_id == 'file_id' and field_value:
                 page.td('<a href="{host}{url}">{name}</a>'.format(
                   host=settings.HOSTNAME, url=field_value.url,
-                  name=field_value.name))
+                  name=path(field_value.name).basename()))
                 continue
 
             if not isinstance(field_value, basestring):
