@@ -156,7 +156,7 @@ def service_flis(action):
 
 @task
 def service_article5(action):
-    run("'%(article5_sandbox)s/bin/supervisorctl' %(action)s %(name)s" % {
+    run("'%(sandbox)s/bin/supervisorctl' %(action)s %(name)s" % {
             'sandbox': app['article5_sandbox'],
             'action': action,
             'name': 'flis_article5',
