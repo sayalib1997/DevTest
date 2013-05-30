@@ -20,7 +20,8 @@ class Command(BaseCommand):
         response = StringIO()
         call_command('dumpdata', stdout=response)
         response.seek(0)
-        data = loads(response.read())
+        data = filter(lambda x: x['model'].startswith('flis'),
+                   loads(response.read()))
         for item in data:
             item['fields']['country'] = country
         print dumps(data, indent=4)
