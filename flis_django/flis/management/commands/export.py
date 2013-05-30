@@ -9,10 +9,10 @@ from django.core.management import call_command
 class Command(BaseCommand):
 
     option_list = BaseCommand.option_list + (
-        make_option('--country',
-                    action='store_true',
-                    dest='country',),)
-
+        make_option('-c', '--country',
+                    dest='country',
+                    help='country',
+                    metavar='COUNTRY'),)
 
 
     def handle(self, *args, **kwargs):
@@ -22,5 +22,5 @@ class Command(BaseCommand):
         response.seek(0)
         data = loads(response.read())
         for item in data:
-            item['country'] = country
+            item['fields']['country'] = country
         print dumps(data, indent=4)
