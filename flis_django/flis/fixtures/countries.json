@@ -1,0 +1,122 @@
+[
+    {
+        "pk": "al",
+        "model": "flis.country",
+        "fields": {
+            "name": "Albania"
+        }
+    },
+
+    {
+        "pk": "at",
+        "model": "flis.country",
+        "fields": {
+            "name": "Austria"
+        }
+    },
+
+    {
+        "pk": "be",
+        "model": "flis.country",
+        "fields": {
+            "name": "Belgium"
+        }
+    },
+
+    {
+        "pk": "cz",
+        "model": "flis.country",
+        "fields": {
+            "name": "Czech Republic"
+        }
+    },
+
+    {
+        "pk": "hu",
+        "model": "flis.country",
+        "fields": {
+            "name": "Hungary"
+        }
+    },
+
+    {
+        "pk": "hu",
+        "model": "flis.country",
+        "fields": {
+            "name": "Hungary"
+        }
+    },
+
+    {
+        "pk": "ir",
+        "model": "flis.country",
+        "fields": {
+            "name": "Ireland"
+        }
+    },
+
+    {
+        "pk": "me",
+        "model": "flis.country",
+        "fields": {
+            "name": "Montenegro"
+        }
+    },
+
+    {
+        "pk": "mk",
+        "model": "flis.country",
+        "fields": {
+            "name": "FYR Macedonia"
+        }
+    },
+
+    {
+        "pk": "pt",
+        "model": "flis.country",
+        "fields": {
+            "name": "Portugal"
+        }
+    },
+
+    {
+        "pk": "ro",
+        "model": "flis.country",
+        "fields": {
+            "name": "Romania"
+        }
+    },
+
+    {
+        "pk": "sk",
+        "model": "flis.country",
+        "fields": {
+            "name": "Slovakia"
+        }
+    },
+
+    {
+        "pk": "xk",
+        "model": "flis.country",
+        "fields": {
+            "name": "Kosovo"
+        }
+    },
+
+    {
+        "pk": "article-5-contribution",
+        "model": "flis.country",
+        "fields": {
+            "name": "GMT EU Ressource Efficiency"
+        }
+    },
+
+
+    {
+        "pk": "eea",
+        "model": "flis.country",
+        "fields": {
+            "name": "EEA"
+        }
+    }
+]

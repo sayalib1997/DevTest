@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+
+<h3>BLOSSOM case studies</h3>
+
+<div class="btn-toolbar">
+  <div class="btn-group">
+    <a href="{% url blossom_new country=country %}"
+       class="btn btn-primary">Add BLOSSOM case study</a>
+  </div>
+</div>
+
+{% if not object_list %}
+  <p><br />No BLOSSOM case study defined yet.<br /></p>
+{% endif %}
+
+{% if object_list %}
+<table class="table table-bordered sources" style="width: 400px;">
+  <thead>
+    <tr>
+      <th>Case study name</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for blossom in object_list %}
+    <tr>
+      <td>
+        <a href="{% url blossom_view pk=blossom.id country=country %}">
+          {{ blossom.title }}</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+
+{% endblock %}

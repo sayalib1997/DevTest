@@ -1,0 +1,234 @@
+{% extends 'layout.html' %}
+{% load utils %}
+
+
+{% block content %}
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<!--<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>-->
+<script type="text/javascript">
+    $(function() {
+      $( "#id_date_of_conclusion_planned").datepicker({ dateFormat: "dd/mm/yy" });
+      $( "#id_date_of_conclusion_final").datepicker({ dateFormat: "dd/mm/yy" });
+    });
+</script>
+
+<h3>Edit BLOSSOM case study</h3>
+
+<form class="form-horizontal" method="POST" enctype="multipart/form-data">
+
+  <fieldset>
+
+    <div class="control-group {% if form.title.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.title.label }}</label>
+      <div class="controls">
+        {{ form.title }}
+        <span class="help-inline">{{ form.title.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.new_or_update.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.new_or_update.label }}</label>
+      <div class="controls">
+        {{ form.new_or_update }}
+        <span class="help-inline">{{ form.new_or_update.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.language.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.language.label }}</label>
+      <div class="controls">
+        {{ form.language }}
+        <span class="help-inline">{{ form.language.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.ownership.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.ownership.label }}</label>
+      <div class="controls">
+        {{ form.ownership }}
+        <span class="help-inline">{{ form.ownership.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.status.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.status.label }}</label>
+      <div class="controls">
+        {{ form.status }}
+        <span class="help-inline">{{ form.status.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.who_is_doing.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.who_is_doing.label }}</label>
+      <div class="controls">
+        {{ form.who_is_doing }}
+        <span class="help-inline">{{ form.who_is_doing.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.purpose_and_target_audience.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.purpose_and_target_audience.label }}</label>
+      <div class="controls">
+        {{ form.purpose_and_target_audience }}
+        <span class="help-inline">{{ form.purpose_and_target_audience.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.stakeholders_study_planned.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.stakeholders_study_planned.label }}</label>
+      <div class="controls">
+        {{ form.stakeholders_study_planned }}
+        <span class="help-inline">{{ form.stakeholders_study_planned.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.stakeholders_study_final.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.stakeholders_study_final.label }}</label>
+      <div class="controls">
+        {{ form.stakeholders_study_final }}
+        <span class="help-inline">{{ form.stakeholders_study_final.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.stakeholders_review_planned.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.stakeholders_review_planned.label }}</label>
+      <div class="controls">
+        {{ form.stakeholders_review_planned }}
+        <span class="help-inline">{{ form.stakeholders_review_planned.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.stakeholders_review_final.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.stakeholders_review_final.label }}</label>
+      <div class="controls">
+        {{ form.stakeholders_review_final }}
+        <span class="help-inline">{{ form.stakeholders_review_final.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.time_plan_planned.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.time_plan_planned.label }}</label>
+      <div class="controls">
+        {{ form.time_plan_planned }}
+        <span class="help-inline">{{ form.time_plan_planned.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.time_plan_final.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.time_plan_final.label }}</label>
+      <div class="controls">
+        {{ form.time_plan_final }}
+        <span class="help-inline">{{ form.time_plan_final.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.date_of_conclusion_planned.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.date_of_conclusion_planned.label }}</label>
+
+      <div class="controls">
+        <input type="text" name="date_of_conclusion_planned" id="id_date_of_conclusion_planned"
+        value="{{ form.date_of_conclusion_planned.value|date:"d/m/Y" }}" />
+        <span class="help-inline">{{ form.date_of_conclusion_planned.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.date_of_conclusion_final.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.date_of_conclusion_final.label }}</label>
+      <div class="controls">
+        <input type="text" name="date_of_conclusion_final" id="id_date_of_conclusion_final"
+        value="{{ form.date_of_conclusion_final.value|date:"d/m/Y" }}" />
+        <span class="help-inline">{{ form.date_of_conclusion_final.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.project_team.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.project_team.label }}</label>
+      <div class="controls">
+        {{ form.project_team }}
+        <span class="help-inline">{{ form.project_team.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.stakeholders.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.stakeholders.label }}</label>
+      <div class="controls">
+        {{ form.stakeholders }}
+        <span class="help-inline">{{ form.stakeholders.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.other_parties.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.other_parties.label }}</label>
+      <div class="controls">
+        {{ form.other_parties }}
+        <span class="help-inline">{{ form.other_parties.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.networks.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.networks.label }}</label>
+      <div class="controls">
+        {{ form.networks }}
+        <span class="help-inline">{{ form.networks.errors.0 }}</span>
+      </div>
+    </div>
+
+  </fieldset>
+
+  {% include "form_actions.html" %}
+
+</form>
+
+{% if object %}
+
+<div class="modal fade" id="delete-modal">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3>Confirmation</h3>
+  </div>
+
+  {% if object|has_referenced_items %}
+
+  {% include "referenced_objects.html" %}
+
+  {% else %}
+
+  <div class="modal-body">
+    <p>Are you sure you want to delete this BLOSSOM case study?</p>
+  </div>
+
+  <div class="modal-footer">
+    <form method="POST" action="{% url blossom_delete pk=object.id country=country %}" style="display: inline;">
+      <button type="submit" class="btn btn-primary btn-danger">
+        Delete</button>
+    </form>
+    <a class="btn btn-cancel" data-dismiss="modal">Cancel</a>
+  </div>
+
+  {% endif %}
+</div>
+
+{% endif %}
+
+{% endblock %}

@@ -2,38 +2,55 @@
 
 <ul class="nav nav-tabs">
 
-  {% if 'interlinks' not in EXCLUDE_TABS %}
-  <li class="{% active request '^%s/$' %}">
-    <a href="{% url interlinks %}">Interlinks</a>
+  <li class="{% active request '$' %}">
+    <a href="{% url interlinks country=country %}">Interlinks</a>
   </li>
-  {% endif %}
 
-  {% if 'indicators' not in EXCLUDE_TABS %}
-  <li class="{% active request '^%s/indicators' %}">
-    <a href="{% url indicators %}">Indicators</a>
+  <li class="{% active request 'indicators' %}">
+    <a href="{% url indicators country=country %}">Indicators</a>
   </li>
-  {% endif %}
 
-  {% if 'trends' not in EXCLUDE_TABS %}
-  <li class="{% active request '^%s/trends' %}">
-    <a href="{% url trends %}">Trends</a>
+  <li class="{% active request 'trends' %}">
+    <a href="{% url trends country=country %}">Trends</a>
   </li>
-  {% endif %}
 
-  {% if 'gmts' not in EXCLUDE_TABS %}
-  <li class="{% active request '^%s/gmts' %}">
-    <a href="{% url gmts %}">GMTs</a>
+  <li class="{% active request 'blossoms' %}">
+    <a href="{% url blossoms country=country %}">BLOSSOM</a>
   </li>
-  {% endif %}
 
-  {% if 'sources' not in EXCLUDE_TABS %}
-  <li class="{% active request '^%s/sources' %}">
-    <a href="{% url sources %}">Sources</a>
+  <li class="{% active request 'gmts' %}">
+    <a href="{% url gmts country=country %}">GMTs</a>
   </li>
-  {% endif %}
 
-  {% if 'settings' not in EXCLUDE_TABS %}
-  <li class="dropdown {% active request '^%s/settings' %}">
+  <li class="{% active request 'flismodels' %}">
+    <a href="{% url flismodels country=country %}">Models</a>
+  </li>
+
+  <li class="{% active request 'horizonscannings' %}">
+    <a href="{% url horizonscannings country=country %}">Horizon scanning</a>
+  </li>
+
+  <li class="{% active request 'methodstools' %}">
+    <a href="{% url methodstools country=country %}">Methods and tools</a>
+  </li>
+
+  <li class="{% active request 'uncertainties' %}">
+    <a href="{% url uncertainties country=country %}">Uncertainties</a>
+  </li>
+
+  <li class="{% active request 'wildcards' %}">
+    <a href="{% url wildcards country=country %}">Wild cards</a>
+  </li>
+
+  <li class="{% active request 'earlywarnings' %}">
+    <a href="{% url earlywarnings country=country %}">Early warnings</a>
+  </li>
+
+  <li class="{% active request 'sources' %}">
+    <a href="{% url sources country=country %}">Sources</a>
+  </li>
+
+  <li class="dropdown {% active request 'settings' %}">
     <a class="dropdown-toggle" data-toggle="dropdown">
       Settings <b class="caret"></b>
     </a>
@@ -41,28 +58,36 @@
     <ul class="dropdown-menu">
 
       <li>
-        <a href="{% url thematic_categories %}">Thematic categories</a>
+        <a href="{% url thematic_categories country=country %}">
+          Thematic categories</a>
       </li>
 
 
       <li>
-        <a href="{% url geographical_scales %}">Geographical scale</a>
+        <a href="{% url geographical_scales country=country %}">
+          Geographical scale</a>
       </li>
 
       <li>
-        <a href="{% url geographical_coverages %}">Geographical coverages</a>
+        <a href="{% url geographical_coverages country=country %}">
+          Geographical coverages</a>
       </li>
 
       <li>
-        <a href="{% url steep_categories %}">Steep categories</a>
+        <a href="{% url scenarios country=country %}">
+          Scenarios</a>
       </li>
 
       <li>
-        <a href="{% url timelines %}">Timelines</a>
+        <a href="{% url steep_categories country=country %}">
+          Steep categories</a>
+      </li>
+
+      <li>
+        <a href="{% url timelines country=country %}">Timelines</a>
       </li>
 
     </ul>
   </li>
-  {% endif %}
 
 </ul>

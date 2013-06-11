@@ -1,11 +1,11 @@
 from path import path
 
 HOSTNAME = "http://projects.eionet.europa.eu/flis-services-project/flis"
-FORCE_SCRIPT_NAME = '/flis-services-project/flis/'
+FORCE_SCRIPT_NAME = '/flis-services-project/flis'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'flis_django',                      # Or path to database file if using sqlite3.
+        'NAME': 'flis',                      # Or path to database file if using sqlite3.
         'USER': 'edw',                      # Not used with sqlite3.
         'PASSWORD': 'edw',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -14,14 +14,8 @@ DATABASES = {
 }
 FRAME_URL = 'http://projects.eionet.europa.eu/flis-services-project/flis_templates/frame'
 FRAME_COOKIES = ['__ac', '_ZopeId']
-MEDIA_ROOT = path('/var/local/naaya/flis_django/instance')
+MEDIA_ROOT = path('/var/local/naaya/flis/instance')
 MEDIA_URL = '/static/files'
 ASSETS_DEBUG = True
 USE_X_FORWARDED_HOST = True
-
-#instance_path = path(__file__).parent
-#
-#secret_key_path = instance_path/'secret_key.txt'
-#if secret_key_path.isfile():
-#    SECRET_KEY = secret_key_path.text().strip()
-
+STATIC_URL = HOSTNAME + '/static/'

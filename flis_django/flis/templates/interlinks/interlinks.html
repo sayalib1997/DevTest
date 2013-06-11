@@ -7,7 +7,7 @@
 
 <div class="btn-toolbar">
   <div class="btn-group">
-    <a href="{% url interlink_new %}"
+    <a href="{% url interlink_new country=country %}"
        class="btn btn-primary">Add interlink</a>
   </div>
 </div>
@@ -38,7 +38,7 @@
     {% for object in object_list %}
     <tr>
       <td>
-        <a href="{% url interlink_view object.id %}">
+        <a href="{% url interlink_view pk=object.id country=country %}">
           {{ object }}</a>
       </td>
 

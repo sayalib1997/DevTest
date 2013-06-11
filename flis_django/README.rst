@@ -54,3 +54,10 @@ Create a migration after changes in models.py
 ::
     ./manage.py schemamigration flis --auto
     ./manage.py migrate
+
+
+Load countries from fixture
+---------------------------
+::
+    ./manage.py loaddata countries
+

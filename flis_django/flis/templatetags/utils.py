@@ -11,10 +11,11 @@ register = template.Library()
 
 @register.simple_tag
 def active(request, pattern):
+    pattern = '^%s/%s/' + pattern
     if getattr(settings, 'FORCE_SCRIPT_NAME', None):
-        pattern = pattern % settings.FORCE_SCRIPT_NAME
+        pattern = pattern % (settings.FORCE_SCRIPT_NAME, request.country)
     else:
-        pattern = pattern % ''
+        pattern = pattern % ('', request.country)
 
     if re.search(pattern, request.path):
         return 'active'

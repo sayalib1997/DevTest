@@ -3,11 +3,11 @@
 
 {% block content %}
 
-<h3>Geographic Scales</h3>
+<h3>Geographical Scales</h3>
 
 <div class="btn-toolbar">
   <div class="btn-group">
-    <a href="{% url geographical_scale_new %}"
+    <a href="{% url geographical_scale_new country=country %}"
        class="btn btn-primary">Add geographical scale</a>
   </div>
 </div>
@@ -20,7 +20,7 @@
 <table class="table table-bordered sources" style="width: 400px;">
   <thead>
     <tr>
-      <th>Geographic scale name</th>
+      <th>Geographical scale name</th>
     </tr>
   </thead>
 
@@ -28,8 +28,7 @@
     {% for object in object_list %}
     <tr>
       <td>
-        <a href="{% url geographical_scale_view object.id %}">
-            {{ object.code }} ({{ object.description }})</a>
+        <a href="{% url geographical_scale_view pk=object.id country=country %}">{{ object.code }} ({{ object.description }})</a>
       </td>
     </tr>
     {% endfor %}

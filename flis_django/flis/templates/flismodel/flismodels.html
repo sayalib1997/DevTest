@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+
+<h3>Models</h3>
+
+<div class="btn-toolbar">
+  <div class="btn-group">
+    <a href="{% url flismodel_new country=country %}" class="btn btn-primary">
+      Add Model</a>
+  </div>
+</div>
+
+{% if not object_list %}
+  <p><br />No model defined yet.<br /></p>
+{% endif %}
+
+{% if object_list %}
+<table class="table table-bordered sources" style="width: 400px;">
+  <thead>
+    <tr>
+      <th>Model</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for object in object_list %}
+    <tr>
+      <td>
+        <a href="{% url flismodel_view pk=object.id country=country %}">
+          {{ object }}</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% if is_paginated %}
+  {% include "paginator.html" %}
+{% endif %}
+
+{% endblock %}

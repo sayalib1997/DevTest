@@ -20,14 +20,3 @@ def edit_is_allowed(func):
             return render(request, 'restricted.html')
         return func(*args, **kwargs)
     return wrapper
-
-
-def is_view_excluded(view):
-    def decorator(func):
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            if view in settings.EXCLUDE_TABS:
-                raise PermissionDenied
-            return func(*args, **kwargs)
-        return wrapper
-    return decorator

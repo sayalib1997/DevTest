@@ -7,7 +7,7 @@
 
 <div class="btn-toolbar">
   <div class="btn-group">
-    <a href="{% url timeline_new %}"
+    <a href="{% url timeline_new country=country %}"
        class="btn btn-primary">Add timeline</a>
   </div>
 </div>
@@ -28,7 +28,8 @@
     {% for object in object_list %}
     <tr>
       <td>
-        <a href="{% url timeline_view  object.id %}">{{ object }}</a>
+        <a href="{% url timeline_view pk=object.id country=country %}">
+          {{ object }}</a>
       </td>
     </tr>
     {% endfor %}

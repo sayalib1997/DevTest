@@ -2,9 +2,6 @@ from fabric.api import *
 from fabric.contrib.files import *
 from path import path as ppath
 
-country_codes = ['pt', 'cz', 'be', 'ro', 'at', 'ir', 'sk', 'hu', 'me', 'mk',
-                 'al', 'xk']
-
 app = env.app = {
     'flis-repo': 'https://svn.eionet.europa.eu/repositories/Python/flis_django',
     'localrepo': ppath(__file__).abspath().parent.parent,
@@ -17,18 +14,9 @@ app.update({
     'instance_var': app['repo']/'instance',
     'flis_var': app['repo']/'flis',
     'sandbox': app['repo']/'sandbox',
-    'article5_instance_var': app['article5_repo']/'instance',
-    'article5_flis_var': app['article5_repo']/'flis',
-    'article5_sandbox': app['article5_repo']/'sandbox',
-    'countries_sandbox': app['countries_repo']/'sandbox',
     'user': 'edw',
 })
 
-for country_code in country_codes:
-    app['%s-instance_var' % country_code] = '%s/%s/instance' % (
-                                        app['countries_repo'], country_code)
-    app['%s-flis_var' % country_code] = '%s/%s/flis' % (
-                                        app['countries_repo'], country_code)
 
 @task
 def ssh():
@@ -80,117 +68,46 @@ def install_flis():
 
     run("%s/bin/python %s/manage.py syncdb" % (app['sandbox'], app['repo']))
     run("%s/bin/python %s/manage.py migrate" % (app['sandbox'], app['repo']))
+    run("%s/bin/python %s/manage.py loaddata countries" % (app['sandbox'],
+                                                           app['repo']))
 
 @task
-def install_article5():
-    _svn_repo(app['article5_repo'], app['flis-repo'], update=True)
-
-    if not exists(app['article5_sandbox']):
-        run("virtualenv --distribute '%(article5_sandbox)s'" % app)
-    run("%(article5_sandbox)s/bin/pip install -r %(article5_repo)s/requirements.txt" % app)
-
-    if not exists(app['article5_instance_var']):
-        run("mkdir -p '%(article5_instance_var)s'" % app)
-    if not exists(app['article5_instance_var']/'files'):
-        run("mkdir -p '%(article5_instance_var)s/files'" % app)
-
-    secret_key_path = app['article5_instance_var']/'secret_key.txt'
-    if not exists(secret_key_path):
-        _install_random_key(str(secret_key_path))
-
-    put(app['localrepo']/'fabfile'/'production-settings-article5.py',
-        str(app['article5_flis_var']/'local_settings.py'))
-
-    upload_template(app['localrepo']/'fabfile'/'supervisord-article5.conf',
-                    str(app['article5_sandbox']/'supervisord.conf'),
-                    context=app, backup=False)
-
-    run("%s/bin/python %s/manage.py syncdb" % (app['article5_sandbox'], app['article5_repo']))
-    run("%s/bin/python %s/manage.py migrate" % (app['article5_sandbox'], app['article5_repo']))
+def flis_supervisor():
+    run("'%(sandbox)s/bin/supervisord'" % {
+            'sandbox': app['sandbox'],
+        })
 
 @task
-def install_countries():
-    for country_code in country_codes:
-        _svn_repo(app['countries_repo']/country_code, app['flis-repo'], update=True)
+def update_flis():
+    _svn_repo(app['repo'], app['flis-repo'], update=True)
 
-        if not exists(app['%s-instance_var' % country_code]):
-            run("mkdir -p %s" % app['%s-instance_var'] % country_code)
-        if not exists('%s/files' % app['%s-instance_var' % country_code]):
-            run("mkdir -p %s/files" % app['%s-instance_var' % country_code])
+    if not exists(app['sandbox']):
+        run("virtualenv --distribute '%(sandbox)s'" % app)
+    run("%(sandbox)s/bin/pip install -r %(repo)s/requirements.txt" % app)
 
-        secret_key_path = '%s/secret_key.txt' % app['%s-instance_var' % country_code]
-        if not exists(secret_key_path):
-            _install_random_key(str(secret_key_path))
+    put(app['localrepo']/'fabfile'/'production-settings.py',
+        str(app['flis_var']/'local_settings.py'))
 
-        put(app['localrepo']/'fabfile'/'production-settings-%s.py' % country_code,
-            '%s/local_settings.py' % app['%s-flis_var' % country_code])
-
-    upload_template(app['localrepo']/'fabfile'/'supervisord-countries.conf',
-                    str(app['countries_sandbox']/'supervisord.conf'),
+    upload_template(app['localrepo']/'fabfile'/'supervisord.conf',
+                    str(app['sandbox']/'supervisord.conf'),
                     context=app, backup=False)
 
-    if not exists(app['countries_sandbox']):
-        run("virtualenv --distribute '%(countries_sandbox)s'" % app)
-    run("%(countries_sandbox)s/bin/pip install -r %(countries_repo)s/pt/requirements.txt" % app)
+    run("%s/bin/python %s/manage.py syncdb" % (app['sandbox'], app['repo']))
+    run("%s/bin/python %s/manage.py migrate" % (app['sandbox'], app['repo']))
 
+    execute('service_flis', 'restart')
 
-    for country_code in country_codes:
-        run("%s/bin/python %s/manage.py syncdb" % (
-                        app['countries_sandbox'], '%s/%s' % 
-                            (app['countries_repo'], country_code)
-                        )
-            )
-        run("%s/bin/python %s/manage.py migrate" % (
-                        app['countries_sandbox'], '%s/%s' %
-                            (app['countries_repo'], country_code)
-                        )
-            )
 
 @task
 def service_flis(action):
     run("'%(sandbox)s/bin/supervisorctl' %(action)s %(name)s" % {
             'sandbox': app['sandbox'],
             'action': action,
-            'name': 'flis_django',
+            'name': 'flis',
         })
-
-@task
-def service_article5(action):
-    run("'%(sandbox)s/bin/supervisorctl' %(action)s %(name)s" % {
-            'sandbox': app['article5_sandbox'],
-            'action': action,
-            'name': 'flis_article5',
-        })
-
-@task
-def countries_service(action):
-    for country_code in country_codes:
-        run("'%(sandbox)s/bin/supervisorctl' %(action)s %(name)s" % {
-                'sandbox': app['countries_sandbox'],
-                'action': action,
-                'name': 'flis_%s' % country_code,
-            })
 
 @task
 def deploy_flis():
     execute('install_flis')
     execute('service_flis', 'restart')
-
-@task
-def deploy_article5():
-    execute('install_article5')
-    execute('service_article5', 'restart')
-
-@task
-def deploy_countries():
-    execute('install_countries')
-    execute('countries_service', 'restart')
-
-@task
-def restart_countries():
-    execute('countries_service', 'restart')
-
-@task
-def stop_countries():
-    execute('countries_service', 'stop')
 

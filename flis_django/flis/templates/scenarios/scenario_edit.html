@@ -1,0 +1,57 @@
+{% extends 'layout.html' %}
+
+
+{% block content %}
+
+<h3>Edit scenario</h3>
+
+<form class="form-horizontal" method="post">
+<br />
+  <fieldset>
+
+    <div class="control-group {% if form.code.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.code.label }}</label>
+      <div class="controls">
+        {{ form.code }}
+        <span class="help-inline">{{ form.code.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.description.errors %}error{% endif %}">
+      <label class="control-label" for="id_description">
+        {{ form.description.label }}</label>
+      <div class="controls">
+        {{ form.description }}
+        <span class="help-inline">{{ form.description.errors.0 }}</span>
+      </div>
+    </div>
+
+  </fieldset>
+
+  {% include "form_actions.html" %}
+
+</form>
+
+{% if object %}
+<div class="modal fade" id="delete-modal">
+  <div class="modal-header">
+    <a class="close" data-dismiss="modal">×</a>
+    <h3>Confirmation</h3>
+  </div>
+
+  <div class="modal-body">
+    <p>Are you sure you want to delete this scenario?</p>
+  </div>
+
+  <div class="modal-footer">
+    <form method="POST" action="{% url scenario_delete pk=object.id country=country%}" style="display: inline;">
+      <button type="submit" class="btn btn-primary btn-danger">
+        Delete</button>
+    </form>
+    <a class="btn btn-cancel" data-dismiss="modal">Cancel</a>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

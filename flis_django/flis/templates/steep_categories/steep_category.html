@@ -5,12 +5,12 @@
 
 <div class="btn-toolbar">
   <div class="btn-group">
-    <a class="btn" href="{% url steep_category_edit object.id %}">
-      Edit {{ object.code }}</a>
+    <a class="btn" href="{% url steep_category_edit pk=object.id country=country %}">Edit {{ object.code }}</a>
   </div>
 
   <div class="btn-group">
-    <a class="btn" href="{% url steep_categories %}">Back to steep categories</a>
+    <a class="btn" href="{% url steep_categories country=country %}">
+      Back to steep categories</a>
   </div>
 </div>
 

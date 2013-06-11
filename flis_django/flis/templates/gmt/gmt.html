@@ -5,12 +5,12 @@
 
 <div class="btn-toolbar">
   <div class="btn-group">
-    <a class="btn" href="{% url gmt_edit object.id %}">
+    <a class="btn" href="{% url gmt_edit pk=object.id country=country %}">
       Edit {{ object }}</a>
   </div>
 
   <div class="btn-group">
-    <a class="btn" href="{% url gmts %}">Back to gmts</a>
+    <a class="btn" href="{% url gmts country=country %}">Back to gmts</a>
   </div>
 </div>
 

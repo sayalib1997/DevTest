@@ -3,6 +3,7 @@ from django_assets import Bundle, register
 
 JS_ASSETS = (
     'js/jquery-1.7.1.min.js',
+    'js/jquery-ui-1.10.3.custom.min.js',
     'js/jquery.uniform.js',
     'js/chosen.jquery.js',
     'bootstrap/js/bootstrap.js',

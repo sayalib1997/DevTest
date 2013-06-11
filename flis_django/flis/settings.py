@@ -85,6 +85,7 @@ SECRET_KEY = 'n_ht-dmak+3ij5q_&amp;r1gfozzmiy3jpvax)a7g**=9ea-l1a#e2'
 
 
 TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.request',
     'django.contrib.messages.context_processors.messages',
     'flis.template.context_processor.util',
@@ -102,7 +103,9 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'flis.frame.RequestMiddleware',
     'flis.frame.UserMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    'flis.middleware.CountryMiddleware',
+    'django_tools.middlewares.ThreadLocal.ThreadLocalMiddleware',
+     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -123,14 +126,14 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    # 'django.contrib.auth',
-    # 'django.contrib.contenttypes',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
     'django.contrib.sessions',
     # 'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
     'south',
     'django_assets',
     'flis',
@@ -166,7 +169,7 @@ LOGGING = {
     }
 }
 
-EXCLUDE_TABS = ()
+FLIS_DATE_FORMAT = '%d/%m/%Y'
 
 try:
     from local_settings import *

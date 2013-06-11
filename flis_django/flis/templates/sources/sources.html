@@ -7,7 +7,7 @@
 
 <div class="btn-toolbar">
   <div class="btn-group">
-    <a href="{% url source_new %}"
+    <a href="{% url source_new country=country %}"
        class="btn btn-primary">Add source</a>
   </div>
 </div>
@@ -28,7 +28,7 @@
     {% for source in object_list %}
     <tr>
       <td>
-        <a href="{% url source_view source.id %}">
+        <a href="{% url source_view pk=source.id country=country %}">
           {{ source.short_name }} ({{ source.long_name }})</a>
       </td>
     </tr>
