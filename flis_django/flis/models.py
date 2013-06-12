@@ -7,23 +7,7 @@ from django.utils.safestring import mark_safe
 from path import path
 from flis import markup
 
-LANGUAGES = [
-    ("sq", "Albanian"),
-    ("bs", "Bosnian"),
-    ("hr", "Croatian"),
-    ("cz", "Czech"),
-    ("en", "English"),
-    ("nl", "Dutch"),
-    ("fr", "French"),
-    ("de", "German"),
-    ("hu", "Hungarian"),
-    ("ga", "Irish"),
-    ("mk", "Macedonian"),
-    ("pt", "Portuguese"),
-    ("ro", "Romanian"),
-    ("sr", "Serbian"),
-    ("sk", "Slovak"),
-]
+from constants import LANGUAGES
 
 class BaseModel():
 
