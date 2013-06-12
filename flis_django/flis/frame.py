@@ -38,7 +38,7 @@ class UserMiddleware(object):
             if (resp.status_code == 200 and resp.json):
                 request.user_id = resp.json['user_id']
                 request.user_roles = resp.json['user_roles']
-                # request.user_roles = ['Authenticated']
+                request.user_groups = resp.json['groups']
 
 
 class Loader(BaseLoader):

@@ -6,3 +6,5 @@ instance
 .DS_Store
 local_settings.py
 /run
+
+/fabfile/localcfg.py

@@ -109,5 +109,6 @@ def service_flis(action):
 @task
 def deploy_flis():
     execute('install_flis')
+    execute('flis_supervisor')
     execute('service_flis', 'restart')
 
