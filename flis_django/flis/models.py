@@ -304,7 +304,6 @@ class Indicator(models.Model, BaseModel):
 
     base_year = models.CharField(max_length=256, verbose_name='Base year')
     end_year = models.CharField(max_length=256, verbose_name='End year')
-    # url = models.URLField(max_length=512, verbose_name='URL')
     ownership = models.CharField(max_length=512, verbose_name='Ownership')
     file_id = models.FileField(upload_to='files', max_length=256,
                                null=True, blank=True, default='',
