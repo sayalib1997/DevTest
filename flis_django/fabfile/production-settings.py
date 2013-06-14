@@ -1,4 +1,4 @@
-rom path import path
+from path import path
 
 HOSTNAME = "http://projects.eionet.europa.eu/flis-services-project/flis"
 FORCE_SCRIPT_NAME = '/flis-services-project/flis'
