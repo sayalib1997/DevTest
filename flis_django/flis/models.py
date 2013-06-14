@@ -1,5 +1,4 @@
 from datetime import date
-from copy import deepcopy
 from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -24,7 +23,7 @@ class BaseModel():
                 continue
             field_name = field.verbose_name
             field_id = field.name
-            field_value = deepcopy(getattr(self, field.name, None))
+            field_value = getattr(self, field.name, None)
 
             page.tr()
             page.th(field_name, class_='span2')
