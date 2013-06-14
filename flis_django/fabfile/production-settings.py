@@ -1,4 +1,4 @@
-from path import path
+rom path import path
 
 HOSTNAME = "http://projects.eionet.europa.eu/flis-services-project/flis"
 FORCE_SCRIPT_NAME = '/flis-services-project/flis'
@@ -19,3 +19,5 @@ MEDIA_URL = '/static/files'
 ASSETS_DEBUG = True
 USE_X_FORWARDED_HOST = True
 STATIC_URL = HOSTNAME + '/static/'
+DEBUG = False
+ASSETS_ROOT = path('/var/local/naaya/flis/flis/static')
