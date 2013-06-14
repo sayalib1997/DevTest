@@ -1,4 +1,4 @@
-django==1.4
+django==1.5.1
 gunicorn==0.14.6
 requests==0.14.1
 path.py==2.3

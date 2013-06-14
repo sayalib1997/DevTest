@@ -99,7 +99,7 @@
   </div>
 
   <div class="modal-footer">
-    <form method="POST" action="{% url methodtool_delete pk=object.pk country=country %}" style="display: inline;">
+    <form method="POST" action="{% url 'methodtool_delete' pk=object.pk country=country %}" style="display: inline;">
       <button type="submit" class="btn btn-primary btn-danger">
         Delete</button>
     </form>

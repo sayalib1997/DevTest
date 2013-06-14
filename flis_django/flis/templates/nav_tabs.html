@@ -3,53 +3,53 @@
 <ul class="nav nav-tabs">
 
   <li class="{% active request '$' %}">
-    <a href="{% url interlinks country=country %}">Interlinks</a>
+    <a href="{% url 'interlinks' country=country %}">Interlinks</a>
   </li>
 
   <li class="{% active request 'indicators' %}">
-    <a href="{% url indicators country=country %}">Indicators</a>
+    <a href="{% url 'indicators' country=country %}">Indicators</a>
   </li>
 
   <li class="{% active request 'trends' %}">
-    <a href="{% url trends country=country %}">Trends</a>
+    <a href="{% url 'trends' country=country %}">Trends</a>
   </li>
 
   {% if country.pk != 'eea' %}
   <li class="{% active request 'blossoms' %}">
-    <a href="{% url blossoms country=country %}">BLOSSOM</a>
+    <a href="{% url 'blossoms' country=country %}">BLOSSOM</a>
   </li>
   {% endif %}
 
   <li class="{% active request 'gmts' %}">
-    <a href="{% url gmts country=country %}">GMTs</a>
+    <a href="{% url 'gmts' country=country %}">GMTs</a>
   </li>
 
   <li class="{% active request 'flismodels' %}">
-    <a href="{% url flismodels country=country %}">Models</a>
+    <a href="{% url 'flismodels' country=country %}">Models</a>
   </li>
 
   <li class="{% active request 'horizonscannings' %}">
-    <a href="{% url horizonscannings country=country %}">Horizon scanning</a>
+    <a href="{% url 'horizonscannings' country=country %}">Horizon scanning</a>
   </li>
 
   <li class="{% active request 'methodstools' %}">
-    <a href="{% url methodstools country=country %}">Methods and tools</a>
+    <a href="{% url 'methodstools' country=country %}">Methods and tools</a>
   </li>
 
   <li class="{% active request 'uncertainties' %}">
-    <a href="{% url uncertainties country=country %}">Uncertainties</a>
+    <a href="{% url 'uncertainties' country=country %}">Uncertainties</a>
   </li>
 
   <li class="{% active request 'wildcards' %}">
-    <a href="{% url wildcards country=country %}">Wild cards</a>
+    <a href="{% url 'wildcards' country=country %}">Wild cards</a>
   </li>
 
   <li class="{% active request 'earlywarnings' %}">
-    <a href="{% url earlywarnings country=country %}">Early warnings</a>
+    <a href="{% url 'earlywarnings' country=country %}">Early warnings</a>
   </li>
 
   <li class="{% active request 'sources' %}">
-    <a href="{% url sources country=country %}">Sources</a>
+    <a href="{% url 'sources' country=country %}">Sources</a>
   </li>
 
   <li class="dropdown {% active request 'settings' %}">
@@ -60,33 +60,33 @@
     <ul class="dropdown-menu">
 
       <li>
-        <a href="{% url thematic_categories country=country %}">
+        <a href="{% url 'thematic_categories' country=country %}">
           Thematic categories</a>
       </li>
 
 
       <li>
-        <a href="{% url geographical_scales country=country %}">
+        <a href="{% url 'geographical_scales' country=country %}">
           Geographical scale</a>
       </li>
 
       <li>
-        <a href="{% url geographical_coverages country=country %}">
+        <a href="{% url 'geographical_coverages' country=country %}">
           Geographical coverages</a>
       </li>
 
       <li>
-        <a href="{% url scenarios country=country %}">
+        <a href="{% url 'scenarios' country=country %}">
           Scenarios</a>
       </li>
 
       <li>
-        <a href="{% url steep_categories country=country %}">
+        <a href="{% url 'steep_categories' country=country %}">
           Steep categories</a>
       </li>
 
       <li>
-        <a href="{% url timelines country=country %}">Timelines</a>
+        <a href="{% url 'timelines' country=country %}">Timelines</a>
       </li>
 
     </ul>

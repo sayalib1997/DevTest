@@ -8,7 +8,7 @@
 
 <div class="btn-toolbar">
   <div class="btn-group">
-    <a href="{% url indicator_new country=country %} "
+    <a href="{% url 'indicator_new' country=country %} "
        class="btn btn-primary">Add indicator</a>
   </div>
 </div>
@@ -44,7 +44,7 @@
     {% for object in object_list %}
     <tr>
       <td>
-        <a href="{% url indicator_view pk=object.id country=country %}">
+        <a href="{% url 'indicator_view' pk=object.id country=country %}">
           {{ object }}</a>
       </td>
 

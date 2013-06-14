@@ -7,7 +7,7 @@
 
 <div class="btn-toolbar">
   <div class="btn-group">
-    <a href="{% url blossom_new country=country %}"
+    <a href="{% url 'blossom_new' country=country %}"
        class="btn btn-primary">Add BLOSSOM case study</a>
   </div>
 </div>
@@ -28,7 +28,7 @@
     {% for blossom in object_list %}
     <tr>
       <td>
-        <a href="{% url blossom_view pk=blossom.id country=country %}">
+        <a href="{% url 'blossom_view' pk=blossom.id country=country %}">
           {{ blossom.title }}</a>
       </td>
     </tr>

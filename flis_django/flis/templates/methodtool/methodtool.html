@@ -5,12 +5,12 @@
 
 <div class="btn-toolbar">
   <div class="btn-group">
-    <a class="btn" href="{% url methodtool_edit pk=object.id country=country %}">
+    <a class="btn" href="{% url 'methodtool_edit' pk=object.id country=country %}">
       Edit {{ object }}</a>
   </div>
 
   <div class="btn-group">
-    <a class="btn" href="{% url methodstools country=country %}">Back to Methods and tools</a>
+    <a class="btn" href="{% url 'methodstools' country=country %}">Back to Methods and tools</a>
   </div>
 </div>
 
