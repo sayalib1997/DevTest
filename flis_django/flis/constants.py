@@ -19,6 +19,10 @@ LANGUAGES = [
 EDITOR_ROLES = ['Administrator']
 
 COUNTRY_ADMINS = {
+    'regional-cooperation-1': ['eionet-nrc-forwardlooking-cc-at',
+                               'eionet-nrc-forwardlooking-cc-cz',
+                               'eionet-nrc-forwardlooking-cc-hu',
+                               'eionet-nrc-forwardlooking-cc-sk'],
     'al': ['eionet-nrc-forwardlooking-cc-al'],
     'ba': ['eionet-nrc-forwardlooking-cc-ba'],
     'hr': ['eionet-nrc-forwardlooking-cc-hr'],
