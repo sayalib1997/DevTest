@@ -14,9 +14,11 @@
     <a href="{% url trends country=country %}">Trends</a>
   </li>
 
+  {% if country.pk != 'eea' %}
   <li class="{% active request 'blossoms' %}">
     <a href="{% url blossoms country=country %}">BLOSSOM</a>
   </li>
+  {% endif %}
 
   <li class="{% active request 'gmts' %}">
     <a href="{% url gmts country=country %}">GMTs</a>
