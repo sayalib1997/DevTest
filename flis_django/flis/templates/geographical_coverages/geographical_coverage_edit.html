@@ -45,7 +45,7 @@
   </div>
 
   <div class="modal-footer">
-    <form method="POST" action="{% url 'geographical_coverage_delete' pk=object.id country=country %}" style="display: inline;">
+    <form method="POST" action="{% url geographical_coverage_delete pk=object.id country=country %}" style="display: inline;">
       <button type="submit" class="btn btn-primary btn-danger">
         Delete</button>
     </form>

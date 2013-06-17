@@ -7,7 +7,7 @@
 
 <div class="btn-toolbar">
   <div class="btn-group">
-    <a href="{% url 'geographical_coverage_new' country=country %}"
+    <a href="{% url geographical_coverage_new country=country %}"
        class="btn btn-primary">Add geographical coverage</a>
   </div>
 </div>
@@ -28,7 +28,7 @@
     {% for object in object_list %}
     <tr>
       <td>
-        <a href="{% url 'geographical_coverage_view' pk=object.id country=country %}">{{ object.code }} ({{ object.description }})</a>
+        <a href="{% url geographical_coverage_view pk=object.id country=country %}">{{ object.code }} ({{ object.description }})</a>
       </td>
     </tr>
     {% endfor %}

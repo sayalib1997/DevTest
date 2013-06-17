@@ -5,12 +5,12 @@
 
 <div class="btn-toolbar">
   <div class="btn-group">
-    <a class="btn" href="{% url 'earlywarning_edit' pk=object.id country=country %}">
+    <a class="btn" href="{% url earlywarning_edit pk=object.id country=country %}">
       Edit {{ object }}</a>
   </div>
 
   <div class="btn-group">
-    <a class="btn" href="{% url 'earlywarnings' country=country %}">Back to early warnings</a>
+    <a class="btn" href="{% url earlywarnings country=country %}">Back to early warnings</a>
   </div>
 </div>
 

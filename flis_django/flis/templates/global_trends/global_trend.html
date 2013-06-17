@@ -5,11 +5,11 @@
 
 <div class="btn-toolbar">
   <div class="btn-group">
-    <a class="btn" href="{% url 'global_trend_edit' pk=object.id country=country %}">Edit {{ object.title }}</a>
+    <a class="btn" href="{% url global_trend_edit pk=object.id country=country %}">Edit {{ object.title }}</a>
   </div>
 
   <div class="btn-group">
-    <a class="btn" href="{% url 'global_trends' country=country %}">
+    <a class="btn" href="{% url global_trends country=country %}">
       Back to global trends</a>
   </div>
 </div>

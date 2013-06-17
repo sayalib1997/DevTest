@@ -7,7 +7,7 @@
 
 <div class="btn-toolbar">
   <div class="btn-group">
-    <a href="{% url 'earlywarning_new' country=country %}" class="btn btn-primary">
+    <a href="{% url earlywarning_new country=country %}" class="btn btn-primary">
       Add early warning</a>
   </div>
 </div>
@@ -28,7 +28,7 @@
     {% for object in object_list %}
     <tr>
       <td>
-        <a href="{% url 'earlywarning_view' pk=object.id country=country %}">
+        <a href="{% url earlywarning_view pk=object.id country=country %}">
           {{ object }}</a>
       </td>
     </tr>

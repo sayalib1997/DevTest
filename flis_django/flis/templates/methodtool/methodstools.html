@@ -7,7 +7,7 @@
 
 <div class="btn-toolbar">
   <div class="btn-group">
-    <a href="{% url 'methodtool_new' country=country %}" class="btn btn-primary">
+    <a href="{% url methodtool_new country=country %}" class="btn btn-primary">
       Add method / tool</a>
   </div>
 </div>
@@ -28,7 +28,7 @@
     {% for object in object_list %}
     <tr>
       <td>
-        <a href="{% url 'methodtool_view' pk=object.id country=country %}">
+        <a href="{% url methodtool_view pk=object.id country=country %}">
           {{ object }}</a>
       </td>
     </tr>
