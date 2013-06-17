@@ -22,6 +22,11 @@ def active(request, pattern):
     return ''
 
 
+@register.assignment_tag
+def assign(value):
+    return value
+
+
 @register.filter
 def filename(value):
     return path(value.file.name).basename()

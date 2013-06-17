@@ -146,23 +146,25 @@
       </div>
     </div>
 
+    {% assign form.date_of_conclusion_planned.value as date_value_1  %}
     <div class="control-group {% if form.date_of_conclusion_planned.errors %}error{% endif %}">
       <label class="control-label" for="id_code">
         {{ form.date_of_conclusion_planned.label }}</label>
 
       <div class="controls">
         <input type="text" name="date_of_conclusion_planned" id="id_date_of_conclusion_planned"
-        value="{{ form.date_of_conclusion_planned.value|date:"d/m/Y" }}" />
+        value="{% firstof date_value_1|date:"d/m/Y" date_value_1 %}" />
         <span class="help-inline">{{ form.date_of_conclusion_planned.errors.0 }}</span>
       </div>
     </div>
 
+    {% assign form.date_of_conclusion_final.value as date_value_2  %}
     <div class="control-group {% if form.date_of_conclusion_final.errors %}error{% endif %}">
       <label class="control-label" for="id_code">
         {{ form.date_of_conclusion_final.label }}</label>
       <div class="controls">
         <input type="text" name="date_of_conclusion_final" id="id_date_of_conclusion_final"
-        value="{{ form.date_of_conclusion_final.value|date:"d/m/Y" }}" />
+        value="{% firstof date_value_2|date:"d/m/Y" date_value_2 %}" />
         <span class="help-inline">{{ form.date_of_conclusion_final.errors.0 }}</span>
       </div>
     </div>
