@@ -29,21 +29,30 @@
       </div>
     </div>
 
-    <div class="control-group {% if form.new_or_update.errors %}error{% endif %}">
-      <label class="control-label" for="id_code">
-        {{ form.new_or_update.label }}</label>
-      <div class="controls">
-        {{ form.new_or_update }}
-        <span class="help-inline">{{ form.new_or_update.errors.0 }}</span>
-      </div>
-    </div>
-
     <div class="control-group {% if form.language.errors %}error{% endif %}">
       <label class="control-label" for="id_code">
         {{ form.language.label }}</label>
       <div class="controls">
         {{ form.language }}
         <span class="help-inline">{{ form.language.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.title_original.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.title_original.label }}</label>
+      <div class="controls">
+        {{ form.title_original }}
+        <span class="help-inline">{{ form.title_original.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.new_or_update.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.new_or_update.label }}</label>
+      <div class="controls">
+        {{ form.new_or_update }}
+        <span class="help-inline">{{ form.new_or_update.errors.0 }}</span>
       </div>
     </div>
 
@@ -191,6 +200,15 @@
       <div class="controls">
         {{ form.networks }}
         <span class="help-inline">{{ form.networks.errors.0 }}</span>
+      </div>
+    </div>
+
+    <div class="control-group {% if form.url.errors %}error{% endif %}">
+      <label class="control-label" for="id_code">
+        {{ form.url.label }}</label>
+      <div class="controls">
+        {{ form.url }}
+        <span class="help-inline">{{ form.url.errors.0 }}</span>
       </div>
     </div>
 

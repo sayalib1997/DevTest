@@ -132,10 +132,12 @@ class Blossom(models.Model, BaseModel):
     country = models.ForeignKey(Country)
     title = models.CharField(null=True, max_length=256,
              verbose_name='Case study title')
-    new_or_update = models.CharField(max_length=16, choices=NEW_OR_UPDATE_CHOICES,
-        verbose_name='New Blossom or update of Blossom country study')
     language = models.CharField(null=True, max_length=56, choices=LANGUAGES,
         verbose_name='Language')
+    title_original = models.CharField(null=True, max_length=256,
+             verbose_name='Title in original language')
+    new_or_update = models.CharField(max_length=16, choices=NEW_OR_UPDATE_CHOICES,
+        verbose_name='New Blossom or update of Blossom country study')
     ownership = models.TextField(null=True, blank=True, default='',
                                verbose_name='Who is ordering BLOSSOM')
     status = models.CharField(null=True, max_length=56, choices=STATUSES,
@@ -168,6 +170,8 @@ class Blossom(models.Model, BaseModel):
        verbose_name='Other informal parties')
     networks = models.TextField(null=True, blank=True, default='',
        verbose_name='Networks')
+    url = models.URLField(max_length=512, blank=True,
+       verbose_name='Link to final report')
 
     def __unicode__(self):
         return self.title
