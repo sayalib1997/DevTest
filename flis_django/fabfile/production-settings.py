@@ -19,5 +19,5 @@ MEDIA_URL = '/flis-services-project/flis/static/files/'
 ASSETS_DEBUG = True
 USE_X_FORWARDED_HOST = True
 STATIC_URL = HOSTNAME + '/static/'
-DEBUG = True
+DEBUG = False
 ASSETS_ROOT = path('/var/local/naaya/flis/flis/static')
