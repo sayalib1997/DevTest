@@ -318,4 +318,6 @@ urlpatterns = patterns('',
 
     url(r'^(?P<country>[-\w]+)/', include(flis_patterns)),
 
+    url(r'^/$', RedirectView.as_view(url='/eea/'))
+
 )
