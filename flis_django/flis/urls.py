@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic import RedirectView
+from django.core.urlresolvers import reverse
 from flis import views, auth
 
 # Uncomment the next two lines to enable the admin:
@@ -316,8 +317,9 @@ urlpatterns = patterns('',
 
     url(r'^management/', include(admin.site.urls)),
 
+    url(r'^/$', RedirectView.as_view(url='/eea/')),
+
     url(r'^(?P<country>[-\w]+)/', include(flis_patterns)),
 
-    url(r'^/$', RedirectView.as_view(url='/eea/'))
 
 )
