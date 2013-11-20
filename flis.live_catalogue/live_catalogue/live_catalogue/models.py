@@ -1,6 +1,6 @@
 from django.db import models
 from live_catalogue.definitions import CATEGORIES, FLIS_TOPICS, THEMES
-from live_catalogue.definitions import COUNTRIES
+from live_catalogue.definitions import GEOGRAPHIC_SCOPE, COUNTRIES
 
 
 class Catalogue(models.Model):
@@ -33,6 +33,8 @@ class Catalogue(models.Model):
     description = models.TextField(blank=True)
     keywords = models.ManyToManyField('Keyword', null=True, blank=True)
     status = models.CharField(choices=STATUS_CHOICES, max_length=10, blank=True)
+    geographic_scope = models.CharField(choices=GEOGRAPHIC_SCOPE, max_length=128,
+                                        blank=True)
     resources = models.TextField(blank=True)
 
     start_date = models.DateField(blank=True)
