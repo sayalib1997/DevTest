@@ -198,15 +198,18 @@
     <div class="control-group">
       <label class="control-label"></label>
       <div class="controls">
-        {% for perm in form.permissions %}
+        {% for perm in form.perms %}
           {{ perm }}
         {% endfor %}
+        <div class="text-error">{{ form.perms.errors }}</div>
       </div>
     </div>
 
     <div class="form-actions">
-      <button type="submit" class="btn btn-primary">Save</button>
-      <button type="submit" class="btn btn-primary">Save draft</button>
+      <button type="submit" class="btn btn-primary" name="save" value="final">
+        Save</button>
+      <button type="submit" class="btn btn-primary" name="save" value="draft">
+        Save draft</button>
     </div>
 
   </form>

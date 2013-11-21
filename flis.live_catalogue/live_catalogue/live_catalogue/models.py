@@ -37,8 +37,8 @@ class Catalogue(models.Model):
                                         blank=True)
     resources = models.TextField(blank=True)
 
-    start_date = models.DateField(blank=True)
-    end_date = models.DateField(blank=True)
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
 
     need_urgent = models.BooleanField(default=False)
 
@@ -47,7 +47,7 @@ class Catalogue(models.Model):
     phone_number = models.CharField(max_length=64, blank=True)
     institution = models.CharField(max_length=64, blank=True)
     address = models.CharField(max_length=256, blank=True)
-    country = models.CharField(choices=COUNTRIES, max_length=64)
+    country = models.CharField(choices=COUNTRIES, max_length=64, blank=True)
     url = models.URLField(blank=True)
     info = models.TextField(blank=True)
     document = models.FileField(upload_to='documents', null=True, blank=True)
