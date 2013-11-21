@@ -17,6 +17,7 @@ FRAME_COOKIES = ['__ac', '_ZopeId']
 MEDIA_ROOT = path('/var/local/naaya/live_catalogue/instance')
 MEDIA_URL = '/flis-services-project/live_catalogue/static/files/'
 ASSETS_DEBUG = True
+ALLOWED_HOSTS = ['localhost', '*']
 USE_X_FORWARDED_HOST = True
 STATIC_URL = HOSTNAME + '/static/'
 DEBUG = False
