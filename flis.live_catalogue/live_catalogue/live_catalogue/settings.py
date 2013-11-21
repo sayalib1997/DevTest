@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     'eea_frame',
     'widget_tweaks',
     'live_catalogue',
+    'gunicorn',
 )
 
 MIDDLEWARE_CLASSES = (
