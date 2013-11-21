@@ -46,10 +46,11 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'django_assets',
-    'eea_frame',
     'widget_tweaks',
-    'live_catalogue',
+    'django_select2',
     'gunicorn',
+    'eea_frame',
+    'live_catalogue',
 )
 
 MIDDLEWARE_CLASSES = (
