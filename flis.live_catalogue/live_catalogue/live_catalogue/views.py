@@ -1,5 +1,6 @@
 from django.views.generic import View
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Q
 
 from braces.views import AjaxResponseMixin, JSONResponseMixin
 from live_catalogue.forms import NeedForm, OfferForm
@@ -9,7 +10,10 @@ from live_catalogue.models import Catalogue, Keyword
 class HomeView(View):
 
     def get(self, request):
-        return render(request, 'home.html')
+        catalogues = Catalogue.objects.filter(draft=False)
+        return render(request, 'home.html', {
+            'catalogues': catalogues,
+        })
 
 
 class NeedEdit(View):

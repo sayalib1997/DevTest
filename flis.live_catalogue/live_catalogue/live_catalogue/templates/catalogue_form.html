@@ -4,13 +4,21 @@
 
 {% block content %}
 
-  <h1>New need</h1>
+  {% if form.KIND == 'need' %}
+    <h2>New need</h2>
+  {% else %}
+    <h2>New offer</h2>
+  {% endif %}
 
   <form class="form-horizontal" method="POST">
 
     {% include "catalogue_form_general.html" %}
 
-    <h4>Details about the need</h4>
+    {% if form.KIND == 'need' %}
+      <h4>Details about the need</h4>
+    {% else %}
+      <h4>Details about the offer</h4>
+    {% endif %}
 
     {% include "catalogue_form_details.html" %}
 

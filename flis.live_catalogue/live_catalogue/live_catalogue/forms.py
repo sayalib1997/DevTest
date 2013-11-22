@@ -1,6 +1,7 @@
 from django import forms
 from django_select2 import AutoModelSelect2TagField
 from live_catalogue.models import Catalogue, Keyword, CataloguePermission
+from eea_frame.middleware import get_current_request
 
 
 class KeywordsField(AutoModelSelect2TagField):
@@ -40,6 +41,8 @@ class CatalogueForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.is_draft = kwargs.pop('is_draft', False)
+        request = get_current_request()
+        self.user_id = request.user_id
         super(CatalogueForm, self).__init__(*args, **kwargs)
 
         self.fields['status'].empty_label = None
@@ -53,6 +56,7 @@ class CatalogueForm(forms.ModelForm):
         catalogue = super(CatalogueForm, self).save(commit=False)
         catalogue.kind = self.KIND
         catalogue.is_draft = self.is_draft
+        catalogue.user_id = self.user_id
 
         catalogue.category = self.cleaned_data['category']
         catalogue.flis_topic = self.cleaned_data['flis_topic']

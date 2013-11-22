@@ -14,6 +14,7 @@ CSS_ASSETS = (
     'bootstrap/css/bootstrap-responsive.css',
     'css/bootstrap-ui/jquery-ui-1.8.16.custom.css',
     'css/select2/select2.css',
+    'css/main.css',
 )
 
 

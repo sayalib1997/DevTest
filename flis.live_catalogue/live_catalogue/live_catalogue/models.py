@@ -24,6 +24,7 @@ class Catalogue(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now_add=True, auto_now=True)
     draft = models.BooleanField(default=True)
+    user_id = models.CharField(max_length=64, blank=True)
 
     category = models.CharField(choices=CATEGORIES, max_length=64)
     flis_topic = models.CharField(choices=FLIS_TOPICS, max_length=64)
