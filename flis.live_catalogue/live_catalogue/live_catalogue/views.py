@@ -35,7 +35,7 @@ class CatalogueView(View):
         catalogue = get_object_or_404(Catalogue, pk=pk)
         if catalogue.kind == catalogue.NEED:
             form = NeedForm(instance=catalogue)
-        elif catalogue.kind == catalogue.Offer:
+        elif catalogue.kind == catalogue.OFFER:
             form = OfferForm(instance=catalogue)
 
         return render(request, 'catalogue_view.html', {
