@@ -4,16 +4,28 @@ from django.db.models import Q
 from django.contrib import messages
 
 from braces.views import AjaxResponseMixin, JSONResponseMixin
-from live_catalogue.forms import NeedForm, OfferForm
+from live_catalogue.forms import NeedForm, OfferForm, CatalogueFilterForm
 from live_catalogue.models import Catalogue, Keyword
 
 
 class HomeView(View):
 
     def get(self, request):
-        catalogues = Catalogue.objects.filter(draft=True)
+        catalogues = Catalogue.objects.filter(draft=False)
+        filter_form = CatalogueFilterForm()
         return render(request, 'home.html', {
             'catalogues': catalogues,
+            'filter_form': filter_form,
+        })
+
+    def post(self, request):
+        catalogues = Catalogue.objects.filter(draft=False)
+        filter_form = CatalogueFilterForm(request.POST)
+        if filter_form.is_valid():
+            catalogues = catalogues.filter(kind=filter_form.cleaned_data['kind'])
+        return render(request, 'home.html', {
+            'catalogues': catalogues,
+            'filter_form': filter_form,
         })
 
 
@@ -37,7 +49,7 @@ class NeedEdit(View):
                 success_msg = 'Need saved as draft'
             else:
                 success_msg = 'Need saved'
-            messages.success('Need saved')
+            messages.success(request, 'Need saved')
             return redirect('home')
         return render(request, 'catalogue_form.html', {
             'catalogue': catalogue,
@@ -65,7 +77,7 @@ class OfferEdit(View):
                 success_msg = 'Offer saved as draft'
             else:
                 success_msg = 'Offer saved'
-            messages.success('Need saved')
+            messages.success(request, 'Need saved')
             return redirect('home')
         return render(request, 'catalogue_form.html', {
             'catalogue': catalogue,

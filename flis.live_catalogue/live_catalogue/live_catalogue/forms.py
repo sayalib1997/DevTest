@@ -8,6 +8,7 @@ class KeywordsField(AutoModelSelect2TagField):
 
     queryset = Keyword.objects
     search_fields = ('name__icontains',)
+    to_field_name = ('name', )
 
     def get_model_field_values(self, value):
         return {'name': value}
@@ -56,7 +57,7 @@ class CatalogueForm(forms.ModelForm):
     def save(self):
         catalogue = super(CatalogueForm, self).save(commit=False)
         catalogue.kind = self.KIND
-        catalogue.is_draft = self.is_draft
+        catalogue.draft = self.is_draft
         catalogue.user_id = self.user_id
 
         catalogue.category = self.cleaned_data['category']
@@ -123,5 +124,9 @@ class OfferForm(CatalogueForm):
         catalogue.save()
         return catalogue
 
+
+class CatalogueFilterForm(forms.Form):
+
+    kind = forms.ChoiceField(choices=Catalogue.KIND_CHOICES)
 
 
