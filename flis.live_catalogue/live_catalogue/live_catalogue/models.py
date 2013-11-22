@@ -56,7 +56,7 @@ class Catalogue(models.Model):
         return '%s (%s)' % (self.kind, self.title)
 
     def category_verbose(self):
-        return dict(KIND_CHOICES).get(self.kind, '')
+        return dict(self.KIND_CHOICES).get(self.kind, '')
 
 
 class CataloguePermission(models.Model):

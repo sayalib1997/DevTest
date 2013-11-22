@@ -2,21 +2,42 @@
 
 
 CATEGORIES = (
-    ('article', 'Article'),
+    ('projects', 'Projects'),
+    ('training', 'Training'),
+    ('reports', 'Reports'),
+    ('request', 'Request for collaboration'),
+    ('tenders', 'Tenders'),
+    ('open_calls', 'Open calls'),
     ('contracts', 'Contracts'),
-    ('open calls', 'Open Calls'),
+    ('support_documents', 'Support documents'),
+    ('articles', 'Articles'),
+    ('news', 'News'),
 )
 
 
 FLIS_TOPICS = (
-    ('drivers and trends', 'Drivers and trends'),
+    ('early_warning', 'Early warning'),
+    ('drivers_and_trends', 'Drivers and trends'),
     ('indicators', 'Indicators'),
+    ('scenarios', 'Scenarios'),
+    ('methods_and_tools', 'Methods and tools'),
+    ('networking', 'Networking, capacity building and governance'),
+    ('information', 'Use of forward-looking information'),
 )
 
 
 THEMES = (
-    ('water', 'Water'),
+    ('air_pollution', 'Air pollution'),
     ('biodiversity', 'Biodiversity'),
+    ('chemicals', 'Chemicals'),
+    ('climate_change', 'Climate change'),
+    ('environment_and_health', 'Environment and health'),
+    ('land_use', 'Land use'),
+    ('natural_resources', 'Natural resources'),
+    ('noise', 'Noise'),
+    ('soil', 'Soil'),
+    ('waste', 'Waste and material resources'),
+    ('water', 'Water'),
 )
 
 

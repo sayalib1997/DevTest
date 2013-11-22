@@ -11,7 +11,7 @@ from live_catalogue.models import Catalogue, Keyword
 class HomeView(View):
 
     def get(self, request):
-        catalogues = Catalogue.objects.filter(draft=False)
+        catalogues = Catalogue.objects.filter(draft=True)
         return render(request, 'home.html', {
             'catalogues': catalogues,
         })
