@@ -94,7 +94,7 @@ def update_live_catalogue():
     run("%s/bin/python %s/manage.py syncdb" % (app['sandbox'], app['manage_var']))
     run("%s/bin/python %s/manage.py migrate" % (app['sandbox'], app['manage_var']))
 
-    run("%s/bin/python %s/manage.py collectstatic" % (app['sandbox'], app['manage_var']))
+    run("%s/bin/python %s/manage.py collectstatic --noinput" % (app['sandbox'], app['manage_var']))
 
     execute('service_live_catalogue', 'restart')
 
