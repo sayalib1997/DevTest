@@ -7,7 +7,7 @@ def login_required(f):
     @wraps(f)
     def wrapper(request, *args, **kwargs):
         if not getattr(settings, 'SKIP_EDIT_AUTHORIZATION', False):
-            if request.user_id and 'Anonymous' not in request.user_roles:
+            if request.user_id and 'Contributor' in request.user_roles:
                 pass
             else:
                return render(request, 'restricted.html')
