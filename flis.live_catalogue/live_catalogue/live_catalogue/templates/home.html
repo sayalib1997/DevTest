@@ -2,14 +2,35 @@
 
 {% block content %}
 
-  <table class="table">
+  <table class="table table-bordered">
 
     <thead>
       <tr>
+        <th>Category</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Date</th>
+        <th>Geo scope</th>
+        <th>Institution</th>
+        <th>FLIS Topic</th>
       </tr>
     </thead>
 
     <tbody>
+      {% for catalogue in catalogues %}
+      <tr class="{{ catalogue.kind }}">
+        <td>{{ catalogue.category_verbose }}</td>
+        <td>{{ catalogue.title }}</td>
+        <td>{{ catalogue.description }}</td>
+        <td>{{ catalogue.created_on }}</td>
+        <td>{{ catalogue.institution }}</td>
+        <td>{{ catalogue.flis_topic }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6"><p>No entries</p></td>
+      </tr>
+      {% endfor %}
     </tbody>
 
   </table>

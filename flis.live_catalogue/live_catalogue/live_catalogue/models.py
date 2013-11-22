@@ -20,7 +20,6 @@ class Catalogue(models.Model):
     )
 
     kind = models.CharField(choices=KIND_CHOICES, max_length=5, db_index=True)
-    created_by = models.CharField(max_length=64)
     created_on = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now_add=True, auto_now=True)
     draft = models.BooleanField(default=True)
@@ -55,6 +54,9 @@ class Catalogue(models.Model):
 
     def __unicode__(self):
         return '%s (%s)' % (self.kind, self.title)
+
+    def category_verbose(self):
+        return dict(KIND_CHOICES).get(self.kind, '')
 
 
 class CataloguePermission(models.Model):

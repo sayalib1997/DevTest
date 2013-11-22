@@ -1,12 +1,15 @@
 from django_assets import Bundle, register
+from django.conf import settings
 
 
+_JS_ASSETS = ('js/jquery.js', 'js/jquery-ui-1.8.18.custom.min.js',)
 JS_ASSETS = (
     'bootstrap/js/bootstrap.js',
-    'js/jquery-ui-1.8.18.custom.min.js',
     'js/select2.min.js',
     'js/main.js',
 )
+if settings.DEBUG:
+    JS_ASSETS = _JS_ASSETS + JS_ASSETS
 
 
 CSS_ASSETS = (

@@ -42,8 +42,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     'django.core.context_processors.request',)
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ('localhost', '127.0.0.1')
 
 # Application definition
 

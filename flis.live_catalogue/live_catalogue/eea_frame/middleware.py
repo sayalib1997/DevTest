@@ -36,11 +36,14 @@ class UserMiddleware(object):
             forwarded_cookies = get_forwarded_cookies(request)
             resp = requests.get(settings.FRAME_URL, cookies=forwarded_cookies)
             resp_json = resp.json()
-            # import pdb; pdb.set_trace()
             if (resp.status_code == 200 and resp_json):
                 request.user_id = resp_json['user_id']
                 request.user_roles = resp_json['user_roles']
                 request.user_groups = resp_json['groups']
+        else:
+            request.user_id = getattr(settings, 'USER_ID', None)
+            request.roles = getattr(settings, 'USER_ROLES', None)
+            request.groups = getattr(settings, 'USER_GROUPS', None)
 
         if not getattr(request, 'user_id', None):
             request.user_id = None

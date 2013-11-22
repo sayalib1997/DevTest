@@ -1,6 +1,7 @@
 from django.views.generic import View
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
+from django.contrib import messages
 
 from braces.views import AjaxResponseMixin, JSONResponseMixin
 from live_catalogue.forms import NeedForm, OfferForm
@@ -32,6 +33,11 @@ class NeedEdit(View):
         form = NeedForm(request.POST, instance=catalogue, is_draft=is_draft)
         if form.is_valid():
             form.save()
+            if is_draft:
+                success_msg = 'Need saved as draft'
+            else:
+                success_msg = 'Need saved'
+            messages.success('Need saved')
             return redirect('home')
         return render(request, 'catalogue_form.html', {
             'catalogue': catalogue,
@@ -55,6 +61,11 @@ class OfferEdit(View):
         form = OfferForm(request.POST, instance=catalogue, is_draft=is_draft)
         if form.is_valid():
             form.save()
+            if is_draft:
+                success_msg = 'Offer saved as draft'
+            else:
+                success_msg = 'Offer saved'
+            messages.success('Need saved')
             return redirect('home')
         return render(request, 'catalogue_form.html', {
             'catalogue': catalogue,
