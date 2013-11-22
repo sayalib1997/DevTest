@@ -31,7 +31,12 @@
       {% for catalogue in catalogues %}
       <tr class="{{ catalogue.kind }}">
         <td>{{ catalogue.kind_verbose }}</td>
-        <td>{{ catalogue.title }}</td>
+        {% url 'catalogue_view' pk=catalogue.pk kind=catalogue.kind as catalogue_view_url %}
+        <td>
+          <a href="{{ catalogue_view_url }}">
+            {{ catalogue.title }}
+          </a>
+        </td>
         <td>{{ catalogue.description }}</td>
         <td>{{ catalogue.created_on }}</td>
         <td>{{ catalogue.geographic_scope }}</td>
