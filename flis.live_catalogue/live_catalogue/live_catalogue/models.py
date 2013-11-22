@@ -67,7 +67,6 @@ class Catalogue(models.Model):
     def theme_verbose(self):
         return dict(THEMES).get(self.theme, '')
 
-
 class CataloguePermission(models.Model):
 
     catalogue = models.ForeignKey(Catalogue, related_name='permissions')
