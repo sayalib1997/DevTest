@@ -111,3 +111,9 @@ class ApiKeywords(JSONResponseMixin, AjaxResponseMixin, View):
             'results': [{'id': k.pk, 'text': k.name} for k in keywords]
         })
 
+
+class CrashMe(View):
+
+    def get(self, request):
+        raise Exception()
+

@@ -60,6 +60,7 @@ INSTALLED_APPS = (
     'gunicorn',
     'eea_frame',
     'live_catalogue',
+    'raven.contrib.django.raven_compat',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -113,6 +114,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 FRAME_COOKIES = ['__ac', '_ZopeId']
+
 
 try:
     from local_settings import *
