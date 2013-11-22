@@ -15,7 +15,7 @@ class KeywordsField(AutoModelSelect2TagField):
 
 class CatalogueForm(forms.ModelForm):
 
-    NRC_FLIS, EIONET = 'nrc_flis', 'eionet'
+    NRC_FLIS, EIONET = 'eionet-nrc-forwardlooking', 'eionet'
     PERMS_CHOICES = ((NRC_FLIS, 'NRC Flis'), (EIONET, 'All members of EIONET'),)
 
     REQUIRED_FIELDS = ('status', 'title', 'keywords', 'start_date',

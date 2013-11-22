@@ -7,7 +7,7 @@ from django.conf import settings
 _JS_ASSETS = ('js/jquery.js',)
 JS_ASSETS = (
     'bootstrap/js/bootstrap.js',
-    'js/jquery-ui-1.8.18.custom.min.js'
+    'js/jquery-ui-1.8.18.custom.min.js',
     'js/select2.min.js',
     'js/main.js',
 )
