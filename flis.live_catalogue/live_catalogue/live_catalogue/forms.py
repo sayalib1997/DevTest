@@ -45,6 +45,7 @@ class CatalogueForm(forms.ModelForm):
         self.user_id = request.user_id
         super(CatalogueForm, self).__init__(*args, **kwargs)
 
+        self.fields['url'].initial = 'http://'
         self.fields['status'].empty_label = None
         self.fields['status'].choices = self.fields['status'].choices[1:]
 
