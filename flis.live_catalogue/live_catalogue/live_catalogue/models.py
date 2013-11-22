@@ -55,8 +55,17 @@ class Catalogue(models.Model):
     def __unicode__(self):
         return '%s (%s)' % (self.kind, self.title)
 
-    def category_verbose(self):
+    def kind_verbose(self):
         return dict(self.KIND_CHOICES).get(self.kind, '')
+
+    def category_verbose(self):
+        return dict(CATEGORIES).get(self.category, '')
+
+    def flis_topic_verbose(self):
+        return dict(FLIS_TOPICS).get(self.flis_topic, '')
+
+    def theme_verbose(self):
+        return dict(THEMES).get(self.theme, '')
 
 
 class CataloguePermission(models.Model):

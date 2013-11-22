@@ -29,6 +29,21 @@ class HomeView(View):
         })
 
 
+class CatalogueView(View):
+
+    def get(self, request, pk, kind):
+        catalogue = get_object_or_404(Catalogue, pk=pk)
+        if catalogue.kind == catalogue.NEED:
+            form = NeedForm(instance=catalogue)
+        elif catalogue.kind == catalogue.Offer:
+            form = OfferForm(instance=catalogue)
+
+        return render(request, 'catalogue_view.html', {
+            'catalogue': catalogue,
+            'form': form,
+        })
+
+
 class NeedEdit(View):
 
     def get(self, request, pk=None):
