@@ -1,5 +1,3 @@
-from path import path
-
 HOSTNAME = "http://projects.eionet.europa.eu/flis-services-project/live_catalogue"
 FORCE_SCRIPT_NAME = '/flis-services-project/live_catalogue'
 DATABASES = {
@@ -14,11 +12,11 @@ DATABASES = {
 }
 FRAME_URL = 'http://projects.eionet.europa.eu/flis-services-project/flis_templates/frame'
 FRAME_COOKIES = ['__ac', '_ZopeId']
-MEDIA_ROOT = path('/var/local/naaya/live_catalogue/instance')
+MEDIA_ROOT = '/var/local/naaya/live_catalogue/instance'
 MEDIA_URL = '/flis-services-project/live_catalogue/static/files/'
 ASSETS_DEBUG = True
 ALLOWED_HOSTS = ['localhost', '*']
 USE_X_FORWARDED_HOST = True
 STATIC_URL = HOSTNAME + '/static/'
 DEBUG = False
-ASSETS_ROOT = path('/var/local/naaya/live_catalogue/live_catalogue/live_catalogue/static')
+ASSETS_ROOT = '/var/local/naaya/live_catalogue/live_catalogue/live_catalogue/static'
