@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<h3>Restricted</h3>
+<h3 id="restricted-title">Restricted</h3>
 
 {% if request.user_id %}
   <p class="alert alert-error">Your account doesn't have edit credentials.</p>

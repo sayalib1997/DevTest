@@ -5,11 +5,11 @@
 
 <h3>Edit interlink</h3>
 
-<form class="form-horizontal" method="post">
+<form class="form-horizontal" method="post" id="interlink-edit">
 
   <fieldset>
     <div class="control-group {% if form.gmt.errors %}error{% endif %}">
-      <label class="control-label" for="id_gmt">
+      <label class="control-label" for="{{ form.gmt.auto_id }}">
         {{ form.gmt.label }}</label>
       <div class="controls">
         {{ form.gmt }}
@@ -18,7 +18,7 @@
     </div>
 
     <div class="control-group {% if form.trend.errors %}error{% endif %}">
-      <label class="control-label" for="id_trend">
+      <label class="control-label" for="{{ form.trend.auto_id }}">
         {{ form.trend.label }}</label>
       <div class="controls">
         {{ form.trend }}
@@ -26,8 +26,17 @@
       </div>
     </div>
 
+    <div class="control-group {% if form.uncertainty.errors %}error{% endif %}">
+      <label class="control-label" for="{{ form.uncertainty.auto_id }}">
+        {{ form.uncertainty.label }}</label>
+      <div class="controls">
+        {{ form.uncertainty }}
+        <span class="help-inline">{{ form.uncertainty.errors.0 }}</span>
+      </div>
+    </div>
+
     <div class="control-group {% if form.indicator_1.errors %}error{% endif %}">
-      <label class="control-label" for="id_indicator_1">
+      <label class="control-label" for="{{ form.indicator_1.auto_id }}">
         {{ form.indicator_1.label }}</label>
       <div class="controls">
         {{ form.indicator_1 }}
@@ -36,7 +45,7 @@
     </div>
 
     <div class="control-group {% if form.indicator_2.errors %}error{% endif %}">
-      <label class="control-label" for="id_indicator_2">
+      <label class="control-label" for="{{ form.indicator_2.auto_id }}">
         {{ form.indicator_2.label }}</label>
       <div class="controls">
         {{ form.indicator_2 }}
@@ -45,7 +54,7 @@
     </div>
 
     <div class="control-group {% if form.indicator_3.errors %}error{% endif %}">
-      <label class="control-label" for="id_indicator_3">
+      <label class="control-label" for="{{ form.indicator_3.auto_id }}">
         {{ form.indicator_3.label }}</label>
       <div class="controls">
         {{ form.indicator_3 }}
@@ -54,7 +63,7 @@
     </div>
 
     <div class="control-group {% if form.indicator_4.errors %}error{% endif %}">
-      <label class="control-label" for="id_indicator_4">
+      <label class="control-label" for="{{ form.indicator_4.auto_id }}">
         {{ form.indicator_4.label }}</label>
       <div class="controls">
         {{ form.indicator_4 }}

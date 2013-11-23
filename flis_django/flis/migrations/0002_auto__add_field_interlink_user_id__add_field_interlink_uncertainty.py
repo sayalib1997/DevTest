@@ -8,23 +8,30 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'Blossom.title'
-        db.add_column('flis_blossom', 'title',
-                      self.gf('django.db.models.fields.CharField')(max_length=256, null=True),
+        # Adding field 'Interlink.user_id'
+        db.add_column('flis_interlink', 'user_id',
+                      self.gf('django.db.models.fields.CharField')(default='', max_length=128),
+                      keep_default=False)
+
+        # Adding field 'Interlink.uncertainty'
+        db.add_column('flis_interlink', 'uncertainty',
+                      self.gf('django.db.models.fields.related.ForeignKey')(related_name='interlinks', null=True, on_delete=models.PROTECT, to=orm['flis.Uncertainty']),
                       keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting field 'Blossom.title'
-        db.delete_column('flis_blossom', 'title')
+        # Deleting field 'Interlink.user_id'
+        db.delete_column('flis_interlink', 'user_id')
+
+        # Deleting field 'Interlink.uncertainty'
+        db.delete_column('flis_interlink', 'uncertainty_id')
 
 
     models = {
         'flis.blossom': {
             'Meta': {'object_name': 'Blossom'},
-            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['flis.Country']"}),
-            'date_of_conclusion_final': ('django.db.models.fields.CharField', [], {'max_length': '56', 'null': 'True'}),
-            'date_of_conclusion_planned': ('django.db.models.fields.CharField', [], {'max_length': '56', 'null': 'True'}),
+            'date_of_conclusion_final': ('django.db.models.fields.DateField', [], {'null': 'True'}),
+            'date_of_conclusion_planned': ('django.db.models.fields.DateField', [], {'null': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'language': ('django.db.models.fields.CharField', [], {'max_length': '56', 'null': 'True'}),
             'networks': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
@@ -42,6 +49,8 @@ class Migration(SchemaMigration):
             'time_plan_final': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
             'time_plan_planned': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True'}),
+            'title_original': ('django.db.models.fields.CharField', [], {'max_length': '256', 'null': 'True'}),
+            'url': ('django.db.models.fields.URLField', [], {'max_length': '512', 'blank': 'True'}),
             'who_is_doing': ('django.db.models.fields.CharField', [], {'max_length': '56', 'null': 'True'})
         },
         'flis.country': {
@@ -52,7 +61,6 @@ class Migration(SchemaMigration):
         'flis.earlywarning': {
             'Meta': {'object_name': 'EarlyWarning'},
             'code': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['flis.Country']"}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
             'file_id': ('django.db.models.fields.files.FileField', [], {'default': "''", 'max_length': '256', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -64,7 +72,6 @@ class Migration(SchemaMigration):
         'flis.flismodel': {
             'Meta': {'object_name': 'FlisModel'},
             'code': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['flis.Country']"}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
             'file_id': ('django.db.models.fields.files.FileField', [], {'default': "''", 'max_length': '256', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -76,21 +83,18 @@ class Migration(SchemaMigration):
         'flis.geographicalcoverage': {
             'Meta': {'object_name': 'GeographicalCoverage'},
             'code': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['flis.Country']"}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         'flis.geographicalscale': {
             'Meta': {'object_name': 'GeographicalScale'},
             'code': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['flis.Country']"}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         'flis.gmt': {
             'Meta': {'object_name': 'GMT'},
             'code': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['flis.Country']"}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
             'file_id': ('django.db.models.fields.files.FileField', [], {'default': "''", 'max_length': '256', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -102,7 +106,6 @@ class Migration(SchemaMigration):
         'flis.horizonscanning': {
             'Meta': {'object_name': 'HorizonScanning'},
             'code': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['flis.Country']"}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
             'file_id': ('django.db.models.fields.files.FileField', [], {'default': "''", 'max_length': '256', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -115,7 +118,6 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Indicator'},
             'base_year': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'code': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['flis.Country']"}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
             'end_year': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
             'file_id': ('django.db.models.fields.files.FileField', [], {'default': "''", 'max_length': '256', 'null': 'True', 'blank': 'True'}),
@@ -136,12 +138,13 @@ class Migration(SchemaMigration):
             'indicator_2': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'interlinks_indicator_2'", 'null': 'True', 'on_delete': 'models.PROTECT', 'to': "orm['flis.Indicator']"}),
             'indicator_3': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'interlinks_indicator_3'", 'null': 'True', 'on_delete': 'models.PROTECT', 'to': "orm['flis.Indicator']"}),
             'indicator_4': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'interlinks_indicator_4'", 'null': 'True', 'on_delete': 'models.PROTECT', 'to': "orm['flis.Indicator']"}),
-            'trend': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'interlinks'", 'on_delete': 'models.PROTECT', 'to': "orm['flis.Trend']"})
+            'trend': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'interlinks'", 'on_delete': 'models.PROTECT', 'to': "orm['flis.Trend']"}),
+            'uncertainty': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'interlinks'", 'null': 'True', 'on_delete': 'models.PROTECT', 'to': "orm['flis.Uncertainty']"}),
+            'user_id': ('django.db.models.fields.CharField', [], {'max_length': '128'})
         },
         'flis.methodtool': {
             'Meta': {'object_name': 'MethodTool'},
             'code': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['flis.Country']"}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
             'file_id': ('django.db.models.fields.files.FileField', [], {'default': "''", 'max_length': '256', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -153,14 +156,12 @@ class Migration(SchemaMigration):
         'flis.scenario': {
             'Meta': {'object_name': 'Scenario'},
             'code': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['flis.Country']"}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         'flis.source': {
             'Meta': {'object_name': 'Source'},
             'author': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
-            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['flis.Country']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'long_name': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
             'short_name': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
@@ -171,27 +172,23 @@ class Migration(SchemaMigration):
         'flis.steepcategory': {
             'Meta': {'object_name': 'SteepCategory'},
             'code': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['flis.Country']"}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         'flis.thematiccategory': {
             'Meta': {'object_name': 'ThematicCategory'},
             'code': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['flis.Country']"}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         'flis.timeline': {
             'Meta': {'object_name': 'Timeline'},
-            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['flis.Country']"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '512'})
         },
         'flis.trend': {
             'Meta': {'object_name': 'Trend'},
             'code': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['flis.Country']"}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
             'file_id': ('django.db.models.fields.files.FileField', [], {'default': "''", 'max_length': '256', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -202,7 +199,6 @@ class Migration(SchemaMigration):
         'flis.uncertainty': {
             'Meta': {'object_name': 'Uncertainty'},
             'code': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['flis.Country']"}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
             'file_id': ('django.db.models.fields.files.FileField', [], {'default': "''", 'max_length': '256', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -214,7 +210,6 @@ class Migration(SchemaMigration):
         'flis.wildcard': {
             'Meta': {'object_name': 'WildCard'},
             'code': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
-            'country': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['flis.Country']"}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '512'}),
             'file_id': ('django.db.models.fields.files.FileField', [], {'default': "''", 'max_length': '256', 'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),

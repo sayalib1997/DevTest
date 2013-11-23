@@ -1,12 +1,16 @@
 from datetime import date
+
 from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.safestring import mark_safe
+
+from django_tools.middlewares import ThreadLocal
 from path import path
 from flis import markup
 
 from constants import LANGUAGES
+
 
 class BaseModel():
 
@@ -60,20 +64,19 @@ class BaseModel():
 
 class Country(models.Model):
 
-  iso = models.CharField(max_length=128, primary_key=True)
-  name = models.CharField(max_length=256)
+    iso = models.CharField(max_length=128, primary_key=True)
+    name = models.CharField(max_length=256)
 
-  class Meta(object):
+    class Meta(object):
+        verbose_name_plural = 'Countries'
 
-    verbose_name_plural = 'Countries'
-
-  def __unicode__(self):
-    return self.iso
+    def __unicode__(self):
+        return self.iso
 
 
 class Source(models.Model, BaseModel):
 
-    country = models.ForeignKey(Country)
+    # country = models.ForeignKey(Country)
     short_name = models.CharField(max_length=512, verbose_name='Short name')
     long_name = models.CharField(max_length=512, verbose_name='Long name')
     year_of_publication = models.CharField(max_length=512,
@@ -86,15 +89,16 @@ class Source(models.Model, BaseModel):
         return self.short_name
 
     def get_absolute_url(self):
+        country = ThreadLocal.get_current_request().country
         return reverse('source_view', kwargs={
-          'pk': self.pk,
-          'country': self.country,
+           'pk': self.pk,
+           'country': country,
         })
 
 
 class Trend(models.Model, BaseModel):
 
-    country = models.ForeignKey(Country)
+    # country = models.ForeignKey(Country)
     code = models.CharField(max_length=256, verbose_name='Code')
     description = models.CharField(max_length=512, verbose_name='Description')
     source = models.ForeignKey(Source, related_name='trends',
@@ -112,9 +116,10 @@ class Trend(models.Model, BaseModel):
         return self.description
 
     def get_absolute_url(self):
+        country = ThreadLocal.get_current_request().country
         return reverse('trend_view', kwargs={
-          'pk': self.pk,
-          'country': self.country,
+           'pk': self.pk,
+           'country': country,
         })
 
 
@@ -129,7 +134,8 @@ class Blossom(models.Model, BaseModel):
         ('independent', 'Independent'),
         ('part-of-official-process', 'Part of official process'),
     ]
-    country = models.ForeignKey(Country)
+
+    # country = models.ForeignKey(Country)
     title = models.CharField(null=True, max_length=256,
              verbose_name='Case study title')
     language = models.CharField(null=True, max_length=56, choices=LANGUAGES,
@@ -177,15 +183,16 @@ class Blossom(models.Model, BaseModel):
         return self.title
 
     def get_absolute_url(self):
+        country = ThreadLocal.get_current_request().country
         return reverse('blossom_view', kwargs={
-          'pk': self.pk,
-          'country': self.country,
+            'pk': self.pk,
+            'country': country,
         })
 
 
 class ThematicCategory(models.Model, BaseModel):
 
-    country = models.ForeignKey(Country)
+    # country = models.ForeignKey(Country)
     code = models.CharField(max_length=256, verbose_name='Code')
     description = models.CharField(max_length=512, verbose_name='Description')
 
@@ -193,15 +200,16 @@ class ThematicCategory(models.Model, BaseModel):
         return '%s (%s)' % (self.code, self.description)
 
     def get_absolute_url(self):
+        country = ThreadLocal.get_current_request().country
         return reverse('thematic_category_view', kwargs={
-          'pk': self.pk,
-          'country': self.country,
+           'pk': self.pk,
+           'country': country,
         })
 
 
 class GeographicalScale(models.Model, BaseModel):
 
-    country = models.ForeignKey(Country)
+    # country = models.ForeignKey(Country)
     code = models.CharField(max_length=256, verbose_name='Code')
     description = models.CharField(max_length=512, verbose_name='Description')
 
@@ -209,15 +217,16 @@ class GeographicalScale(models.Model, BaseModel):
         return '%s (%s)' % (self.code, self.description)
 
     def get_absolute_url(self):
+        country = ThreadLocal.get_current_request().country
         return reverse('geographical_scale_view', kwargs={
-          'pk': self.pk,
-          'country': self.country,
+            'pk': self.pk,
+            'country': country,
         })
 
 
 class GeographicalCoverage(models.Model, BaseModel):
 
-    country = models.ForeignKey(Country)
+    # country = models.ForeignKey(Country)
     code = models.CharField(max_length=256, verbose_name='Code')
     description = models.CharField(max_length=512, verbose_name='Description')
 
@@ -225,15 +234,16 @@ class GeographicalCoverage(models.Model, BaseModel):
         return '%s (%s)' % (self.code, self.description)
 
     def get_absolute_url(self):
+        country = ThreadLocal.get_current_request().country
         return reverse('geographical_coverage_view', kwargs={
-          'pk': self.pk,
-          'country': self.country,
+            'pk': self.pk,
+            'country': country,
         })
 
 
 class Scenario(models.Model, BaseModel):
 
-    country = models.ForeignKey(Country)
+    # country = models.ForeignKey(Country)
     code = models.CharField(max_length=256, verbose_name='Code')
     description = models.CharField(max_length=512, verbose_name='Description')
 
@@ -241,15 +251,16 @@ class Scenario(models.Model, BaseModel):
         return '%s (%s)' % (self.code, self.description)
 
     def get_absolute_url(self):
+        country = ThreadLocal.get_current_request().country
         return reverse('scenario_view', kwargs={
-          'pk': self.pk,
-          'country': self.country,
+           'pk': self.pk,
+           'country': country,
         })
 
 
 class SteepCategory(models.Model, BaseModel):
 
-    country = models.ForeignKey(Country)
+    # country = models.ForeignKey(Country)
     code = models.CharField(max_length=256, verbose_name='Code')
     description = models.CharField(max_length=512, verbose_name='Description')
 
@@ -257,30 +268,32 @@ class SteepCategory(models.Model, BaseModel):
         return '%s (%s)' % (self.code, self.description)
 
     def get_absolute_url(self):
+        country = ThreadLocal.get_current_request().country
         return reverse('steep_category_view', kwargs={
-          'pk': self.pk,
-          'country': self.country,
+            'pk': self.pk,
+            'country': country,
         })
 
 
 class Timeline(models.Model, BaseModel):
 
-    country = models.ForeignKey(Country)
+    # country = models.ForeignKey(Country)
     title = models.CharField(max_length=512, verbose_name='Title')
 
     def __unicode__(self):
         return self.title
 
     def get_absolute_url(self):
+        country = ThreadLocal.get_current_request().country
         return reverse('timeline_view', kwargs={
-          'pk': self.pk,
-          'country': self.country,
+           'pk': self.pk,
+           'country': country,
         })
 
 
 class Indicator(models.Model, BaseModel):
 
-    country = models.ForeignKey(Country)
+    # country = models.ForeignKey(Country)
     code = models.CharField(max_length=256, verbose_name='Code')
     description = models.CharField(max_length=512, verbose_name='Description')
 
@@ -316,15 +329,16 @@ class Indicator(models.Model, BaseModel):
         return self.code
 
     def get_absolute_url(self):
+        country = ThreadLocal.get_current_request().country
         return reverse('indicator_view', kwargs={
-          'pk': self.pk,
-          'country': self.country,
+            'pk': self.pk,
+            'country': country,
         })
 
 
 class GMT(models.Model, BaseModel):
 
-    country = models.ForeignKey(Country)
+    # country = models.ForeignKey(Country)
     code = models.CharField(max_length=256, verbose_name='Code')
     steep_category = models.ForeignKey(SteepCategory,
                                        related_name='gmts',
@@ -346,16 +360,16 @@ class GMT(models.Model, BaseModel):
         return self.code
 
     def get_absolute_url(self):
-
-      return reverse('gmt_view', kwargs={
-        'pk': self.pk,
-        'country': self.country
-      })
+        country = ThreadLocal.get_current_request().country
+        return reverse('gmt_view', kwargs={
+            'pk': self.pk,
+            'country': country,
+        })
 
 
 class FlisModel(models.Model, BaseModel):
 
-    country = models.ForeignKey(Country)
+    # country = models.ForeignKey(Country)
     code = models.CharField(max_length=256, verbose_name='Code')
     steep_category = models.ForeignKey(SteepCategory,
                                        related_name='flismodels',
@@ -378,16 +392,16 @@ class FlisModel(models.Model, BaseModel):
         return self.code
 
     def get_absolute_url(self):
-
-      return reverse('flismodel_view', kwargs={
-        'pk': self.pk,
-        'country': self.country
-      })
+        country = ThreadLocal.get_current_request().country
+        return reverse('flismodel_view', kwargs={
+            'pk': self.pk,
+            'country': country,
+        })
 
 
 class HorizonScanning(models.Model, BaseModel):
 
-    country = models.ForeignKey(Country)
+    # country = models.ForeignKey(Country)
     code = models.CharField(max_length=256, verbose_name='Code')
     steep_category = models.ForeignKey(SteepCategory,
                                        related_name='horizonscannings',
@@ -410,16 +424,16 @@ class HorizonScanning(models.Model, BaseModel):
         return self.code
 
     def get_absolute_url(self):
-
-      return reverse('horizonscanning_view', kwargs={
-        'pk': self.pk,
-        'country': self.country
-      })
+        country = ThreadLocal.get_current_request().country
+        return reverse('horizonscanning_view', kwargs={
+            'pk': self.pk,
+            'country': country,
+        })
 
 
 class MethodTool(models.Model, BaseModel):
 
-    country = models.ForeignKey(Country)
+    # country = models.ForeignKey(Country)
     code = models.CharField(max_length=256, verbose_name='Code')
     steep_category = models.ForeignKey(SteepCategory,
                                        related_name='methodstools',
@@ -442,16 +456,16 @@ class MethodTool(models.Model, BaseModel):
         return self.code
 
     def get_absolute_url(self):
-
-      return reverse('methodtool_view', kwargs={
-        'pk': self.pk,
-        'country': self.country
-      })
+        country = ThreadLocal.get_current_request().country
+        return reverse('methodtool_view', kwargs={
+            'pk': self.pk,
+            'country': country,
+        })
 
 
 class Uncertainty(models.Model, BaseModel):
 
-    country = models.ForeignKey(Country)
+    # country = models.ForeignKey(Country)
     code = models.CharField(max_length=256, verbose_name='Code')
     steep_category = models.ForeignKey(SteepCategory,
                                        related_name='uncertainties',
@@ -474,16 +488,16 @@ class Uncertainty(models.Model, BaseModel):
         return self.code
 
     def get_absolute_url(self):
-
-      return reverse('uncertainty_view', kwargs={
-        'pk': self.pk,
-        'country': self.country
-      })
+        country = ThreadLocal.get_current_request().country
+        return reverse('uncertainty_view', kwargs={
+            'pk': self.pk,
+            'country': country,
+        })
 
 
 class WildCard(models.Model, BaseModel):
 
-    country = models.ForeignKey(Country)
+    # country = models.ForeignKey(Country)
     code = models.CharField(max_length=256, verbose_name='Code')
     steep_category = models.ForeignKey(SteepCategory,
                                        related_name='wildcards',
@@ -506,16 +520,16 @@ class WildCard(models.Model, BaseModel):
         return self.code
 
     def get_absolute_url(self):
-
-      return reverse('wildcard_view', kwargs={
-        'pk': self.pk,
-        'country': self.country
-      })
+        country = ThreadLocal.get_current_request().country
+        return reverse('wildcard_view', kwargs={
+            'pk': self.pk,
+            'country': country,
+        })
 
 
 class EarlyWarning(models.Model, BaseModel):
 
-    country = models.ForeignKey(Country)
+    # country = models.ForeignKey(Country)
     code = models.CharField(max_length=256, verbose_name='Code')
     steep_category = models.ForeignKey(SteepCategory,
                                        related_name='earlywarnings',
@@ -538,20 +552,23 @@ class EarlyWarning(models.Model, BaseModel):
         return self.code
 
     def get_absolute_url(self):
-
-      return reverse('earlywarning_view', kwargs={
-        'pk': self.pk,
-        'country': self.country
-      })
+        country = ThreadLocal.get_current_request().country
+        return reverse('earlywarning_view', kwargs={
+            'pk': self.pk,
+            'country': country,
+        })
 
 
 class Interlink(models.Model, BaseModel):
 
     country = models.ForeignKey(Country)
+    user_id = models.CharField(max_length=128)
     gmt = models.ForeignKey(GMT, related_name='interlinks', verbose_name='GMT')
-    trend = models.ForeignKey(Trend, related_name='interlinks',
-                              verbose_name='Trend',
+    trend = models.ForeignKey(Trend, related_name='interlinks', verbose_name='Trend',
                               on_delete=models.PROTECT)
+    uncertainty = models.ForeignKey(Uncertainty, related_name='interlinks',
+                                    on_delete=models.PROTECT, null=True,
+                                    blank=False)
     indicator_1 = models.ForeignKey(Indicator, related_name='interlinks_indicator_1',
                                     verbose_name='Indicator',
                                     on_delete=models.PROTECT)
@@ -573,8 +590,6 @@ class Interlink(models.Model, BaseModel):
 
     def get_absolute_url(self):
         return reverse('interlink_view', kwargs={
-          'pk': self.pk,
-          'country': self.country,
+         'pk': self.pk,
+         'country': self.country,
         })
-
-

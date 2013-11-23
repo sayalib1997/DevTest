@@ -11,17 +11,17 @@ flis_patterns = patterns('',
     url(r'^$', views.Interlinks.as_view(), name='interlinks'),
 
     url(r'^interlinks/new/$',
-        auth.edit_is_allowed(views.InterlinkCreate.as_view()),
+        auth.edit_is_allowed(views.InterlinkCreate.as_view(), check_country=True),
         name='interlink_new'),
 
     url(r'^interlinks/(?P<pk>\d+)/edit/$',
-        auth.edit_is_allowed(views.InterlinkEdit.as_view()),
+        auth.edit_is_allowed(views.InterlinkEdit.as_view(), check_country=True),
         name='interlink_edit'),
 
     url(r'^interlinks/(?P<pk>\d+)/$', views.Interlink.as_view(), name='interlink_view'),
 
     url(r'^interlinks/(?P<pk>\d+)/delete/$',
-        auth.edit_is_allowed(views.InterlinkDelete.as_view()),
+        auth.edit_is_allowed(views.InterlinkDelete.as_view(), check_country=True),
         name='interlink_delete'),
 
     url(r'^sources/$', views.Sources.as_view(), name='sources'),
