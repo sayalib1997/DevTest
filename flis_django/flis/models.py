@@ -565,10 +565,10 @@ class Interlink(models.Model, BaseModel):
     user_id = models.CharField(max_length=128)
     gmt = models.ForeignKey(GMT, related_name='interlinks', verbose_name='GMT')
     trend = models.ForeignKey(Trend, related_name='interlinks', verbose_name='Trend',
-                              on_delete=models.PROTECT)
+                              on_delete=models.PROTECT, blank=True)
     uncertainty = models.ForeignKey(Uncertainty, related_name='interlinks',
                                     on_delete=models.PROTECT, null=True,
-                                    blank=False)
+                                    blank=True)
     indicator_1 = models.ForeignKey(Indicator, related_name='interlinks_indicator_1',
                                     verbose_name='Indicator',
                                     on_delete=models.PROTECT)
