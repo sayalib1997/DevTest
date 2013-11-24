@@ -25,7 +25,7 @@
   </thead>
 
   <tbody>
-    {% for object in object_list %}
+    {% for object in object_list|alphanumeric_sort %}
     <tr>
       <td>
         <a href="{% url gmt_view pk=object.id country=country %}">
