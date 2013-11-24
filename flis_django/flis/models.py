@@ -335,6 +335,8 @@ class Indicator(models.Model, BaseModel):
             'country': country,
         })
 
+    class Meta:
+        ordering = ('code',)
 
 class GMT(models.Model, BaseModel):
 

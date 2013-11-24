@@ -29,7 +29,6 @@ class Interlinks(BaseQuerysetView, ListView):
     model = models.Interlink
     template_name = 'interlinks/interlinks.html'
     paginate_by = PER_PAGE
-    ordering = ["gmt"]
 
 
 class Interlink(DetailView):
@@ -473,7 +472,6 @@ class Indicators(ListView):
 
     model = models.Indicator
     template_name = 'indicators/indicators.html'
-    ordering = ["code"]
 
 
 class Indicator(DetailView):
