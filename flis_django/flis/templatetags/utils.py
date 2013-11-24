@@ -9,6 +9,12 @@ from flis.models import Interlink
 register = template.Library()
 
 
+def _human_key(key):
+    parts = re.split('(\d*\.\d+|\d+)', key)
+    return tuple((e.swapcase() if i % 2 == 0 else float(e))
+            for i, e in enumerate(parts))
+
+
 @register.simple_tag
 def active(request, pattern):
     pattern = '^%s/%s/' + pattern
@@ -77,3 +83,9 @@ def get_trends_from_interlinks(interlinks):
     for interlink in interlinks:
         trends.add(interlink.trend)
     return trends
+
+
+@register.filter
+def alphanumeric_sort(queryset, key='code'):
+    return sorted(queryset, key=lambda x: _human_key(getattr(x, 'code', None)))
+
