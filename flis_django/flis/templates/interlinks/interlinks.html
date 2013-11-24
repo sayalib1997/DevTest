@@ -2,6 +2,7 @@
 
 
 {% block content %}
+{% load utils %}
 
 <h3>Interlinks</h3>
 
@@ -35,7 +36,7 @@
   </thead>
 
   <tbody>
-    {% for object in object_list %}
+    {% for object in object_list|alphanumeric_sor:"gmt" %}
     <tr>
       <td>
         <a href="{% url interlink_view pk=object.id country=country %}">
