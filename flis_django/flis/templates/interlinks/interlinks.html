@@ -1,8 +1,8 @@
 {% extends 'layout.html' %}
+{% load utils %}
 
 
 {% block content %}
-{% load utils %}
 
 <h3>Interlinks</h3>
 
@@ -18,44 +18,39 @@
 {% endif %}
 
 {% if object_list %}
+  <table class="table table-bordered interlinks">
+    <thead>
+      <tr>
+        <th>GMT</th>
+        <th>Trend</th>
+        <th>Indicator 1</th>
+        <th>Indicator 2</th>
+        <th>Indicator 3</th>
+        <th>Indicator 4</th>
+      </tr>
+    </thead>
 
-{% for object in object_list %}
+    <tbody>
+      {% for object in object_list|alphanumeric_sort:"gmt" %}
+      <tr>
+        <td>
+          <a href="{% url interlink_view pk=object.id country=country %}">
+            {{ object }}</a>
+        </td>
 
-{% endfor %}
+        <td>{{ object.trend }}</td>
 
-<table class="table table-bordered interlinks">
-  <thead>
-    <tr>
-      <th>GMT</th>
-      <th>Trend</th>
-      <th>Indicator 1</th>
-      <th>Indicator 2</th>
-      <th>Indicator 3</th>
-      <th>Indicator 4</th>
-    </tr>
-  </thead>
+        <td>{{ object.indicator_1 }}</td>
 
-  <tbody>
-    {% for object in object_list|alphanumeric_sort object_list "gmt" %}
-    <tr>
-      <td>
-        <a href="{% url interlink_view pk=object.id country=country %}">
-          {{ object }}</a>
-      </td>
+        <td>{{ object.indicator_2 }}</td>
 
-      <td>{{ object.trend }}</td>
+        <td>{{ object.indicator_3 }}</td>
 
-      <td>{{ object.indicator_1 }}</td>
-
-      <td>{{ object.indicator_2 }}</td>
-
-      <td>{{ object.indicator_3 }}</td>
-
-      <td>{{ object.indicator_4 }}</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+        <td>{{ object.indicator_4 }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endif %}
 
 {% if is_paginated %}

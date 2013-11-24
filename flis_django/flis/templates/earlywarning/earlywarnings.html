@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% load utils %}
 
 
 {% block content %}
@@ -25,12 +26,13 @@
   </thead>
 
   <tbody>
-    {% for object in object_list %}
+    {% for object in object_list|alphanumeric_sort %}
     <tr>
       <td>
         <a href="{% url earlywarning_view pk=object.id country=country %}">
           {{ object }}</a>
       </td>
+      <td>{{ object.description }}</td>
     </tr>
     {% endfor %}
   </tbody>

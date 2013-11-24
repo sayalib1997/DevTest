@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% load utils %}
 
 
 {% block content %}
@@ -25,7 +26,7 @@
   </thead>
 
   <tbody>
-    {% for thematic_category in object_list %}
+    {% for thematic_category in object_list|alphanumeric_sort %}
     <tr>
       <td>
         <a href="{% url thematic_category_view pk=thematic_category.id country=country %}">{{ thematic_category.code }} ({{ thematic_category.description }})</a>

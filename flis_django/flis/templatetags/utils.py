@@ -10,6 +10,11 @@ register = template.Library()
 
 
 def _human_key(key):
+    if not isinstance(key, basestring):
+        try:
+            key = key.code
+        except AttributeError:
+            key = key.id
     parts = re.split('(\d*\.\d+|\d+)', key)
     return tuple((e.swapcase() if i % 2 == 0 else float(e))
             for i, e in enumerate(parts))
@@ -86,6 +91,10 @@ def get_trends_from_interlinks(interlinks):
 
 
 @register.filter
-def alphanumeric_sort(queryset, key='code'):
-    return sorted(queryset, key=lambda x: _human_key(getattr(x, key, None)))
+def alphanumeric_sort(queryset, sort_key='code'):
+
+    def get_human_value(x):
+        return _human_key(getattr(x, sort_key, None))
+
+    return sorted(queryset, key=lambda x: get_human_value(x))
 
