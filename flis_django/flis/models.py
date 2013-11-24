@@ -123,7 +123,7 @@ class Trend(models.Model, BaseModel):
         })
 
     class Meta:
-        ordering = ('code',)
+        ordering = ('description',)
 
 
 class Blossom(models.Model, BaseModel):
