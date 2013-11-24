@@ -29,6 +29,7 @@ class Interlinks(BaseQuerysetView, ListView):
     model = models.Interlink
     template_name = 'interlinks/interlinks.html'
     paginate_by = PER_PAGE
+    order = ["code"]
 
 
 class Interlink(DetailView):
