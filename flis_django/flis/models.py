@@ -372,7 +372,7 @@ class GMT(models.Model, BaseModel):
         })
 
     class Meta:
-        ordering = ('description',)
+        ordering = ('code',)
 
 
 class FlisModel(models.Model, BaseModel):
