@@ -565,7 +565,7 @@ class Interlink(models.Model, BaseModel):
     user_id = models.CharField(max_length=128)
     gmt = models.ForeignKey(GMT, related_name='interlinks', verbose_name='GMT')
     trend = models.ForeignKey(Trend, related_name='interlinks', verbose_name='Trend',
-                              on_delete=models.PROTECT, blank=True)
+                              on_delete=models.PROTECT, null=True, blank=True)
     uncertainty = models.ForeignKey(Uncertainty, related_name='interlinks',
                                     on_delete=models.PROTECT, null=True,
                                     blank=True)
