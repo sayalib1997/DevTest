@@ -122,6 +122,9 @@ class Trend(models.Model, BaseModel):
            'country': country,
         })
 
+    class Meta:
+        ordering = ('code',)
+
 
 class Blossom(models.Model, BaseModel):
 
@@ -595,3 +598,6 @@ class Interlink(models.Model, BaseModel):
          'pk': self.pk,
          'country': self.country,
         })
+
+    class Meta:
+        ordering = ('gmt',)
