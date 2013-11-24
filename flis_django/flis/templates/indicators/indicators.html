@@ -41,7 +41,7 @@
 
   <tbody>
 
-    {% for object in object_list %}
+    {% for object in sorted(object_list, key=attrgetter('code')) %}
     <tr>
       <td>
         <a href="{% url indicator_view pk=object.id country=country %}">
