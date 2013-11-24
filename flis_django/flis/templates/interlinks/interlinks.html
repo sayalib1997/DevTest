@@ -36,7 +36,7 @@
   </thead>
 
   <tbody>
-    {% for object in object_list|alphanumeric_sor:"gmt" %}
+    {% for object in object_list|alphanumeric_sort:"gmt" %}
     <tr>
       <td>
         <a href="{% url interlink_view pk=object.id country=country %}">
