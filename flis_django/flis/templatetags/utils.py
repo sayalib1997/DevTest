@@ -87,5 +87,5 @@ def get_trends_from_interlinks(interlinks):
 
 @register.filter
 def alphanumeric_sort(queryset, key='code'):
-    return sorted(queryset, key=lambda x: _human_key(getattr(x, 'code', None)))
+    return sorted(queryset, key=lambda x: _human_key(getattr(x, key, None)))
 
