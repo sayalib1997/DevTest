@@ -32,6 +32,15 @@
     },
 
     {
+        "pk": "ch",
+        "model": "flis.country",
+        "fields": {
+            "name": "Switzerland"
+        }
+    },
+
+
+    {
         "pk": "hu",
         "model": "flis.country",
         "fields": {
